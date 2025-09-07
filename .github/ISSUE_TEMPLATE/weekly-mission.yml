@@ -1,0 +1,49 @@
+name: Weekly Mission
+description: 주차별 미션 과제를 위한 이슈
+title: 'W? 미션 – (작성 후 자동 변경됨)' # 액션이 자동으로 'W{주차} 미션 – {닉네임/이름}' 으로 바꿔줍니다.
+labels: ['weekly']
+body:
+    - type: dropdown
+      id: week
+      attributes:
+          label: 주차
+          options:
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+              - '6'
+              - '7'
+              - '8'
+              - '9'
+              - '10'
+              - '11'
+              - '12'
+      validations:
+          required: true
+
+    - type: input
+      id: member
+      attributes:
+          label: 닉네임/이름
+          placeholder: '예: 코튼/김연진' # 슬래시(/) 사용 OK
+          description: '형식 예시: 코튼/김연진 (닉네임과 이름 사이에 슬래시 /)'
+      validations:
+          required: true
+
+    - type: checkboxes
+      id: tasks
+      attributes:
+          label: 이번 주 완료 조건
+          options:
+              - label: 미션 완료
+              - label: 폴더 구조 정리
+              - label: PR 생성 및 리뷰 반영
+
+    - type: textarea
+      id: note
+      attributes:
+          label: 참고/비고
+          placeholder: '추가 설명, 스크린샷, 자료 링크 등'
