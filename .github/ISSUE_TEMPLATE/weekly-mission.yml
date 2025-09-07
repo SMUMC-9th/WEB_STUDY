@@ -1,6 +1,6 @@
 name: Weekly Mission
 description: 주차별 미션 과제를 위한 이슈
-title: 'W? 미션 – (작성 후 자동 변경됨)' # 액션이 자동으로 'W{주차} 미션 – {닉네임/이름}' 으로 바꿔줍니다.
+title: 'W{주차} 미션 – {닉네임/이름}' # 생성 시 직접 입력
 labels: ['weekly']
 body:
     - type: dropdown
@@ -8,19 +8,21 @@ body:
       attributes:
           label: 주차
           options:
-              - '0'
-              - '1'
-              - '2'
-              - '3'
-              - '4'
-              - '5'
-              - '6'
-              - '7'
-              - '8'
-              - '9'
-              - '10'
-              - '11'
-              - '12'
+              [
+                  '0',
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '10',
+                  '11',
+                  '12',
+              ]
       validations:
           required: true
 
@@ -28,8 +30,7 @@ body:
       id: member
       attributes:
           label: 닉네임/이름
-          placeholder: '예: 코튼/김연진' # 슬래시(/) 사용 OK
-          description: '형식 예시: 코튼/김연진 (닉네임과 이름 사이에 슬래시 /)'
+          placeholder: '예: 코튼/김연진'
       validations:
           required: true
 
@@ -42,8 +43,10 @@ body:
               - label: 폴더 구조 정리
               - label: PR 생성 및 리뷰 반영
 
-    - type: textarea
-      id: note
+    - type: markdown
       attributes:
-          label: 참고/비고
-          placeholder: '추가 설명, 스크린샷, 자료 링크 등'
+          value: |
+              > 📌 **이슈 생성 후 해야 할 일**
+              > 1) 라벨 `week:{주차}` 직접 추가 (예: `week:3`)  
+              > 2) 마일스톤 `Week {주차}` 직접 지정 (예: `Week 3`)
+              > 3) PR 본문에 `Closes #이슈번호` 포함
