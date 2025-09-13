@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      background-color: #f1fdf4;
+    }
+
+    .main-nav{
+      position:relative; /* 자식 요소인 .main-nav__hamburger가 absolute이면 기준이 되는 부모가 필요하기 때문에 relative로 설정함 */
+      width: 100%;
+    }
+
+    .main-nav__hamburger{
+      position: absolute; /* 특정 좌표에 배치할려고 absolute 씀 */
+      top: 10px;
+      left: 190px;
+      display:none;
+      cursor: pointer;
+      background-color: #97a1a3;
+      color: white;
+      border-radius: 50%;
+      border: none;
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
+      z-index: 1000; /* 다른 요소보다 위로 올라오게 */
+    }
+    .main-nav__list {
+      margin: 10px;
+      padding: 10px;
+      display: flex; /* 자식들을 가로로 정렬 */
+      list-style: none;
+      border-radius: 30px;
+      background-color: #97a1a3;
+    }
+
+
+    .main-nav__item{
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    .main-nav__item:hover{
+      background-color: #00a73d;
+    }
+    .main-nav__link{
+      text-decoration: none; /* 기본 밑줄 제거 */
+      color: white;
+    }
+
+    /* 미디어 쿼리 */
+    @media (max-width: 480px) { /* 스크린의 넓이가 480보다 작을 경우 */
+      .main-nav__hamburger{
+        display: block !important;
+      }
+      .main-nav__list{
+        transition: right 0.3s ease;
+        flex-direction: column;
+        position:fixed;
+        top: 0;
+        right: -300px; /* 처음엔 화면 밖으로 숨김! */
+        height: 100vh;
+        width: 200px;
+        background-color: #1b1a1b;
+        margin: 0;
+        border-radius: 0;
+        padding-top: 60px;
+      }
+      /*active 클래스가 붙으면 right: 0 */
+      .main-nav__list.active{
+        right:0;
+      }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="main-nav">
+    <button class="main-nav__hamburger">☰</button> <!-- 햄버거 버튼 -->
+    <ul class="main-nav__list">
+      <li class="main-nav__item">
+        <a href="#" class="main-nav__link">불꽃</a>
+      </li>
+      <li class="main-nav__item">
+        <a href="#" class="main-nav__link">Projects</a>
+      </li>
+      <li class="main-nav__item">
+        <a href="#" class="main-nav__link">Members</a>
+      </li>
+      <li class="main-nav__item">
+        <a href="#" class="main-nav__link">FAQ</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const hamburger = document.querySelector('.main-nav__hamburger');
+  const navList = document.querySelector('.main-nav__list');
+
+  hamburger.addEventListener('click', () => {
+    navList.classList.toggle('active'); // toggle: classList 안에서 특정 클래스가 있으면 제거, 없으면 추가하는 메서드임. (즉 active 클래스 있으면 추가, 없으면 제거)
+
+    if(navList.classList.contains('active')) {
+      hamburger.textContent = 'x';
+    }
+    else {
+      hamburger.textContent = '☰'
+    }
+  })
+</script>
+</body>
+</html>
