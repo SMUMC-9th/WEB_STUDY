@@ -1,0 +1,87 @@
+@font-face {
+  font-family: 'NanumHuman';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2501-1@1.1/NanumHumanTTFRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumHuman';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2501-1@1.1/NanumHumanTTFBold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NanumHuman';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2501-1@1.1/NanumHumanTTFExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+}
+
+
+body{
+  font-family: 'NanumHuman';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 4rem;
+  text-align: center;
+  background-color: #eae9e6;
+
+}
+
+header{
+  color: #cc3233;
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: -4px;
+  margin-bottom: 2rem;
+}
+
+main {
+  width: 50%;
+}
+
+#todoInput{
+  font-family: 'NanumHuman';
+  font-size: 1.4rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  width: 80%;
+  border: 2px solid #199b60; /* 테두리 두께, 스타일, 색상을 한 번에 지정 */
+  border-radius: 6px;
+  outline: none;        /* 포커스 시 파란 외곽선 제거 */
+  text-align: center; /* input 전체 텍스트를 중앙 정렬 */
+
+}
+
+.section-container{
+  color: #cc3233;
+  font-weight: 700;
+  margin: 0.5rem;
+  display: flex;
+  gap: 5rem;
+  justify-content: center; /* 가로 가운데 정렬 */
+}
+
+.section-container > .main__will,
+.section-container > .main__did
+{
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.main__will > div, .main__did > div { /* 직계 자손들만 */
+  color: black;
+  font-size: 1rem;
+  margin: 0.4rem;
+}
+
+
+button {
+  all: unset; /* 기본 margin, padding, border, background, font 등 제거 */
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
