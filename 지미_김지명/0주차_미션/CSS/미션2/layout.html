@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>복합 레이아웃 미션</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* 메인 컨테이너 - CSS Grid 사용 */
+        .container {
+            display: grid;
+            grid-template-rows: auto 1fr auto auto;
+            grid-template-areas: 
+                "header"
+                "hero"
+                "content"
+                "banner";
+            min-height: 100vh;
+        }
+
+        /* 상단 헤더 영역 - Flexbox 사용 */
+        .header-section {
+            grid-area: header;
+            display: flex;
+            height: 120px;
+        }
+
+        .header {
+            flex: 1;
+            background-color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .menu {
+            flex: 1;
+            background-color: #e74c3c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            grid-area: hero;
+            background-color: #5b9bd5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            min-height: 350px;
+        }
+
+        /* 중간 콘텐츠 영역 - CSS Grid 사용 */
+        .content-section {
+            grid-area: content;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1fr;
+            grid-template-rows: 1fr;
+            min-height: 400px;
+        }
+
+        .main {
+            background-color: #34495e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .spacer {
+            background-color: white;
+        }
+
+        /* 오른쪽 영역 - CSS Grid 사용 */
+        .right-section {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 0;
+        }
+
+        .image {
+            background-color: #a8d5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .extra {
+            background-color: #52c4a0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* 배너 섹션 */
+        .banner {
+            grid-area: banner;
+            background-color: #f4d03f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: bold;
+            height: 120px;
+        }
+
+        /* 반응형 레이아웃 */
+        @media (max-width: 768px) {
+            .header-section {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .header, .menu {
+                height: 80px;
+                font-size: 1.8rem;
+            }
+
+            .hero {
+                font-size: 2rem;
+                min-height: 250px;
+            }
+
+            .content-section {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                min-height: auto;
+            }
+
+            .main {
+                height: 200px;
+                font-size: 1.8rem;
+            }
+
+            .spacer {
+                height: 50px;
+            }
+
+            .right-section {
+                grid-template-rows: auto auto;
+            }
+
+            .image, .extra {
+                height: 150px;
+                font-size: 1.5rem;
+            }
+
+            .banner {
+                font-size: 1.8rem;
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header, .menu {
+                font-size: 1.5rem;
+                height: 60px;
+            }
+
+            .hero {
+                font-size: 1.8rem;
+                min-height: 200px;
+            }
+
+            .main {
+                height: 150px;
+                font-size: 1.5rem;
+            }
+
+            .image, .extra {
+                height: 120px;
+                font-size: 1.3rem;
+            }
+
+            .banner {
+                font-size: 1.5rem;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 상단 헤더 영역 (Flexbox) -->
+        <div class="header-section">
+            <div class="header">HEADER</div>
+            <div class="menu">MENU</div>
+        </div>
+
+        <!-- 히어로 섹션 -->
+        <div class="hero">HERO</div>
+
+        <!-- 중간 콘텐츠 영역 (Grid) -->
+        <div class="content-section">
+            <div class="main">MAIN</div>
+            <div class="spacer"></div>
+            <div class="right-section">
+                <div class="image">IMAGE</div>
+                <div class="extra">EXTRA</div>
+            </div>
+        </div>
+
+        <!-- 배너 섹션 -->
+        <div class="banner">BANNER</div>
+    </div>
+</body>
+</html>
