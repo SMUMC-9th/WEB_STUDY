@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0주차 TodoList</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="container">
+      <h1>TodoList</h1>
+      <form id="todo-form" class="input-row">
+        <input id="todo-input" type="text" placeholder="Todo를 작성해보세요!" />
+        <button id="add-btn" type="submit">+</button>
+      </form>
+    </header>
+
+    <main class="container two-col">
+      <section class="todo">
+        <h3>Todo</h3>
+        <ul id="todo-list" class="list"></ul>
+      </section>
+
+      <section class="todo">
+        <h3>Done</h3>
+        <ul id="done-list" class="list"></ul>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
