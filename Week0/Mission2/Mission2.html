@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Mission2</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        grid-template-rows: 0.8fr 3fr 3fr 1fr;
+        grid-template-areas:
+          "header menu"
+          "hero hero"
+          "content content"
+          "banner banner";
+        height: 100vh;
+      }
+
+      .box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+      }
+
+      .header {
+        grid-area: header;
+        background: #111a28;
+      }
+      .menu {
+        grid-area: menu;
+        background: #e74c3c;
+      }
+
+      .hero {
+        grid-area: hero;
+        background: #4a80c4;
+      }
+
+      .content {
+        grid-area: content;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 150px;
+      }
+
+      .main {
+        background: #1e2a3a;
+        display: flex;
+        flex: 2;
+      }
+
+      .side {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+
+      .image {
+        background: #c1e4e9;
+        color: black;
+        flex: 1.5;
+      }
+      .extra {
+        background: #4cbf92;
+        color: black;
+        flex: 1;
+      }
+
+      .banner {
+        grid-area: banner;
+        background: #f4c04c;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box header">HEADER</div>
+      <div class="box menu">MENU</div>
+      <div class="box hero">HERO</div>
+
+      <div class="content">
+        <div class="box main">MAIN</div>
+        <div class="side">
+          <div class="box image">IMAGE</div>
+          <div class="box extra">EXTRA</div>
+        </div>
+      </div>
+
+      <div class="box banner">BANNER</div>
+    </div>
+  </body>
+</html>
