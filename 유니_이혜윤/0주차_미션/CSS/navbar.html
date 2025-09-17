@@ -146,6 +146,8 @@
     <script>
       // 메뉴 모두 가져오기
       const allLinks = document.querySelectorAll(".menu a, .sidebar a");
+      const sidebar = document.querySelector(".sidebar");
+      const hamburger = document.querySelector(".hamburger");
 
       allLinks.forEach((link) => {
         link.addEventListener("click", () => {
@@ -154,6 +156,12 @@
           // 클릭한 메뉴에 active 추가
           link.classList.add("active");
         });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!sidebar.classList.contains("show")) return;
+        if (sidebar.contains(e.target) || hamburger.contains(e.target)) return;
+        sidebar.classList.remove("show");
       });
     </script>
   </body>
