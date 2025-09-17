@@ -24,6 +24,7 @@ hr {
     border: 2px solid rgb(62,95,187);
     margin: 20px auto;   
     display: block;
+    padding-left: 12px;
   }
 
 .input::placeholder {

@@ -15,7 +15,7 @@ input.addEventListener('keydown', (e) => {
     }
 });
 
-function addTodo(text) {
+function createTodoItem(text, buttonText, buttonClass, onButtonClick) {
     const li = document.createElement('li');
     li.className = 'todo-item';
 
@@ -23,30 +23,22 @@ function addTodo(text) {
     span.className = 'todo-item__text';
     span.textContent = text;
 
-    const completeBtn = document.createElement('button');
-    completeBtn.className = 'btn btn-complete';
-    completeBtn.textContent = '완료';
-    completeBtn.addEventListener('click', () => moveToDone(li, text));
+    const button = document.createElement('button');
+    button.className = `btn ${buttonClass}`;
+    button.textContent = buttonText;
+    button.addEventListener('click', onButtonClick);
 
-    li.append(span, completeBtn);
+    li.append(span, button);
+    return li;
+}
+
+function addTodo(text) {
+    const li = createTodoItem(text, '완료', 'btn-complete', () => moveToDone(li, text));
     todoList.prepend(li);
 }
 
 function moveToDone(originLi, text) {
     originLi.remove();
-
-    const li = document.createElement('li');
-    li.className = 'todo-item';
-
-    const span = document.createElement('span');
-    span.className = 'todo-item__text';
-    span.textContent = text;
-  
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'btn btn-delete';
-    deleteBtn.textContent = '삭제';
-    deleteBtn.addEventListener('click', () => li.remove());
-  
-    li.append(span, deleteBtn);
+    const li = createTodoItem(text, '삭제', 'btn-delete', () => li.remove());
     doneList.prepend(li);
 }

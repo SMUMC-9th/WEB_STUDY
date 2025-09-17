@@ -88,15 +88,12 @@
             font-weight: bold;
         }
 
-        .spacer {
-            background-color: white;
-        }
-
         /* 오른쪽 영역 - CSS Grid 사용 */
         .right-section {
             display: grid;
             grid-template-rows: 1fr 1fr;
             gap: 0;
+            grid-column: 3;
         }
 
         .image {
@@ -151,7 +148,7 @@
 
             .content-section {
                 grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto;
+                grid-template-rows: auto auto;
                 min-height: auto;
             }
 
@@ -160,8 +157,9 @@
                 font-size: 1.8rem;
             }
 
-            .spacer {
-                height: 50px;
+            .right-section {
+                grid-template-rows: auto auto;
+                grid-column: auto; 
             }
 
             .right-section {
@@ -221,7 +219,6 @@
         <!-- 중간 콘텐츠 영역 (Grid) -->
         <div class="content-section">
             <div class="main">MAIN</div>
-            <div class="spacer"></div>
             <div class="right-section">
                 <div class="image">IMAGE</div>
                 <div class="extra">EXTRA</div>
