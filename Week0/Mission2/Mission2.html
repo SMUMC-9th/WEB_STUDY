@@ -49,17 +49,19 @@
       .content {
         grid-area: content;
         display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 150px;
+        grid-template-columns: 2fr 150px 1fr;
+        grid-template-areas: "main gap side";
       }
 
       .main {
+        grid-area: main;
         background: #1e2a3a;
         display: flex;
         flex: 2;
       }
 
       .side {
+        grid-area: side;
         display: flex;
         flex-direction: column;
         flex: 1;
