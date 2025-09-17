@@ -38,10 +38,12 @@
       main {
         display: grid;
         grid-template-columns: 50% 25% 25%;
+        grid-template-areas: "main . side";
         min-height: 300px;
       }
 
       .main {
+        grid-area: main;
         background: #1e2b3b;
         color: #fff;
         display: grid;
@@ -49,6 +51,7 @@
       }
 
       .side {
+        grid-area: side;
         display: grid;
         grid-template-rows: 1fr 1fr;
       }
@@ -83,7 +86,6 @@
 
       <main>
         <div class="main">MAIN</div>
-        <div class="gap"></div>
         <div class="side">
           <div class="image">IMAGE</div>
           <div class="extra">EXTRA</div>
