@@ -1,36 +1,66 @@
 "use strict";
-const todoInput = document.getElementById('todoInput');
-const main__will = document.querySelector('.main__will');
-const main__did = document.querySelector('.main__did');
-function addMainwill(value) {
-    const todo = document.createElement('div');
-    const completeBtn = document.createElement('button');
-    todo.textContent = value;
-    completeBtn.textContent = '[O]';
-    todo.appendChild(completeBtn);
-    main__will.appendChild(todo);
-    completeBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        main__did.appendChild(todo);
-        completeBtn.textContent = '[X]';
-        const deleteBtn = completeBtn;
-        deleteBtn.addEventListener('click', deleteTodo);
+const todoInput = document.getElementById("todo-input");
+const todoForm = document.getElementById("todo-form");
+const todoList = document.getElementById("todo-list");
+const doneList = document.getElementById("done-list");
+let todos = [];
+let doneTasks = [];
+const renderTasks = () => {
+    todoList.innerHTML = "";
+    doneList.innerHTML = "";
+    todos.forEach((todo) => {
+        const li = createTodoElement(todo, false);
+        todoList.appendChild(li);
     });
-}
-function deleteTodo(event) {
-    const target = event.target;
-    const todo = target.parentElement;
-    todo.remove();
-}
-todoInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        const value = todoInput.value.trim();
-        if (!value)
-            return;
-        else {
-            addMainwill(value);
-            todoInput.value = '';
-        }
+    doneTasks.forEach((task) => {
+        const li = createTodoElement(task, true);
+        doneList.appendChild(li);
+    });
+};
+const getTodoText = () => {
+    return todoInput.value.trim();
+};
+const addTodo = (text) => {
+    todos.push({ id: Date.now(), text });
+    todoInput.value = "";
+    renderTasks();
+};
+const completeTask = (todo) => {
+    todos = todos.filter((t) => t.id !== todo.id);
+    doneTasks.push(todo);
+    renderTasks();
+};
+const deleteTodo = (todo) => {
+    doneTasks = doneTasks.filter((t) => t.id !== todo.id);
+    renderTasks();
+};
+const createTodoElement = (todo, isDone) => {
+    const li = document.createElement("li");
+    li.classList.add("render-container__item");
+    li.textContent = todo.text;
+    const button = document.createElement("button");
+    button.classList.add("render-container__item-button");
+    if (isDone) {
+        button.textContent = "X";
     }
+    else {
+        button.textContent = "O";
+    }
+    button.addEventListener("click", () => {
+        if (isDone) {
+            deleteTodo(todo);
+        }
+        else {
+            completeTask(todo);
+        }
+    });
+    li.appendChild(button);
+    return li;
+};
+todoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = getTodoText();
+    if (text)
+        addTodo(text);
 });
+renderTasks();
