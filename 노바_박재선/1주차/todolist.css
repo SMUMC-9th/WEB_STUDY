@@ -1,0 +1,88 @@
+body {
+            display: flex;
+            background-color: rgb(237, 237, 237);
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin:0;
+        }
+        .container {
+            width: 330px;
+            min-height: 120px;
+            border: none;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 0 10px rgb(196, 196, 196);
+        }
+        .Header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .Editor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .Editor > input{
+            border-radius: 4px;
+            border: 1px solid rgb(206,206,206);
+            padding: 5px;
+            width: 210px;
+            font-size: 12px;
+        }
+        .Editor >input:focus{
+            border:1px solid rgb(93, 93, 255);
+            outline: none;
+        }
+        .Editor > button {
+            color: white;
+            background-color: rgb(6, 185, 6);
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            padding: 5px 8px;
+            cursor: pointer;
+        }
+        .List {
+            display: flex;
+            margin-bottom: 10px;
+            flex: 1;
+        }
+        .List-todoSection, .List-doneSection {
+            flex: 1;
+            text-align: center;
+            padding-left: 10px;
+            padding: 0 15px;
+        }
+        .List ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .List li {
+            display: flex;
+            border: none;
+            border-radius: 6px;
+            background-color: rgb(237, 237, 237);
+            padding: 5px;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 5px rgb(196, 196, 196);
+            margin-bottom: 10px;
+        }
+        .List button {
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            padding: 5px 8px;
+            cursor: pointer;
+        }
+        .List-todoSection button {
+            background-color: rgb(6, 185, 6);
+        }
+        .List-doneSection button {
+            background-color: rgb(236, 9, 9);
+        }
