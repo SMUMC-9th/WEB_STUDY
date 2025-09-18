@@ -19,22 +19,23 @@ function addTask(text) {
     const completeButton = document.createElement('button');
     completeButton.textContent = '완료';
 
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '삭제';
+    
+    
+
     completeButton.addEventListener('click', function() {
         doneList.appendChild(listItem);
         completeButton.remove();
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = '삭제';
-        deleteButton.className = 'delete-btn';
-
-        deleteButton.addEventListener('click', function() {
-            listItem.remove();
-        });
         listItem.appendChild(deleteButton);
-    });
+    });    
 
     listItem.appendChild(taskText);
     listItem.appendChild(completeButton);
-
     todoList.appendChild(listItem);
+
+    deleteButton.addEventListener('click', function() {
+        listItem.remove();
+        deleteButton.remove();
+    });
 }

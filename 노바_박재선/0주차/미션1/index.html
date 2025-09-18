@@ -4,113 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navbar 구현</title>
-    <style>
-        body{
-            margin: 0;
-            font-family: sans-serif;
-            background-color: rgb(27,27,27);
-        }
-        .navBar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 20px;
-            width: 100%;
-            position: fixed;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .menu {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-            align-items: center;
-            background-color: rgb(2,1,27);
-            opacity: 0.6;
-            padding: 20px;
-            border-radius: 50px;
-        }
-        .menu a {
-            text-decoration: none;
-            color: white;
-            font-size: 14px;
-            margin: 10px;
-        }
-        .menu a:active {
-            background-color: green;
-            border-radius: 50px;
-            padding: 8px 15px;
-        }
-        .menu a:hover {
-            columns: rgb(161,161,161);
-            transition-duration: 0.2s;
-        }
-        #menu-toggle {
-            display: none;
-        }
-
-        .hamburger {
-            display: none;
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-            z-index: 100;
-        }
-        #menu-toggle:checked + .hamburger{
-            color:transparent;
-        }
-
-        #menu-toggle:checked + .hamburger::after {
-            content: "X";
-            position: absolute;
-            top: 0;
-            left: 0;
-            color: white;
-        }
-        .sidebar {
-            position: fixed;
-            background-color: rgb(42,40,40);
-            top: 0px;
-            right: -400px;
-            width: 250px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 60px 30px;
-            gap: 20px;
-            transition: right 0.3s ease;
-        }
-        #menu-toggle:checked ~ .sidebar {
-            right: 0;
-        }
-
-        .sidebar a{
-            color: white;
-            text-decoration: none;
-            font-size: 25px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .sidebar a:hover{
-            font-size: 23px;
-            transform: translateX(5px);
-        }
-        .sidebar a:active{
-            color: green;
-        }
-
-        @media (max-width: 640px) {
-            .menu {
-                display:none;
-            }
-            .hamburger{
-                display: block;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <nav class="navBar">
@@ -139,5 +33,6 @@
         <a href="#members">Members</a>
         <a href="#faq">FAQ</a>
     </div>
+    <script src="index.js"></script>
 </body>
 </html>
