@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODOLIST</title>
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: aliceblue;
+        font-family: sans-serif;
+        padding: 50px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 50px;
+      }
+      hr {
+        width: 90%;
+        border: none;
+        border-top: 2px solid lightgray;
+        margin: 20px auto;
+      }
+
+      .todolist {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .todolist__input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      .todolist__status {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin-top: 20px;
+      }
+      .todolist__pending,
+      .todolist__done {
+        width: 48%;
+        font-weight: bold;
+        text-align: center;
+        min-height: 50px;
+      }
+      .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 5px 0;
+        padding: 5px 10px;
+        border-bottom: 2px solid lightgray;
+        margin-bottom: 10px;
+      }
+      .item button {
+        all: unset;
+        padding: 5px 10px;
+        background-color: lightgray;
+        text-align: center;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>UMC Study Plan</h1>
+    </div>
+    <hr />
+    <div class="todolist">
+      <input
+        type="text"
+        class="todolist__input"
+        placeholder="스터디 계획을 작성해보세요!"
+      />
+      <div class="todolist__status">
+        <div class="todolist__pending">
+          <strong>해야 할 일</strong>
+        </div>
+        <div class="todolist__done">
+          <strong>해낸 일</strong>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const input = document.querySelector(".todolist__input");
+      const pending = document.querySelector(".todolist__pending");
+      const done = document.querySelector(".todolist__done");
+
+      input.addEventListener("keyup", (e) => {
+        if (e.key === "Enter" && input.value.trim() !== "") {
+          addItem(input.value.trim());
+          input.value = "";
+        }
+      });
+
+      function addItem(text) {
+        const item = document.createElement("div");
+        item.className = "item";
+        item.innerHTML = `
+        <span>${text}</span>
+        <button>완료</button>
+      `;
+
+        const button = item.querySelector("button");
+        button.addEventListener("click", () => {
+          if (button.textContent === "완료") {
+            pending.removeChild(item);
+            done.appendChild(item);
+            button.textContent = "삭제";
+          } else {
+            done.removeChild(item);
+          }
+        });
+
+        pending.appendChild(item);
+      }
+    </script>
+  </body>
+</html>

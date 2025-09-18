@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Background 속성 예제</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      .box {
+        width: 100%;
+        height: 300px;
+        border: 2px solid #333;
+        margin-bottom: 20px;
+      }
+
+      .repeat {
+        background-image: url("https://picsum.photos/200");
+        background-repeat: repeat;
+      }
+
+      .no-repeat {
+        background: url("https://picsum.photos/200") no-repeat center center;
+        background-size: auto;
+      }
+
+      .cover {
+        background: url("https://picsum.photos/800/600") no-repeat center center /
+          cover;
+      }
+
+      .contain {
+        background: url("https://picsum.photos/800/600") no-repeat center center /
+          contain;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>background-repeat: repeat</h2>
+    <div class="box repeat"></div>
+
+    <h2>background: no-repeat + center</h2>
+    <div class="box no-repeat"></div>
+
+    <h2>background-size: cover</h2>
+    <div class="box cover"></div>
+
+    <h2>background-size: contain</h2>
+    <div class="box contain"></div>
+  </body>
+</html>
