@@ -18,7 +18,7 @@ export const TodoProvider = ({ children } : PropsWithChildren) => {
   // TodoProvider : Todo 상태와 함수들을 전역처럼 쓰게 해주는 Context Provider)
   // 할 일 목록
   const [todos, setTodos] = useState<TTodo[]>([]); // 제네릭을 사용해서 상태 관리 (배열 안 요소는 TTodo 객체만 가능)
-  // 완료한 일 목록
+  // 완료한 일 목록s
   const [doneTodos, setDoneTodos] = useState<TTodo[]>([]);
 
   const addTodo = (text:string) : void => {
@@ -47,18 +47,19 @@ export const TodoProvider = ({ children } : PropsWithChildren) => {
 
     // 4) Provider에서 값 전달
     <TodoContext.Provider
-      value={{todos, doneTodos, addTodo, completeTodos, deleteTodo}}   >
+      value={{todos, doneTodos, addTodo, completeTodos, deleteTodo}}
+    >
       { children }
     </TodoContext.Provider>
   )
 }
 
-// context가 undefined이지 않게(무조건 있다) 는 걸 알려줌
-export const useTodo = () : ITodoContext => {
+// 5) undefined 방어 코드 (context가 무조건 있다는 걸 알려줌)
+export const useTodo = () : ITodoContext => { // 커스텀 훅
   const context = useContext(TodoContext);
 
   // context가 없는 경우
-  if(!context) {
+  if(!context) {  // Provider로 감싸지 않았으면 실제 값이 undefined일 수 있다. 따라서 이 경우에는 에러 던져서 바로 알려줌
     throw new Error(
       'useTodo를 사용하기 위해서는, 무조건 TodoProvider를 씌워줘야 합니다.'
     );
