@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Movie } from "../types/movie";
+import { Star } from "lucide-react";
 
 export default function Detail() {
   const { id } = useParams();
@@ -55,30 +56,44 @@ export default function Detail() {
 
   const date = detail.release_date.split("-")[0];
   const posterUrl = `https://image.tmdb.org/t/p/w500${detail.poster_path}`;
+  const backdropUrl = `https://image.tmdb.org/t/p/original${detail.backdrop_path}`;
+  const rating = detail.vote_average.toFixed(1);
 
   return (
     <div
-      className="m-5 p-4 bg-cover bg-center text-white rounded-2xl overflow-x-scroll"
+      className="relative text-white h-[60vh] flex items-center"
       style={{
-        backgroundImage: `url(${posterUrl})`,
+        backgroundImage: `url(${backdropUrl || posterUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        position: "relative",
       }}
     >
-      <div
-        className="absolute top-0 left-0 w-1/2 h-full"
-        style={{
-          background: `linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0))`,
-          backdropFilter: "blur(10px)",
-        }}
-      ></div>
-      <div className="relative z-10 p-6 text-left w-1/2">
-        <h1 className="text-3xl font-bold">{detail.title}</h1>
-        <p>평균: {detail.vote_average}</p>
-        <p>{date}</p>
-        <p>{detail.runtime}분</p>
-        <p className="mt-2">{detail.overview}</p>
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+
+      <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8 p-8">
+        <img
+          src={posterUrl}
+          alt={detail.title}
+          className="w-64 rounded-xl shadow-lg"
+        />
+
+        <div className="max-w-2xl">
+          <h1 className="text-4xl font-extrabold mb-4">{detail.title}</h1>
+
+          <div className="flex items-center gap-4 text-gray-300 mb-4">
+            <span>{date}</span>
+            <span>·</span>
+            <span>{detail.runtime}분</span>
+          </div>
+
+          <div className="flex items-center gap-2 mb-6">
+            <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+            <span className="text-xl font-semibold">{rating}</span>
+            <span className="text-gray-400">/ 10</span>
+          </div>
+
+          <p className="text-gray-200 leading-relaxed">{detail.overview}</p>
+        </div>
       </div>
     </div>
   );

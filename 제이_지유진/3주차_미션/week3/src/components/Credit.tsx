@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import type { TCredit } from "../types/credit";
-import CreditCard from "../components/CreditCard";
-import Spin from "../components/Spin";
+import CreditCard from "./CreditCard";
+import Spin from "./Spin";
 
 export default function Credit() {
   const { id } = useParams<{ id: string }>();
@@ -56,10 +56,15 @@ export default function Credit() {
       {isPending ? (
         <Spin />
       ) : credit.length > 0 ? (
-        <div className="grid grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] gap-4 justify-center">
-          {credit.map((item: TCredit, idx: number) => (
-            <CreditCard {...item} key={idx} />
-          ))}
+        <div>
+          <h2 className="text-white text-2xl font-bold mb-6 pl-10">
+            감독/출연
+          </h2>
+          <div className="grid grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] gap-4 justify-center">
+            {credit.map((item: TCredit, idx: number) => (
+              <CreditCard {...item} key={idx} />
+            ))}
+          </div>
         </div>
       ) : (
         <div className="text-white text-center">출연진 정보가 없습니다.</div>

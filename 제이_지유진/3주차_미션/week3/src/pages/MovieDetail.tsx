@@ -1,5 +1,5 @@
-import Credit from "./Credit";
-import Detail from "./Detail";
+import Credit from "../components/Credit";
+import Detail from "../components/Detail";
 
 export default function MovieDetail() {
   return (

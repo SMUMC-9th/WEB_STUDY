@@ -5,7 +5,13 @@ import MovieCard from "../components/movieCard";
 import Skeleton from "../components/Skeleton";
 import Pagination from "../components/Pagenation";
 
-export default function Top() {
+type MovieCategory = "popular" | "now_playing" | "top_rated" | "upcoming";
+
+interface MovieListProps {
+  category: MovieCategory;
+}
+
+export default function Movie({ category }: MovieListProps) {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +23,7 @@ export default function Top() {
     setError(null);
     try {
       const { data } = await axios.get<MovieResponse>(
-        `https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=${page}`,
+        `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
@@ -35,7 +41,8 @@ export default function Top() {
 
   useEffect(() => {
     fetchMovies(currentPage);
-  }, [currentPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, currentPage]);
 
   const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
   const handleNext = () =>
@@ -50,12 +57,7 @@ export default function Top() {
         onNext={handleNext}
       />
 
-      {isLoading && (
-        <>
-          <Skeleton />
-        </>
-      )}
-
+      {isLoading && <Skeleton />}
       {error && <div className="text-red-500 text-center mt-20">{error}</div>}
 
       {!isLoading && !error && (

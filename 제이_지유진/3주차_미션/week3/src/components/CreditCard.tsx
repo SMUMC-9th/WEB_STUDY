@@ -1,13 +1,14 @@
 import type { TCredit } from "../types/credit";
 
 function CreditCard(credit: TCredit) {
+  const URL = credit.profile_path;
   return (
     <div className="flex flex-col items-center justify-between">
       <img
         className="rounded-full h-[80px] w-[80px] object-cover border-white border-2"
         src={
-          credit.profile_path
-            ? `https://image.tmdb.org/t/p/w500${credit.profile_path}`
+          URL
+            ? `https://image.tmdb.org/t/p/w500${URL}`
             : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU6qxvaanw0gI1HMNRdtIbIBQ9L9STrF2G-w&s"
         }
         alt={credit.name}
