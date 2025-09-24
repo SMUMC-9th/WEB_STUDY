@@ -22,7 +22,7 @@ interface Credit {
 }
 
 const MovieDetailPage = () => {
-    const {movieId = 803796} = useParams<{movieId:string}>(); //803796설정해서 디테일화면만 보이도록설정. UI구현하기 위해서
+    const {movieId} = useParams<{movieId:string}>(); //803796설정해서 디테일화면만 보이도록설정. UI구현하기 위해서
     const [movie, setMovie] = useState<MovieDetail | null>(null);
     const [credits, setCredits] = useState<Credit[]>([]);
     const [isPending, setIsPending] = useState(false);
@@ -31,6 +31,7 @@ const MovieDetailPage = () => {
     useEffect(():void => {
         const fetchDetail = async (): Promise<void> => {
             setIsPending(true);
+            setIsError(false);
             try {
                 const {data: movieData} = await axios.get<MovieDetail>(
                     `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
@@ -79,9 +80,6 @@ const MovieDetailPage = () => {
     if(!movie) {
         return null;
     }
-
-
-
 
     return (
         <div className="p-3">

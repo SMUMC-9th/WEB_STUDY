@@ -16,15 +16,14 @@ export default function MoviePage() {
     //3.페이지
     const [page, setPage] = useState(1);
 
-    const {category} = useParams<{
-        category:string;
-    }>();
+    const {category} = useParams<{category:string;}>();
 
 
 
     useEffect(():void => {
         const fetchMovies = async (): Promise<void> => {
             setIsPending(true);
+            setIsError(false);
             try {
                 const { data } = await axios.get<MovieResponse>(
                     `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,{
@@ -43,7 +42,6 @@ export default function MoviePage() {
         }
         fetchMovies();
     },[page, category]);
-    // if(isPending) return <LoadingSpinner />
 
     if(isError) {
         return (
@@ -67,7 +65,7 @@ export default function MoviePage() {
             </div>}
 
             {!isPending &&
-                <div className="p-10 grid gap-4 gid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                <div className="p-10 grid gap-4 gird-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
                     {movies && movies?.map((movie) => (
                         <MovieCard key={movie.id} movie={movie}/>
                     ))

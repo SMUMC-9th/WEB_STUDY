@@ -4,7 +4,7 @@ import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
 import {useTodo} from "../context/TodoContext";
 
-const Todo = ():Element => {
+const Todo = () => {
     
     const {todos, completeTodo, addTodo,deleteTodo, doneTodos}= useTodo();
 
