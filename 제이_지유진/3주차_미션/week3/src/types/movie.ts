@@ -7,6 +7,10 @@ export type Movie = {
   release_date: string;
   vote_average: number;
   backdrop_path: string;
+  genres: { id: number; name: string }[];
+  homepage: string;
+  tagline: string;
+  video: boolean;
 };
 
 export type MovieResponse = {
