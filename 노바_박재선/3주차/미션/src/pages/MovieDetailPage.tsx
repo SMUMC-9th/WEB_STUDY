@@ -34,7 +34,6 @@ const MovieDetailPage = () => {
             try {
                 const {data: movieData} = await axios.get<MovieDetail>(
                     `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
-                    //3 이거 페이지 주소도 달러설정필요할듯
                     {
                         headers: {
                             Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
@@ -85,7 +84,7 @@ const MovieDetailPage = () => {
 
 
     return (
-        <div className="p-3 bg-black">
+        <div className="p-3">
             <div 
                 className="h-80 bg-cover bg-center rounded-xl mb-6"
                 style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500${movie.backdrop_path})`}}
@@ -103,7 +102,7 @@ const MovieDetailPage = () => {
 
 
             <h2 className="text-2xl font-bold mb-4 text-white">감독 · 출연</h2>
-            <div className="text-white grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1">
+            <div className="text-white grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-1">
                 {credits.map((c)=>(
                     <div key={c.id} className="flex flex-col items-center mb-3">
                         {c.profile_path ? (

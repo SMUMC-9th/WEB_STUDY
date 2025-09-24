@@ -4,7 +4,7 @@ import NotFound from "./pages/not-found";
 import MovieDetailPage from "./pages/MovieDetailPage";
 import RootLayout from "./layout/root-layout";
 import HomePage from "./pages/HomePage";
-
+import './App.css'
 
 
 
@@ -17,19 +17,19 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "movies/:movieId(\\d+)", element: <MovieDetailPage /> },
       { path: "movies/:category", element: <MoviePage /> },
+      { path: "*", element: <NotFound /> }
+      
     ]
   },
- 
 ])
 
 
 function App() {
-
   return (
-    <>
-      <RouterProvider router={router} />
+    <div>
+      {<RouterProvider router={router} />}
       {/* <MovieDetailPage /> */}
-    </>
+    </div>
   );
 }
 
