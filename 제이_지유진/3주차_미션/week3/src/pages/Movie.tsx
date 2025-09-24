@@ -44,7 +44,13 @@ export default function Movie({ category }: MovieListProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, currentPage]);
 
-  const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  useEffect(() => {
+    setCurrentPage(1); // 카테고리가 바뀔 때 페이지를 1로 초기화
+  }, [category]);
+
+  function handlePrev() {
+    return setCurrentPage((prev) => Math.max(prev - 1, 1));
+  }
   const handleNext = () =>
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
