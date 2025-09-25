@@ -41,6 +41,8 @@ export type Movie = {
   vote_count
     :
     number;
+  tagline:string;
+  runtime: number;
 }
 // api에서 오는 데이터를 미리 정의 (자동완성, 코드 안정성 올라감)
 export type MovieResponse = {
@@ -48,4 +50,20 @@ export type MovieResponse = {
     results: Movie[];
     total_pages: number;
     total_results: number;
+}
+
+export interface Cast {
+  id: number
+  name: string
+  character: string
+  profile_path: string | null
+  order: number
+}
+
+export interface Crew {
+  id: number
+  name: string
+  job: string
+  department: string
+  profile_path: string | null
 }
