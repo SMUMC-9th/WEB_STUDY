@@ -1,4 +1,4 @@
-import { MdNightlightRound, MdLightMode } from "react-icons/md";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../context/ThemeProvider";
 
 export default function ThemeToggleButton() {
@@ -16,9 +16,9 @@ export default function ThemeToggleButton() {
         }`}
     >
       {theme === "LIGHT" ? (
-        <MdNightlightRound className="text-2xl text-gray-800" />
+        <Moon className="text-2xl text-gray-800" />
       ) : (
-        <MdLightMode className="text-2xl text-yellow-300" />
+        <Sun className="text-2xl text-yellow-300" />
       )}
     </button>
   );

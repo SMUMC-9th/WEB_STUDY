@@ -48,6 +48,7 @@ export default function ProfileCard() {
           <a
             href="https://www.instagram.com/hyeyoon_23?igsh=b3E4NWxqN2Vzdmw0&utm_source=qr"
             target="_blank"
+            rel="noopener noreferrer"
             className={`px-2 py-1 rounded-xl text-sm font-semibold bg-gray-200 text-pink-300
              `}
           >
