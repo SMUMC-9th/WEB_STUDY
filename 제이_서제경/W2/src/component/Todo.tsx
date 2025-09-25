@@ -2,14 +2,16 @@ import { useState } from "react";
 import { useTheme } from "../context/ThemeProvider";
 import { Sun, Moon } from "lucide-react";
 import clsx from "clsx";
+import TodoItem from "./TodoItem";
 
-type Todo = { id: number; text: string; done: boolean };
+export type Todo = { id: number; text: string; done: boolean };
 
 export default function Todo() {
   const [text, setText] = useState("");
   const [todos, setTodos] = useState<Todo[]>([]);
   const { theme, toggleTheme } = useTheme();
 
+  // 새 할 일을 추가하는 함수
   const add = (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
@@ -17,14 +19,17 @@ export default function Todo() {
     setText("");
   };
 
+  // 특정 할 일의 완료 여부를 토글하는 함수
   const toggle = (id: number) =>
     setTodos((xs) =>
       xs.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
     );
 
+  // 특정 할 일을 삭제하는 함수
   const remove = (id: number) =>
     setTodos((xs) => xs.filter((t) => t.id !== id));
 
+  // 할 일 목록을 공통 UI로 렌더링하는 함수
   const list = (items: Todo[], done: boolean) => (
     <section
       className={clsx(
@@ -44,52 +49,14 @@ export default function Todo() {
       </h2>
 
       <ul className="flex flex-col gap-2 min-h-[120px]">
-        {items.length === 0 && (
-          <li
-            className={clsx(
-              "grid place-items-center p-4 border border-dashed rounded-[12px]",
-              theme === "DARK"
-                ? "text-[#9aa3ae] border-[#FFFFFF23]"
-                : "text-gray-500 border-gray-300"
-            )}
-          >
-            {done ? "완료한 항목이 없어요" : "할 일이 비어있어요"}
-          </li>
-        )}
-
         {items.map((t) => (
-          <li
+          <TodoItem
             key={t.id}
-            className={clsx(
-              "grid grid-cols-[1fr_auto] items-center gap-2 p-3 rounded-[14px] transition duration-[180ms] ease-in-out hover:-translate-y-[1px] border",
-              theme === "DARK"
-                ? "bg-[#FFFFFF0F] border-[#FFFFFF23]"
-                : "bg-white border-gray-300",
-              done && (theme === "DARK" ? "text-[#9aa3ae]" : "text-gray-500")
-            )}
-          >
-            <span className="text-[15px]">{t.text}</span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => toggle(t.id)}
-                className={clsx(
-                  "px-3 py-2 text-[13px] font-bold rounded-[12px] border",
-                  theme === "DARK"
-                    ? "border-[#FFFFFF23] bg-[#FFFFFF08]"
-                    : "border-gray-300 bg-white"
-                )}
-              >
-                {done ? "되돌리기" : "완료"}
-              </button>
-
-              <button
-                onClick={() => remove(t.id)}
-                className="px-3 py-2 text-[13px] font-bold rounded-[12px] text-white bg-red-500 "
-              >
-                삭제
-              </button>
-            </div>
-          </li>
+            item={t}
+            done={done}
+            onToggle={toggle}
+            onRemove={remove}
+          />
         ))}
       </ul>
     </section>

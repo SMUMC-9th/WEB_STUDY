@@ -1,45 +1,44 @@
 import { useParams, useNavigate } from "react-router-dom";
-import type { Credit, MovieDetailResponse } from "../../types/movie";
-import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import useCustomFetch from "../../hooks/useCustomFetch";
+import type { MovieDetailResponse, MovieResponse } from "../../types/movie";
+import { LoadingSpinner } from "../../components/common/LoadingSpinner";
+import MovieCard from "../../components/movie/MovieCard";
+import MovieCredit from "../../components/movie/MovieCredit";
+import BackVideo from "../../components/movie/BackVideo";
 import { Star, ArrowLeft } from "lucide-react";
-import defaultProfile from "../../assets/defaultProfile.jpg";
 
 export default function MovieDetailPage() {
-  // 1. URL에서 movieId를 가져오기
   const { movieId } = useParams<{ movieId: string }>();
   const navigate = useNavigate();
 
-  // 2. 영화 정보 요청용 URL
   const movieUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`;
+  const similarUrl = `https://api.themoviedb.org/3/movie/${movieId}/similar?language=ko-KR&page=1`;
 
-  // 출연진(감독/배우) 정보 요청용 URL
-  const creditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`;
-
+  // 뒤로 가기
   const goBack = () => {
     const idx = (window.history.state as { idx?: number } | null)?.idx ?? 0;
     if (idx > 0) navigate(-1);
   };
 
-  // 3. 영화 정보 가져오기
+  // 영화 상세
   const {
     data: movie,
     isPending: moviePending,
     isError: movieError,
   } = useCustomFetch<MovieDetailResponse>(movieUrl);
 
-  // 4. 출연진 정보 가져오기
+  // 비슷한 영화 - MovieResponse 타입으로 사용해야함!! (MovieDetailResponse X)
   const {
-    data: creditsData,
-    isPending: creditsPending,
-    isError: creditsError,
-  } = useCustomFetch<{ cast: Credit[] }>(creditsUrl);
+    data: similarMovies,
+    isPending: similarPending,
+    isError: similarError,
+  } = useCustomFetch<MovieResponse>(similarUrl);
 
-  // 5. 공통 로딩/에러 상태 관리 : 둘 중 하나라도 에러, 로딩이면 전체 처리
-  const isPending = moviePending || creditsPending;
-  const isError = movieError || creditsError;
+  const isAllPending = moviePending || similarPending;
+  const isAllError = movieError || similarError;
 
-  if (isError) {
+  // 에러 처리
+  if (isAllError) {
     return (
       <div className="text-red-500 text-2xl text-center mt-10">
         에러가 발생했습니다.
@@ -47,8 +46,8 @@ export default function MovieDetailPage() {
     );
   }
 
-  // 7. 로딩 중 화면 : 로딩 스피너 보여줌
-  if (isPending || !movie || !creditsData) {
+  // 로딩 처리
+  if (isAllPending || !movie || !similarMovies || !movieId) {
     return (
       <div className="flex items-center justify-center h-dvh backdrop-blur-sm bg-white/70 rounded-full p-3">
         <LoadingSpinner />
@@ -56,17 +55,13 @@ export default function MovieDetailPage() {
     );
   }
 
-  // 8. 출연진 정보를 분리
-  const credits = creditsData.cast;
-
   return (
     <div className="text-white bg-black min-h-dvh">
-      <div
-        className="relative h-[550px] bg-cover bg-center"
-        style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
-        }}
-      >
+      <div className="relative">
+        {/* 배경 영상 컴포넌트 */}
+        <BackVideo backdropPath={movie.backdrop_path} height={550} />
+
+        {/* 뒤로 가기 */}
         <button
           type="button"
           onClick={goBack}
@@ -77,7 +72,6 @@ export default function MovieDetailPage() {
         </button>
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-
         <div className="absolute bottom-0 left-0 w-full p-6 md:flex items-end gap-6">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold">{movie.title}</h1>
@@ -86,10 +80,11 @@ export default function MovieDetailPage() {
                 <Star className="w-4 h-4" />
                 {movie.vote_average.toFixed(1)}
               </span>
-              <span>{movie.release_date.slice(0, 4)}년</span>
+              <span>{movie.release_date?.slice(0, 4)}년</span>
               <span>{movie.runtime}분</span>
             </div>
 
+            {/* 장르 */}
             <div className="mt-3 flex flex-wrap gap-2 text-xs text-white">
               {movie.genres.map((genre) => (
                 <span
@@ -101,39 +96,33 @@ export default function MovieDetailPage() {
               ))}
             </div>
 
-            <p className="mt-4 text-gray-200 text-sm leading-relaxed max-w-2xl">
-              {movie.overview}
+            <p className="mt-4 text-gray-200 text-[15px] leading-relaxed max-w-2xl line-clamp-4">
+              {movie.overview || "줄거리 정보가 없습니다."}
             </p>
           </div>
         </div>
       </div>
 
+      {/* 출연진 */}
       <div className="p-6 bg-black">
         <h2 className="text-2xl font-bold mb-4">감독/출연</h2>
-        <div className="flex overflow-x-auto gap-4 pb-2">
-          {credits.slice(0, 15).map((person) => (
-            <div
-              key={person.id}
-              className="flex-shrink-0 w-24 text-center hover:scale-105 transition"
-            >
-              <img
-                src={
-                  person.profile_path
-                    ? `https://image.tmdb.org/t/p/w185${person.profile_path}`
-                    : defaultProfile
-                }
-                alt={person.name}
-                className="w-24 h-24 rounded-full object-cover mx-auto mb-2 shadow-md"
-              />
+        <MovieCredit movieId={movieId} />
 
-              <p className="text-sm font-semibold truncate">{person.name}</p>
-
-              <p className="text-xs text-gray-400 truncate">
-                {person.character}
-              </p>
+        {/* 비슷한 영화 - 가로 스크롤 (overflow-x-auto & flex-nowrap) */}
+        <h2 className="text-2xl font-bold mt-8 mb-4">비슷한 영화</h2>
+        {similarMovies.results.length === 0 ? (
+          <p className="text-gray-400">추천할 영화가 없습니다.</p>
+        ) : (
+          <div className=" w-full overflow-x-auto overflow-y-hidden scroll-smooth">
+            <div className=" flex flex-nowrap gap-4 p-2 snap-x snap-mandatory">
+              {similarMovies.results.map((m) => (
+                <div key={m.id} className="snap-start shrink-0">
+                  <MovieCard movie={m} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

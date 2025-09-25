@@ -9,9 +9,7 @@ interface ApiResponse<T> {
 
 function useCustomFetch<T>(url: string): ApiResponse<T> {
   const [data, setData] = useState<T | null>(null);
-
   const [isPending, setIsPending] = useState(false);
-
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {

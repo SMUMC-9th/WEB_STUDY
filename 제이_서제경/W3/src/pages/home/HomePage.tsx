@@ -67,10 +67,7 @@ export default function HomePage() {
   return (
     <div className="pb-12">
       <section className="relative mx-auto mt-4 max-w-6xl overflow-hidden">
-        <div
-          className="h-[360px] bg-center bg-cover bg-gray-100 dark:bg-white/10"
-          style={MainBg}
-        />
+        <div className="h-[360px] bg-center bg-cover" style={MainBg} />
         <div className="absolute inset-0 flex items-end">
           <div className="p-6 sm:p-10 text-white max-w-2xl">
             <h2 className="text-2xl sm:text-4xl font-extrabold drop-shadow">

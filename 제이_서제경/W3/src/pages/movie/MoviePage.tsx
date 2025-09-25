@@ -25,10 +25,12 @@ export default function MoviePage() {
     }
 
     const controller = new AbortController();
+
     const run = async () => {
       try {
         setIsPending(true);
         setIsError(false);
+
         const res = await axios.get<MovieResponse>(
           `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
           {

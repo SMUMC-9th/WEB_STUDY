@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 
 type LinkItem = { to: string; label: string };
 
-// 기본 경로 분리 : 피드백 반영
-const MOVIE_BASE = "/movie";
+// 기본 경로 분리 - 피드백 반영
+const MOVIE_BASE = "/movies";
 
 const LINKS: LinkItem[] = [
   { to: "/", label: "홈" },

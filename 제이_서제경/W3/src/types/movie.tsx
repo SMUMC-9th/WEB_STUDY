@@ -1,3 +1,4 @@
+// 개별 영화 타입 - 단일 영화 객체를 표현
 export type Movie = {
   adult: boolean;
   backdrop_path: string;
@@ -15,6 +16,7 @@ export type Movie = {
   vote_count: number;
 };
 
+// 전체 응답 타입 - API의 전체 응답을 표현
 export type MovieResponse = {
   page: number;
   results: Movie[];
@@ -22,6 +24,7 @@ export type MovieResponse = {
   total_results: number;
 };
 
+// 단순 객체 타입은 type으로 정의
 type Genre = {
   id: number;
   name: string;
@@ -45,6 +48,7 @@ type SpokenLanguages = {
   name: string;
 };
 
+// 영화 상세 정보 타입 - 전체 응답을 표현
 export type MovieDetailResponse = {
   adult: boolean;
   backdrop_path: string;
@@ -79,9 +83,24 @@ export type MovieDetailResponse = {
   vote_count: number;
 };
 
+// 확장 타입 - 영화 상세 정보에 출연진 및 비디오 정보 추가
+// 를 위한 interface 정의
 export interface Credit {
   id: number;
   name: string;
   profile_path: string | null;
   character: string;
+}
+
+export interface Video {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
 }

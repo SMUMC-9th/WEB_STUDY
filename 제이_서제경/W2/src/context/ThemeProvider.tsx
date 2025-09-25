@@ -12,7 +12,7 @@ interface IThemeContext {
   toggleTheme: () => void;
 }
 
-// context 생성
+// eslint-disable-next-line react-refresh/only-export-components
 export const ThemeContext = createContext<IThemeContext | undefined>(undefined);
 
 // context provider 생성
@@ -32,7 +32,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-//제공해주는 함수를 만들어야 함!!!
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const context = useContext(ThemeContext);
 
