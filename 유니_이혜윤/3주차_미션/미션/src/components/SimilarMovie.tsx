@@ -50,7 +50,7 @@ const SimilarMovie = ({ movieId }: SimilarMovieProps) => {
       <h2 className="text-xl font-semibold text-white/90 mb-5">추천 영화</h2>
       <div className="flex gap-6 overflow-x-auto">
         {items.map((movie) => (
-          <div key={movie.id} className="flex-shrink-0 w-40">
+          <div key={`similar-${movie.id}`} className="flex-shrink-0 w-40">
             <MovieCard movie={movie} />
           </div>
         ))}

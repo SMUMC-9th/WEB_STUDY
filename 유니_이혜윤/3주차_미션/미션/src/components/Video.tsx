@@ -54,6 +54,7 @@ const Video = ({ movieId, posterPath }: VideoProps) => {
   if (videoKey) {
     return (
       <YouTube
+        key={`video-${videoKey}`}
         videoId={videoKey}
         opts={{ width: "500px", height: "310px" }}
         className="flex justify-center items-center"

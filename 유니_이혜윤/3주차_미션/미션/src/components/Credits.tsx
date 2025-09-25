@@ -43,7 +43,10 @@ const CreditsList = ({
       <h2 className="text-xl font-semibold text-white/90 my-6">출연</h2>
       <div className="flex gap-6 overflow-x-auto">
         {cast.map((actor) => (
-          <div key={actor.id} className="w-22 text-center flex-shrink-0">
+          <div
+            key={`cast-${actor.id}`}
+            className="w-22 text-center flex-shrink-0"
+          >
             <img
               src={
                 actor.profile_path
@@ -64,8 +67,11 @@ const CreditsList = ({
       {/* Crew */}
       <h2 className="text-xl font-semibold text-white/90 my-6">제작진</h2>
       <div className="flex gap-6 overflow-x-auto">
-        {crew.map((member) => (
-          <div key={member.id} className="w-22 text-center flex-shrink-0">
+        {crew.map((member, index) => (
+          <div
+            key={`crew-${member.id}-${index}`}
+            className="w-22 text-center flex-shrink-0"
+          >
             <img
               src={
                 member.profile_path
