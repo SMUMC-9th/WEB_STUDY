@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import type { Movie, MovieResponse } from "../types/movie";
-import MovieCard from "../components/MovieCard";
-import { LoadingSpinner } from "../components/LoadingSpinner";
+import MovieCard from "../components/moviePage/MovieCard";
+import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { useParams } from "react-router-dom";
 
 export default function MoviePage() {
@@ -18,6 +18,12 @@ export default function MoviePage() {
     const { category } = useParams<{
         category: string;
     }>();
+
+    // 카테고리가 변경될 때 페이지를 1로 초기화
+    useEffect(() => {
+        setPage(1);
+        setIsError(false);
+    }, [category]);
 
     useEffect((): void => {
         const fetchMovies = async (): Promise<void> => {

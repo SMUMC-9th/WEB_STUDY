@@ -1,15 +1,14 @@
 import React from 'react';
-import type { Credits } from '../types/movie';
-import { getMainCast, getMainCrew } from '../utils/movieUtils';
+import type { Credits } from '../../types/movie';
+import { getMainCast, getMainCrew } from '../../utils/movieUtils';
 
 interface MovieCastCrewProps {
     credits: Credits | null;
-    movieId?: string;
     onRetryCredits: () => void;
 }
 
 export const MovieCastCrew: React.FC<MovieCastCrewProps> = ({ credits, onRetryCredits }) => {
-    if (!credits || !credits.cast || credits.cast.length === 0) {
+    if (!credits || (!credits.cast?.length && !credits.crew?.length)) {
         return (
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-white/20 text-center">
                 <div className="text-6xl mb-4">👥❌</div>
@@ -25,7 +24,7 @@ export const MovieCastCrew: React.FC<MovieCastCrewProps> = ({ credits, onRetryCr
         );
     }
 
-    const mainCast = getMainCast(credits.cast);
+    const mainCast = credits.cast ? getMainCast(credits.cast) : [];
     const mainCrew = credits.crew ? getMainCrew(credits.crew) : [];
 
     return (
@@ -36,7 +35,7 @@ export const MovieCastCrew: React.FC<MovieCastCrewProps> = ({ credits, onRetryCr
                 </div>
                 <div>
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-800">출연진 & 제작진</h2>
-                    <p className="text-gray-600">출연진 {credits.cast.length}명 | 제작진 {credits.crew?.length || 0}명</p>
+                    <p className="text-gray-600">출연진 {credits.cast?.length}명 | 제작진 {credits.crew?.length || 0}명</p>
                 </div>
             </div>
             
@@ -126,7 +125,7 @@ export const MovieCastCrew: React.FC<MovieCastCrewProps> = ({ credits, onRetryCr
                                             {person.name}
                                         </div>
                                         <div className="text-xs text-gray-600 mt-1">
-                                            {person.jobs ? person.jobs.join(', ') : person.job}
+                                            {person.jobs ? person.jobs.join(', ') : person.jobs}
                                         </div>
                                     </div>
                                 </div>

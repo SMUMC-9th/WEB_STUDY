@@ -1,6 +1,6 @@
 import React from 'react';
-import type { MovieDetail } from '../types/movie';
-import { getGenreColor } from '../utils/movieUtils';
+import type { MovieDetail } from '../../types/movie';
+import { getGenreColor } from '../../utils/movieUtils';
 
 interface MovieGenresProps {
     movieDetail: MovieDetail;

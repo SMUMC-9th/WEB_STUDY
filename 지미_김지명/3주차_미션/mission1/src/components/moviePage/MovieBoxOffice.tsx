@@ -1,5 +1,5 @@
 import React from 'react';
-import type { MovieDetail } from '../types/movie';
+import type { MovieDetail } from '../../types/movie';
 
 interface MovieBoxOfficeProps {
     movieDetail: MovieDetail;

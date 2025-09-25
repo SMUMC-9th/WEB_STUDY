@@ -1,6 +1,6 @@
 import React from 'react';
-import type { MovieDetail } from '../types/movie';
-import { formatReleaseDate, getRelativeDateInfo, getStatusInKorean, getLanguageInKorean } from '../utils/movieUtils';
+import type { MovieDetail } from '../../types/movie';
+import { formatReleaseDate, getRelativeDateInfo, getStatusInKorean, getLanguageInKorean } from '../../utils/movieUtils';
 
 interface MovieBasicInfoProps {
     movieDetail: MovieDetail;

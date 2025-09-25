@@ -1,4 +1,4 @@
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingSpinner } from "../common/LoadingSpinner";
 
 interface LoadingStates {
     movieDetail: boolean;
@@ -16,7 +16,7 @@ export const MovieDetailLoader = ({ loadingStates, movieTitle }: MovieDetailLoad
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-lg p-8 text-center max-w-md w-full">
                 {/* 로딩 스피너 */}
-                <div className="mb-6">
+                <div className="flex justify-center mb-6">
                     <LoadingSpinner />
                 </div>
                 

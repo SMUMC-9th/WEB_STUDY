@@ -22,6 +22,24 @@ export type MovieResponse = {
     total_results: number;
 };
 
+export type MovieVideoResponse = {
+    id: number;
+    results: MovieVideo[];
+};
+
+export type MovieVideo = {
+    iso_639_1: string,
+    iso_3166_1: string,
+    name: string,
+    key: string,
+    site: string,
+    size: number,
+    type: string,
+    official: boolean,
+    published_at: string,
+    id: string
+}
+
 // 장르 타입
 export interface Genre {
     id: number;
@@ -53,7 +71,7 @@ export interface SpokenLanguage {
 export interface MovieDetail {
     adult: boolean;
     backdrop_path: string | null;
-    belongs_to_collection: any;
+    belongs_to_collection: string;
     budget: number;
     genres: Genre[];
     homepage: string;
@@ -114,4 +132,22 @@ export interface Credits {
     id: number;
     cast: CastMember[];
     crew: CrewMember[];
+}
+
+// 비슷한 영화 추천
+export interface SimilarMovies {
+    adult: boolean;
+    backdrop_path: string;
+    genre_ids: number[];
+    id: number;
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    release_date: string;
+    title: string;
+    video: boolean;
+    vote_average: number;
+    vote_count: number;
 }
