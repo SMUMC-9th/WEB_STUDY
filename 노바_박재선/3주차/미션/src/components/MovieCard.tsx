@@ -14,7 +14,7 @@ export default function MovieCard({movie}: MovieCardProps) {
 
     return (
         <div onClick={() => navigate(`/movie/${movie.id}`)} 
-        className="relative rounded-xl shadow-lg overflow-hidden cursor-pointer 
+        className="relative rounded-md shadow-lg overflow-hidden cursor-pointer 
         w-47 transition-transform duration-500 hover:scale-105"  
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

@@ -13,10 +13,11 @@ const Navbar = () => {
         <div className="flex gap-4 p-5 ">
             {LINKS.map(({to, label}) => (
                 <NavLink 
+                    
                     key={to} 
                     to={to}
                     className={({isActive})=>{
-                        return isActive ? "text-[#6dafff] font-bold" : "text-[#969696]"
+                        return isActive ? "text-[#6dafff] font-bold" : "text-[#969696] hover:text-[#606060]"
                     }}
                 >
                     {label}
