@@ -5,3 +5,4 @@ export { default as PageButton } from "./PageButton";
 export { default as SimilarMovie } from "./SimilarMovie";
 export { default as Video } from "./Video";
 export { LoadingSpinner } from "./LoadingSpinner";
+export { ScrollToTop } from "./ScrollToTop";
