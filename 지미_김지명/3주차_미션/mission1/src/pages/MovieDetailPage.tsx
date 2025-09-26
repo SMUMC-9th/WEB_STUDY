@@ -78,7 +78,7 @@ const MovieDetailPage = () => {
                 `https://api.themoviedb.org/3/movie/${id}?language=ko-KR`,
                 {
                     headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
                         'Content-Type': 'application/json'
                     }
                 }
@@ -111,7 +111,7 @@ const MovieDetailPage = () => {
                 `https://api.themoviedb.org/3/movie/${id}/credits?language=ko-KR`,
                 {
                     headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
                         'Content-Type': 'application/json'
                     }
                 }
@@ -134,7 +134,7 @@ const MovieDetailPage = () => {
                 `https://api.themoviedb.org/3/movie/${id}/similar?language=ko-KR&page=${page}`,
                 {
                     headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
                         'Content-Type': 'application/json'
                     }
                 }
@@ -158,7 +158,7 @@ const MovieDetailPage = () => {
                 `https://api.themoviedb.org/3/movie/${id}/videos`,
                 {
                     headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
                         'Content-Type': 'application/json'
                     }
                 }
@@ -351,7 +351,6 @@ const MovieDetailPage = () => {
                 {/* 출연진 정보 */}
                 <MovieCastCrew 
                     credits={credits}
-                    movieId={movieId}
                     onRetryCredits={handleRetryCredits}
                 />
                 

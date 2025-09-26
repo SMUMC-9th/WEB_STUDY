@@ -33,7 +33,7 @@ export default function MoviePage() {
                     `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
                     {
                         headers: {
-                            'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+                            'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
                             'Content-Type': 'application/json'
                         }
                     }
