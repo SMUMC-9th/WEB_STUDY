@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import type { Movie, MovieResponse } from "../types/movie";
+import type { Movie } from "../types/movie";
 import MovieCard from "../components/moviePage/MovieCard";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { useParams } from "react-router-dom";
+import { tmdbApi } from "../api/tmdb/tmdbApi";
 
 export default function MoviePage() {
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -25,27 +25,23 @@ export default function MoviePage() {
         setIsError(false);
     }, [category]);
 
-    useEffect((): void => {
-        const fetchMovies = async (): Promise<void> => {
+    useEffect(() => {
+        if(!category) return;
+
+        const fetchMovies = async () => {
             setIsPending(true);
+            setIsError(false);
+
             try {
-                const { data } = await axios.get<MovieResponse>(
-                    `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-    
+                const data = await tmdbApi.getMoviesByCategory(category, page);
                 setMovies(data.results);
-            } catch {
+            } catch (error){
+                console.error('영화 데이터 조회 실패:', error);
                 setIsError(true);
             } finally {
                 setIsPending(false);
             }
-        }
+        };
 
         fetchMovies();
     }, [page, category]);

@@ -18,6 +18,8 @@ import { MovieBoxOffice } from "../components/moviePage/MovieBoxOffice";
 import { MoviePlot } from "../components/moviePage/MoviePlot";
 import { MovieCastCrew } from "../components/moviePage/MovieCastCrew";
 import { SimilarMovie }from "../components/moviePage/SimilarMovie";
+import { tmdbApiClient } from "../api/apiClient";
+import { tmdbApi } from "../api/tmdb/tmdbApi";
 
 const MovieDetailPage = () => {
     const { movieId } = useParams<{ movieId: string }>();
@@ -74,16 +76,8 @@ const MovieDetailPage = () => {
         setLoadingStates(prev => ({...prev, movieDetail: true, overall: true}));
         
         try {
-            const response = await axios.get<MovieDetail>(
-                `https://api.themoviedb.org/3/movie/${id}?language=ko-KR`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            return response.data;
+            const data = await tmdbApi.getMovieDetail(id);
+            return data;
         } catch (error) {
             let errorMessage = '영화 정보를 불러올 수 없습니다.';
             
@@ -107,16 +101,8 @@ const MovieDetailPage = () => {
         setLoadingStates(prev => ({...prev, credits: true}));
         
         try {
-            const response = await axios.get<Credits>(
-                `https://api.themoviedb.org/3/movie/${id}/credits?language=ko-KR`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            return response.data;
+            const response = tmdbApi.getCredits(id);
+            return response;
         } catch (error) {
             setErrorStates(prev => ({...prev, credits: true, message: '출연진 정보를 불러올 수 없습니다.'}));
             return null;
@@ -130,17 +116,8 @@ const MovieDetailPage = () => {
         setLoadingStates(prev => ({...prev, similarMovies: true}));
 
         try {
-            const response = await axios.get<MovieResponse> (
-                `https://api.themoviedb.org/3/movie/${id}/similar?language=ko-KR&page=${page}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            console.log(response.data.results);
-            return response.data.results;
+            const data = await tmdbApi.getSimilarMovies(id, page);
+            return data.results;
         } catch (error) {
             setErrorStates(prev => ({...prev, similarMovies: true, message: '비슷한 영화 정보를 불러올 수 없습니다.'}));
             return [];
@@ -154,19 +131,9 @@ const MovieDetailPage = () => {
         setLoadingStates(prev => ({...prev, movieVideo: true}));
 
         try {
-            const response = await axios.get<MovieVideoResponse> (
-                `https://api.themoviedb.org/3/movie/${id}/videos`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-
-
-            console.log(response.data.results[0].key);
-            return response.data.results;
+            const response = await tmdbApi.getMovieVideo(id);
+            console.log(response.results[0].key);
+            return response.results;
         } catch (error) {
             setErrorStates(prev => ({...prev, movieVideo: true, message: '정보를 불러올 수 없습니다.'}));
             return [];
