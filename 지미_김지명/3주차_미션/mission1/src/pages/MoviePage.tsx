@@ -1,57 +1,28 @@
 import { useEffect, useState } from "react";
-import type { Movie } from "../types/movie";
 import MovieCard from "../components/moviePage/MovieCard";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { useParams } from "react-router-dom";
-import { tmdbApi } from "../api/tmdb/tmdbApi";
+import { useMovieByCategory } from "../hooks/useMoviesByCategory";
 
 export default function MoviePage() {
-    const [movies, setMovies] = useState<Movie[]>([]);
-
-    // 1. 로딩 상태
-    const [isPending, setIsPending] = useState(false);
-    // 2. 에러 상태
-    const [isError, setIsError] = useState(false);
-    // 3. 페이지 처리
     const [page, setPage] = useState(1);
+    const { category } = useParams<{ category: string }>();
 
-    const { category } = useParams<{
-        category: string;
-    }>();
+    // Custom Hook 사용
+    const { data, isLoading, isError, error } = useMovieByCategory(category, page);
 
     // 카테고리가 변경될 때 페이지를 1로 초기화
     useEffect(() => {
         setPage(1);
-        setIsError(false);
     }, [category]);
-
-    useEffect(() => {
-        if(!category) return;
-
-        const fetchMovies = async () => {
-            setIsPending(true);
-            setIsError(false);
-
-            try {
-                const data = await tmdbApi.getMoviesByCategory(category, page);
-                setMovies(data.results);
-            } catch (error){
-                console.error('영화 데이터 조회 실패:', error);
-                setIsError(true);
-            } finally {
-                setIsPending(false);
-            }
-        };
-
-        fetchMovies();
-    }, [page, category]);
 
     if (isError) {
         return (
-            <div>
-                <span className="text-red-500 text-2xl">에러가 발생했습니다.</span>
+            <div className="flex flex-col items-center justify-center min-h-screen p-4">
+                <span className="text-red-500 text-2xl mb-4">에러가 발생했습니다.</span>
+                <span className="text-gray-600">{error}</span>
             </div>
-        )
+        );
     }
     
     return (
@@ -69,17 +40,17 @@ export default function MoviePage() {
                 onClick={() => setPage((prev) => prev+1)}>{`>`}</button>
             </div>
 
-            {isPending && (
+            {isLoading && (
                 <div className="flex items-center justify-center h-dvh">
                     <LoadingSpinner />
                 </div>
             )}
             
-            {!isPending && (
+            {!isLoading && data && (
                 <div className="p-10 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-                {movies.map((movie) => (
-                    <MovieCard key={movie.id} movie={movie} />
-                ))}
+                    {data.results.map((movie) => (
+                        <MovieCard key={movie.id} movie={movie} />
+                    ))}
                 </div>
             )}
         </>
