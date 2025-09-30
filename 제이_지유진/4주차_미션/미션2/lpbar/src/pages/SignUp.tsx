@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import axios from "axios";
+import { signUp } from "../api/auth";
 
 const signUpSchema = z
   .object({
@@ -74,58 +74,19 @@ export default function SignUp() {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      console.log("회원가입 요청 데이터:", {
+      const res = await signUp({
         name: data.nickname,
         email: data.email,
         password: data.password,
         avatar: imagePreview,
-        bio: "안녕하세요. 저는 " + data.nickname + "입니다.",
+        bio: `안녕하세요. 저는 ${data.nickname}입니다.`,
       });
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/v1/auth/signup`,
-        {
-          name: data.nickname,
-          email: data.email,
-          password: data.password,
-          avatar: imagePreview,
-          bio: "안녕하세요. 저는 " + data.nickname + "입니다.",
-        }
-      );
-
-      if (response.status === 201) {
-        setUserData({
-          id: response.data.data.id,
-          name: response.data.data.name,
-          email: response.data.data.email,
-          avatar: imagePreview,
-          bio: response.data.data.bio,
-        });
-        console.log("회원가입 성공:", response.data);
-        navigate("/");
-      }
+      setUserData(res.data);
+      navigate("/");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-      let message = "회원가입 중 오류가 발생했습니다.";
-
-      if (axios.isAxiosError(err)) {
-        const serverMsg = err.response?.data?.message;
-        if (serverMsg) message = serverMsg;
-
-        if (err.response?.status === 500) {
-          message = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
-        } else if (err.response?.status === 409) {
-          message = "이미 존재하는 이메일입니다.";
-        }
-
-        console.error("AxiosError:", err.response?.data || err.message);
-      } else if (err instanceof Error) {
-        message = err.message;
-        console.error("Error:", err);
-      } else {
-        console.error("Unknown error:", err);
-      }
-
-      alert(message);
+      alert("회원가입 실패");
     }
   };
 

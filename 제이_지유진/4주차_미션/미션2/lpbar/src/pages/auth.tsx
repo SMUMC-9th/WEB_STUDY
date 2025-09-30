@@ -1,26 +1,47 @@
-import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
+import { signIn } from "../api/auth";
+import { ChevronLeft } from "lucide-react";
 
 export default function Auth() {
   const navigate = useNavigate();
-
-  //useForm 훅에서 values, handleChange, errors, validateField를 일단 가져오셔야 합니다.
   const { values, handleChange, errors, validateField } = useForm({
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!errors.email && !errors.password) {
-      console.log("로그인 요청:", values);
+
+    validateField("email", values.email ?? "");
+    validateField("password", values.password ?? "");
+
+    if (errors.email || errors.password) return;
+
+    try {
+      const data = await signIn({
+        email: values.email ?? "",
+        password: values.password ?? "",
+      });
+
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+
+      console.log("로그인 성공:", data);
+      navigate("/my");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const message =
+        err.response?.data?.message || err.message || "로그인 실패";
+      console.error("로그인 실패:", err.response || err);
+      alert(message);
     }
   };
 
   const isValid =
-    (values.email ?? "").length > 0 &&
-    (values.password ?? "").length >= 6 &&
+    !!values.email &&
+    !!values.password &&
+    values.password.length >= 6 &&
     !errors.email &&
     !errors.password;
 
@@ -36,22 +57,21 @@ export default function Auth() {
           </button>
           <h1 className="text-xl font-semibold">로그인</h1>
         </div>
-
         <button className="w-full flex items-center justify-center gap-2 py-3 bg-white text-gray-900 rounded-xl font-medium shadow hover:bg-gray-100">
+          {" "}
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"
             alt="Google"
             className="w-5 h-5"
-          />
-          구글로 로그인
-        </button>
-
+          />{" "}
+          구글로 로그인{" "}
+        </button>{" "}
         <div className="flex items-center my-6">
-          <div className="flex-grow h-px bg-gray-700" />
-          <span className="px-3 text-sm text-gray-400">or</span>
-          <div className="flex-grow h-px bg-gray-700" />
+          {" "}
+          <div className="flex-grow h-px bg-gray-700" />{" "}
+          <span className="px-3 text-sm text-gray-400">or</span>{" "}
+          <div className="flex-grow h-px bg-gray-700" />{" "}
         </div>
-
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <input
@@ -82,11 +102,11 @@ export default function Auth() {
                 validateField("password", e.target.value);
               }}
             />
-
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
             )}
           </div>
+
           <button
             type="submit"
             disabled={!isValid}
