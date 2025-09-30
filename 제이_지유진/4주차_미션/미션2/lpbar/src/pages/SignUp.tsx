@@ -74,6 +74,14 @@ export default function SignUp() {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
+      console.log("회원가입 요청 데이터:", {
+        name: data.nickname,
+        email: data.email,
+        password: data.password,
+        avatar: imagePreview,
+        bio: "안녕하세요. 저는 " + data.nickname + "입니다.",
+      });
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/v1/auth/signup`,
         {
@@ -90,7 +98,7 @@ export default function SignUp() {
           id: response.data.data.id,
           name: response.data.data.name,
           email: response.data.data.email,
-          avatar: response.data.data.avatar || imagePreview,
+          avatar: imagePreview,
           bio: response.data.data.bio,
         });
         console.log("회원가입 성공:", response.data);
@@ -100,7 +108,15 @@ export default function SignUp() {
       let message = "회원가입 중 오류가 발생했습니다.";
 
       if (axios.isAxiosError(err)) {
-        message = err.response?.data?.message || message;
+        const serverMsg = err.response?.data?.message;
+        if (serverMsg) message = serverMsg;
+
+        if (err.response?.status === 500) {
+          message = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        } else if (err.response?.status === 409) {
+          message = "이미 존재하는 이메일입니다.";
+        }
+
         console.error("AxiosError:", err.response?.data || err.message);
       } else if (err instanceof Error) {
         message = err.message;
@@ -116,7 +132,6 @@ export default function SignUp() {
   return (
     <div className="flex flex-col min-h-screen justify-center items-center text-white">
       <div className="w-full max-w-sm">
-        {/* 헤더 */}
         <div className="relative flex items-center justify-center mb-6">
           <button
             onClick={() => (step === 1 ? navigate("/") : setStep(step - 1))}
@@ -131,7 +146,6 @@ export default function SignUp() {
           </h1>
         </div>
 
-        {/* 이메일 단계 */}
         {step === 1 && (
           <div className="space-y-4">
             <input
@@ -157,12 +171,10 @@ export default function SignUp() {
           </div>
         )}
 
-        {/* 비밀번호 단계 */}
         {step === 2 && (
           <div className="space-y-4">
             <p className="text-sm text-gray-400 mb-2">이메일: {values.email}</p>
 
-            {/* 비밀번호 */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -182,7 +194,6 @@ export default function SignUp() {
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
 
-            {/* 비밀번호 확인 */}
             <div className="relative">
               <input
                 type={showConfirm ? "text" : "password"}
