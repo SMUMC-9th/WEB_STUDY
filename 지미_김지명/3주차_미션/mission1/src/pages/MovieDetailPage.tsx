@@ -1,7 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
-import axios, { AxiosError } from "axios";
-import type { MovieDetail, Credits, Movie, MovieResponse, MovieVideoResponse, MovieVideo } from "../types/movie";
+import { useState } from "react";
 import YouTube from 'react-youtube';
 
 // 컴포넌트들 import
@@ -19,255 +17,88 @@ import { MoviePlot } from "../components/moviePage/MoviePlot";
 import { MovieCastCrew } from "../components/moviePage/MovieCastCrew";
 import { SimilarMovie }from "../components/moviePage/SimilarMovie";
 
+// Custom Hooks
+import { useMovieDetail } from "../hooks/useMovieDetail";
+import { useMovieCredits } from "../hooks/useMovieCredits";
+import { useMovieVideos } from "../hooks/useMovieVideos";
+import { useSimilarMovies } from "../hooks/useSimilarMovies";
+
 const MovieDetailPage = () => {
     const { movieId } = useParams<{ movieId: string }>();
     const navigate = useNavigate();
-    
-    // 상태 관리
-    const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
-    const [movieDetail, setMovieDetail] = useState<MovieDetail | null>(null);
-    const [credits, setCredits] = useState<Credits | null>(null);
-    const [movieVideo, setMovieVideo] = useState<MovieVideo | null>(null);
-    
     const [page, setPage] = useState(1);
-
-    const [loadingStates, setLoadingStates] = useState({
-        movieDetail: false,
-        credits: false,
-        similarMovies: false,
-        movieVideo: false,
-        overall: false
-    });
     
-    const [errorStates, setErrorStates] = useState({
-        movieDetail: false,
-        credits: false,
-        similarMovies: false,
-        movieVideo: false,
-        message: ''
-    });
+    // Custom Hooks 사용
+    const movieDetail = useMovieDetail(movieId);
+    const credits = useMovieCredits(movieId);
+    const videos = useMovieVideos(movieId);
+    const similarMovies = useSimilarMovies(movieId, page);
 
-    // 상태 초기화
-    const resetStates = useCallback(() => {
-        setMovieDetail(null);
-        setCredits(null);
-        setSimilarMovies([]);
-        setMovieVideo(null);
-        setLoadingStates({
-            movieDetail: false,
-            credits: false,
-            similarMovies: false,
-            movieVideo: false,
-            overall: false
-        });
-        setErrorStates({
-            movieDetail: false,
-            credits: false,
-            similarMovies: false,
-            movieVideo: false,
-            message: ''
-        });
-    }, []);
+    // 전체 로딩 상태
+    const isOverallLoading = movieDetail.isLoading;
 
-    // 영화 상세 정보 가져오기
-    const fetchMovieDetail = async (id: string): Promise<MovieDetail> => {
-        setLoadingStates(prev => ({...prev, movieDetail: true, overall: true}));
-        
-        try {
-            const response = await axios.get<MovieDetail>(
-                `https://api.themoviedb.org/3/movie/${id}?language=ko-KR`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            return response.data;
-        } catch (error) {
-            let errorMessage = '영화 정보를 불러올 수 없습니다.';
-            
-            if (error instanceof AxiosError) {
-                if (error.response?.status === 404) {
-                    errorMessage = '영화를 찾을 수 없습니다.';
-                } else if (error.response?.status === 401) {
-                    errorMessage = 'API 인증에 실패했습니다.';
-                }
-            }
-            
-            setErrorStates(prev => ({...prev, movieDetail: true, message: errorMessage}));
-            throw new Error(errorMessage);
-        } finally {
-            setLoadingStates(prev => ({...prev, movieDetail: false}));
-        }
-    };
-
-    // 크레딧 정보 가져오기
-    const fetchCredits = async (id: string): Promise<Credits | null> => {
-        setLoadingStates(prev => ({...prev, credits: true}));
-        
-        try {
-            const response = await axios.get<Credits>(
-                `https://api.themoviedb.org/3/movie/${id}/credits?language=ko-KR`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            return response.data;
-        } catch (error) {
-            setErrorStates(prev => ({...prev, credits: true, message: '출연진 정보를 불러올 수 없습니다.'}));
-            return null;
-        } finally {
-            setLoadingStates(prev => ({...prev, credits: false}));
-        }
-    };
-
-    // 비슷한 영화 가져오기
-    const fetchSimilarMovies = async(id: string, page: number = 1): Promise<Movie[]> => {
-        setLoadingStates(prev => ({...prev, similarMovies: true}));
-
-        try {
-            const response = await axios.get<MovieResponse> (
-                `https://api.themoviedb.org/3/movie/${id}/similar?language=ko-KR&page=${page}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            console.log(response.data.results);
-            return response.data.results;
-        } catch (error) {
-            setErrorStates(prev => ({...prev, similarMovies: true, message: '비슷한 영화 정보를 불러올 수 없습니다.'}));
-            return [];
-        } finally {
-            setLoadingStates(prev => ({...prev, similarMovies: false}));
-        }
-    };
-
-    // 영화 영상 가져오기
-    const fetchMovieVideo = async(id: string) => {
-        setLoadingStates(prev => ({...prev, movieVideo: true}));
-
-        try {
-            const response = await axios.get<MovieVideoResponse> (
-                `https://api.themoviedb.org/3/movie/${id}/videos`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-
-
-            console.log(response.data.results[0].key);
-            return response.data.results;
-        } catch (error) {
-            setErrorStates(prev => ({...prev, movieVideo: true, message: '정보를 불러올 수 없습니다.'}));
-            return [];
-        } finally {
-            setLoadingStates(prev => ({...prev, movieVideo: false}));
-        }
-    };
-
-    // 메인 데이터 로딩
-    const loadMovieData = useCallback(async (id: string) => {
-        resetStates();
-
-        try {
-            const movieData = await fetchMovieDetail(id);
-            setMovieDetail(movieData);
-            
-            const [creditsData, similarMoviesData, movieVideoData] = await Promise.all([
-                fetchCredits(id),
-                fetchSimilarMovies(id),
-                fetchMovieVideo(id)
-            ]);
-
-            if (creditsData) {
-                setCredits(creditsData);
-            }
-
-            setSimilarMovies(similarMoviesData);
-            setMovieVideo(movieVideoData[0]);
-            
-        } catch (error) {
-            console.error('데이터 로딩 실패:', error);
-        } finally {
-            setLoadingStates(prev => ({...prev, overall: false}));
-        }
-    }, [resetStates]);
-
-    // useEffect
-    useEffect(() => {
-        if (!movieId) {
-            setErrorStates({
-                movieDetail: true,
-                credits: false,
-                similarMovies: false,
-                movieVideo: false,
-                message: '영화 ID가 제공되지 않았습니다.'
-            });
-            return;
-        }
-
-        if (isNaN(Number(movieId))) {
-            setErrorStates({
-                movieDetail: true,
-                credits: false,
-                similarMovies: false,
-                movieVideo: false,
-                message: '올바르지 않은 영화 ID입니다.'
-            });
-            return;
-        }
-
-        loadMovieData(movieId);
-    }, [movieId, loadMovieData]);
-
-    // page가 변경될 때마다 비슷한 영화 다시 불러오기
-    useEffect(() => {
-        if (movieId && movieDetail) { // 영화 정보가 이미 로드된 후에만
-            fetchSimilarMovies(movieId, page).then(setSimilarMovies);
-        }
-    }, [page, movieId, movieDetail]);
+    // 첫 번째 비디오
+    const firstVideo = videos.data?.results[0];
 
     // 이벤트 핸들러들
     const handleRetry = () => {
-        if (movieId) {
-            loadMovieData(movieId);
-        }
+        movieDetail.refetch();
+        credits.refetch();
+        videos.refetch();
+        similarMovies.refetch();
     };
 
     const handleRetryCredits = () => {
-        if (movieId) {
-            fetchCredits(movieId).then(setCredits);
-        }
+        credits.refetch();
     };
 
     const handleGoHome = () => navigate('/');
     const handleGoBack = () => navigate(-1);
 
+    // movieId 유효성 검사
+    if (!movieId) {
+        return (
+            <MovieDetailError 
+                errorStates={{ message: '영화 ID가 제공되지 않았습니다.' }}
+                movieId={movieId}
+                onRetry={handleRetry}
+                onGoHome={handleGoHome}
+                onGoBack={handleGoBack}
+            />
+        );
+    }
+
+    if (isNaN(Number(movieId))) {
+        return (
+            <MovieDetailError 
+                errorStates={{ message: '올바르지 않은 영화 ID입니다.' }}
+                movieId={movieId}
+                onRetry={handleRetry}
+                onGoHome={handleGoHome}
+                onGoBack={handleGoBack}
+            />
+        );
+    }
+
     // 로딩 중
-    if (loadingStates.overall) {
+    if (isOverallLoading) {
         return (
             <MovieDetailLoader 
-                loadingStates={loadingStates}
-                movieTitle={movieDetail?.title}
+                loadingStates={{
+                    movieDetail: movieDetail.isLoading,
+                    credits: credits.isLoading,
+                    overall: isOverallLoading
+                }}
+                movieTitle={movieDetail.data?.title}
             />
         );
     }
 
     // 에러 발생
-    if (errorStates.movieDetail) {
+    if (movieDetail.isError) {
         return (
             <MovieDetailError 
-                errorStates={errorStates}
+                errorStates={{ message: movieDetail.error }}
                 movieId={movieId}
                 onRetry={handleRetry}
                 onGoHome={handleGoHome}
@@ -277,14 +108,10 @@ const MovieDetailPage = () => {
     }
 
     // 데이터가 없는 경우
-    if (!movieDetail) {
+    if (!movieDetail.data) {
         return (
             <MovieDetailError 
-                errorStates={{
-                    movieDetail: true,
-                    credits: false,
-                    message: '영화 정보를 찾을 수 없습니다.'
-                }}
+                errorStates={{ message: '영화 정보를 찾을 수 없습니다.' }}
                 movieId={movieId}
                 onRetry={handleRetry}
                 onGoHome={handleGoHome}
@@ -300,12 +127,12 @@ const MovieDetailPage = () => {
             <BackButton onGoBack={handleGoBack} />
             
             {/* 히어로 섹션 */}
-            <MovieHero movieDetail={movieDetail} />
+            <MovieHero movieDetail={movieDetail.data} />
             
             {/* 메인 콘텐츠 */}
             <div className="container mx-auto px-4 py-8 relative">
                 {/* 제목 (backdrop이 없는 경우) */}
-                <MovieTitle movieDetail={movieDetail} />
+                <MovieTitle movieDetail={movieDetail.data} />
                 
                 {/* 메인 정보 카드 */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 mb-8 border border-white/20">
@@ -313,11 +140,11 @@ const MovieDetailPage = () => {
                         <div>
                             {/* 포스터 */}
                             <div className="lg:col-span-1 flex justify-center">
-                                <MoviePoster movieDetail={movieDetail} />
+                                <MoviePoster movieDetail={movieDetail.data} />
                             </div>
                             <YouTube 
                             className="mt-3 flex justify-center pt-3 pb-3" 
-                            videoId={movieVideo?.key}
+                            videoId={firstVideo?.key}
                             opts={{
                                 width: '380px',
                                 height: '316px',
@@ -328,37 +155,36 @@ const MovieDetailPage = () => {
                         {/* 영화 정보 */}
                         <div className="lg:col-span-2 space-y-6">
                             {/* 제목 (backdrop이 있는 경우) */}
-                            <MovieTitle movieDetail={movieDetail} showBackdropVersion={true} />
+                            <MovieTitle movieDetail={movieDetail.data} showBackdropVersion={true} />
                             
                             {/* 평점 */}
-                            <MovieRating movieDetail={movieDetail} />
+                            <MovieRating movieDetail={movieDetail.data} />
                             
                             {/* 장르 */}
-                            <MovieGenres movieDetail={movieDetail} />
+                            <MovieGenres movieDetail={movieDetail.data} />
                             
                             {/* 기본 정보 */}
-                            <MovieBasicInfo movieDetail={movieDetail} />
+                            <MovieBasicInfo movieDetail={movieDetail.data} />
                             
                             {/* 박스오피스 */}
-                            <MovieBoxOffice movieDetail={movieDetail} />
+                            <MovieBoxOffice movieDetail={movieDetail.data} />
                             
                             {/* 줄거리 */}
-                            <MoviePlot movieDetail={movieDetail} />
+                            <MoviePlot movieDetail={movieDetail.data} />
                         </div>
                     </div>
                 </div>
                 
                 {/* 출연진 정보 */}
                 <MovieCastCrew 
-                    credits={credits}
-                    movieId={movieId}
+                    credits={credits.data}
                     onRetryCredits={handleRetryCredits}
                 />
                 
                 {/* 비슷한 영화들 */}
                 <p className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-white/20 text-left mt-4 text-xl font-semibold">▶︎ 비슷한 영화들
                 <div className="flex w-full flex-wrap gap-6">
-                    {similarMovies.map((movie)=> {
+                    {similarMovies.data?.results.map((movie)=> {
                         return (
                             <SimilarMovie
                                 similarMovie={movie}
