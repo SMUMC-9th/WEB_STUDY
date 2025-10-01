@@ -1,15 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
+import { getMyInfo } from "../api/auth";
+import axios from "axios";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem(LOCAL_STORAGE_KEY.accessToken);
-    setIsLoggedIn(!!token);
+    const checkAuthStatus = async () => {
+      const token = localStorage.getItem(LOCAL_STORAGE_KEY.accessToken);
+      
+      // 토큰 자체가 없으면 로그아웃 상태
+      if (!token) {
+        setIsLoggedIn(false);
+        setIsCheckingAuth(false);
+        return;
+      }
+      
+      // 토큰이 있으면 실제로 유효한지 서버에 확인
+      try {
+        await getMyInfo(); // 인증 필요한 API 호출
+        setIsLoggedIn(true); // 200 응답 → 유효한 토큰
+      } catch (error) {
+        // 401 등 에러 → 유효하지 않은 토큰
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+          setIsLoggedIn(false);
+          localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken); // 무효한 토큰 제거
+        }
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    };
+    
+    checkAuthStatus();
   }, []);
+
 
   return (
     <div className="flex flex-col justify-center items-center h-full bg-black gap-6">
