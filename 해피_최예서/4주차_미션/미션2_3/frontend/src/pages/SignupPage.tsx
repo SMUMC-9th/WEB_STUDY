@@ -1,67 +1,27 @@
-import { z } from "zod";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
 import { postSignup } from "../apis/auth.ts";
+import { signupSchema } from "../schemas/authSchemas.ts";
+import type { SignupFormFields } from "../schemas/authSchemas.ts";
+import { FcGoogle } from "react-icons/fc";
+
 // schema = 규칙 정의
-// FormFields = 타입 자동 생성
+// SignupFormFields = 타입 자동 생성
 // useForm = 상태 관리 + 스키마랑 연결
-
-// 1) Zod로 스키마 만들기
-const schema = z
-  .object({
-    // 이메일 형식
-    email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
-
-    // 비밀번호 입력
-    password: z
-      .string()
-      .min(8, {
-        message: "비밀번호는 8자 이상이어야 합니다.",
-      })
-      .max(20, {
-        message: "비밀번호는 20자 이하여야 합니다.",
-      }),
-
-    // 비밀번호 확인하기 위해 다시 치게
-    passwordCheck: z
-      .string()
-      .min(8, {
-        message: "비밀번호는 8자 이상이어야 합니다.",
-      })
-      .max(20, {
-        message: "비밀번호는 20자 이하여야 합니다.",
-      }),
-
-    // name: 빈 문자열이면 안됨
-    name: z.string().min(1, {
-      message: "이름을 입력해주세요",
-    }),
-  })
-  .refine((data) => data.password === data.passwordCheck, {
-    // 반대로 적기
-    // 비밀번호가 일치하지 않을 때
-    message: "비밀번호가 일치하지 않습니다.",
-    path: ["passwordCheck"],
-  });
-
-// 2) Zod로 TS 타입 뽑기
-type FormFields = z.infer<typeof schema>;
-// z.infer: 스키마대로 타입스크립트 타입 만들라는 뜻
 
 export default function SignupPage() {
   const navigate = useNavigate();
 
   // 3) RHF
-  // useForm<FormFields>: react-hook-form을 쓸 때 입력값 구조가 FormFields와 같아야 한다고 지정.
+  // useForm<SignupFormFields>: react-hook-form을 쓸 때 입력값 구조가 SignupFormFields와 같아야 한다고 지정.
   const {
     register, // register : input을 react-hook-form에 연결하는 함수
     handleSubmit,
     formState: { errors, isSubmitting }, // 구조 분해 할당
     // formState.errors: 유효성 검사 실패 시 에러 메시지 들어 있음
     // formState.isSubmitting: 제출 중이면 true → 버튼 비활성화 등에 사용
-  } = useForm<FormFields>({
+  } = useForm<SignupFormFields>({
     defaultValues: {
       // 폼 초기값
       name: "",
@@ -69,13 +29,19 @@ export default function SignupPage() {
       password: "",
       passwordCheck: "",
     },
-    resolver: zodResolver(schema), // resolver: Zod 스키마랑 RHF 연결하마
+    resolver: zodResolver(signupSchema), // resolver: Zod 스키마랑 RHF 연결
     mode: "onChange", // mode: 언제 유효성 검사를 실행할지 결정.
     // "onChange" : 실시간 검사
   });
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${
+      import.meta.env.VITE_SERVER_API_URL
+    }/v1/auth/google/login`;
+  };
+
   // 레지스터에 연결된 값 가져오기
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<SignupFormFields> = async (data) => {
     const { passwordCheck, ...rest } = data;
 
     const response = await postSignup(rest);
@@ -100,7 +66,10 @@ export default function SignupPage() {
 
           <div className="flex flex-col justify-center items-center">
             <div className="w-full relative">
-              <button className="flex justify-center items-center w-full text-[black] border border-[black] rounded-xl px-6 py-2 mb-4 hover:bg-[#e14d36] transition-colors cursor-pointer ">
+              <button
+                onClick={handleGoogleLogin}
+                className="flex justify-center items-center w-full text-[black] border border-[black] rounded-xl px-6 py-2 mb-4 hover:bg-[#e14d36] transition-colors cursor-pointer "
+              >
                 <FcGoogle size={20} className="absolute left-4" />
                 Google Login
               </button>

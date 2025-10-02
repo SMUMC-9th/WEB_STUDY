@@ -8,6 +8,14 @@ export default function Navbar() {
       </NavLink>
       <div>
         <NavLink
+          to="/my"
+          className={({ isActive }) =>
+            isActive ? "px-3 py-1.5 bg-[#fbb411] rounded-xl" : "px-3 py-2"
+          }
+        >
+          MY
+        </NavLink>
+        <NavLink
           to="/signin"
           className={({ isActive }) =>
             isActive ? "px-3 py-1.5 bg-[#fbb411] rounded-xl" : "px-3 py-2"

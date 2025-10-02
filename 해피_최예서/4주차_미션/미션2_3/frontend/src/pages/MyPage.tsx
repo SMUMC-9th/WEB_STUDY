@@ -22,8 +22,16 @@ const MyPage = () => {
     <div>
       {data ? (
         <>
-          {/*<p>{data?.name}</p>*/}
-          {/*<p>{data?.email}</p>*/}
+          <dl className="flex flex-col">
+            <div className="flex">
+              <dt>닉네임</dt>
+              <dd>{data?.data.name}</dd>
+            </div>
+            <div className="flex">
+              <dt>이메일</dt>
+              <dd>{data?.data.email}</dd>
+            </div>
+          </dl>
         </>
       ) : (
         <p>Loading...</p>
