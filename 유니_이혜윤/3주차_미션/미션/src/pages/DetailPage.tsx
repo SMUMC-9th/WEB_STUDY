@@ -1,52 +1,29 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { LoadingSpinner, SimilarMovie, Video, Credits } from "../components";
 import { type MovieDetail } from "../types/movie";
+import { useCustomFetch } from "../hooks/useCustomFetch";
 
 const DetailPage = () => {
   const { movieId } = useParams();
-  const [movie, setMovie] = useState<MovieDetail | null>(null);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    const fetchMovie = async () => {
-      if (!movieId) return;
-      setIsPending(true);
-      try {
-        const { data } = await axios.get<MovieDetail>(
-          `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-            },
-          }
-        );
-        setMovie(data);
-        setIsError(false);
-      } catch {
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
-    fetchMovie();
-  }, [movieId]);
+  const url = movieId
+    ? `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`
+    : "";
+  const { data: movie, loading, error } = useCustomFetch<MovieDetail>(url);
 
-  if (isPending) {
+  if (!movie) return null;
+
+  if (loading) {
     return <LoadingSpinner />;
   }
 
-  if (isError) {
+  if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black/95 text-red-500">
+      <div className="min-h-screen flex items-center justify-center bg-black/95 text-red-300">
         <p>영화 정보를 불러오는 데 실패했습니다.</p>
       </div>
     );
   }
-
-  if (!movie) return null;
 
   return (
     <div className="min-h-screen bg-black/95 text-white">
