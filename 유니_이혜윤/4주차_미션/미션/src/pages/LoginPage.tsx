@@ -1,7 +1,13 @@
+import { postSignin } from "../apis/auth";
+import { LOCAL_STORAGE_KEY } from "../constants/key";
 import useForm from "../hooks/useForm";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import { validateSignin, type UserSigninInformation } from "../utils/validate";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
       initialValue: {
@@ -11,9 +17,14 @@ const LoginPage = () => {
       validate: validateSignin,
     });
 
-  const handleSubmit = () => {
-    console.log(values);
-    // API 요청
+  const handleSubmit = async () => {
+    try {
+      const response = await postSignin(values);
+      setItem(response.data.accessToken);
+      navigate("/my");
+    } catch (e) {
+      alert(e);
+    }
   };
 
   const isDisabled =
@@ -59,7 +70,7 @@ const LoginPage = () => {
           type="button"
           onClick={handleSubmit}
           disabled={isDisabled}
-          className="bg-blue-100 text-white rounded-sm p-2 w-full cursor-pointer hover:bg-blue-200 transition-colors disabled:bg-gray-300 focus:outline-none" // ✅ outline 제거
+          className="bg-blue-100 text-white rounded-sm p-2 w-full cursor-pointer hover:bg-blue-200 transition-colors disabled:bg-gray-300 focus:outline-none"
         >
           login
         </button>
