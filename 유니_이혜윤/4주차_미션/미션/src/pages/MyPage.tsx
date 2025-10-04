@@ -10,7 +10,6 @@ const MyPage = () => {
       try {
         const response = await getMyInfo();
         setData(response);
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
