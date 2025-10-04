@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { type MovieResponse, type Movie } from "../types/movie";
-import axios from "axios";
+import { type MovieResponse } from "../types/movie";
 import { MovieCard, LoadingSpinner, PageButton } from "../components";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams } from "react-router-dom";
+import { useCustomFetch } from "../hooks/useCustomFetch";
 
 const MoviesPage = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [page, setPage] = useState(1);
   const { category } = useParams<{ category: string }>();
 
@@ -16,39 +13,20 @@ const MoviesPage = () => {
     setPage(1);
   }, [category]);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      setIsPending(true);
-      try {
-        const { data } = await axios.get<MovieResponse>(
-          `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-            },
-          }
-        );
-        const filtered = data.results.filter((movie) => movie.adult === false);
+  const url = `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`;
+  const { data, loading, error } = useCustomFetch<MovieResponse>(url);
+  // console.log(url);
 
-        setMovies(filtered);
-        setIsError(false);
-      } catch {
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
-    fetchMovies();
-  }, [page, category]);
+  const movies = data?.results.filter((m) => !m.adult) ?? [];
 
   return (
     <div className="bg-black/95 min-h-screen">
       <div className="container mx-auto max-w-screen-xl px-14 lg:px-20 py-10">
-        {isError && (
+        {error && (
           <div className="text-red-500 text-2xl">에러가 발생했습니다</div>
         )}
 
-        {isPending ? (
+        {loading ? (
           <LoadingSpinner />
         ) : (
           <>
