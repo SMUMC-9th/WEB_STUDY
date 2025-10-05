@@ -1,39 +1,55 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 
-interface useFormProps<T> {
-    initialValues: T;
-    onSubmit: (values:T)=> void;
-    validate: (values:T)=> Partial<T>;
+
+interface UseFormProps<T> {
+  initialValue: T;
+  validate: (values: T) => Record<keyof T, string>;
+  onSubmit: (values: T) => void;
 }
 
-const useForm = <T extends Record<string, string>>({
-    initialValues,
-    onSubmit,
-    validate,
-}: useFormProps<T>) => {
-    const [values, setValues] = useState<T>(initialValues);
-    const [errors, setErrors] = useState<Partial<T>>({});
-    
-    const handleChange = (e:ChangeEvent) => {
-        const {name, value} = e.target;
-        setValues({...values, [name]: value});
-    };
-    const handleSubmit = (e:FormEvent | MouseEvent) => {
-        e.preventDefault();
+function useForm<T>({ initialValue, validate, onSubmit }: UseFormProps<T>) {
+  const [values, setValues] = useState(initialValue);
+  const [errors, setErrors] = useState<Record<keyof T, string>>({} as Record<
+    keyof T,
+    string
+  >);
 
-        const validationErrors = validate(values);
-        setErrors(validationErrors);
+  const handleChange = (name: keyof T, text: string) => {
+    setValues({
+      ...values,
+      [name]: text,
+    });
+  };
 
-        if (Object.keys(validationErrors).length === 0){
-            onSubmit(values);
-        }
-    };
-    return {
-        values,
-        errors,
-        handleChange,
-        handleSubmit,
+  const getInputProps = (name: keyof T) => {
+    const value = values[name];
+
+    const onChange = (
+      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => handleChange(name, e.target.value);
+
+    return { value, onChange };
+  };
+
+  const validateForm = () => {
+    const newErrors = validate(values);
+    setErrors(newErrors as Record<keyof T, string>);
+    const hasError = Object.values(newErrors).some(msg => !!msg);
+    return !hasError;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors = validate(values);
+    setErrors(newErrors);
+
+    const hasError = Object.values(newErrors).some((msg) => msg);
+    if (!hasError) {
+      onSubmit(values);
     }
+  };
+
+  return { values, errors, getInputProps, validateForm, handleSubmit, setErrors, validate };
 }
 
 export default useForm;
