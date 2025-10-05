@@ -5,27 +5,27 @@
 // App.tsx에 context.provider 감싸주기
 // useState 안에 set
 
-// import { createContext, useState, type ReactNode } from "react";
+import { createContext, useState, type ReactNode } from "react";
 
-// interface LoginContextType {
-//     login: boolean;
-//     isLogined : () => void;
+interface LoginContextType {
+    login: boolean;
+    isLogined : () => void;
 
-// }
+}
 
-// // eslint-disable-next-line react-refresh/only-export-components
-// export const LoginContext = createContext<LoginContextType | undefined>(
-//     undefined
-// );
+// eslint-disable-next-line react-refresh/only-export-components
+export const LoginContext = createContext<LoginContextType | undefined>(
+    undefined
+);
 
-// export const LoginProvider = ({children}:{children:ReactNode}) => {
-//     const [login, setLogin] = useState(false);
-//     const isLogined = () => setLogin((prev)=>true);
+export const LoginProvider = ({children}:{children:ReactNode}) => {
+    const [login, setLogin] = useState(false);
+    const isLogined = () => setLogin((prev)=>true);
 
-//     return (
-//         <LoginContext.Provider
-//             value={{login, isLogined}}>
-//             {children}
-//         </LoginContext.Provider>
-//     )
-// }
+    return (
+        <LoginContext.Provider
+            value={{login, isLogined}}>
+            {children}
+        </LoginContext.Provider>
+    )
+}
