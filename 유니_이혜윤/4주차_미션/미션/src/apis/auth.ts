@@ -6,7 +6,6 @@ import type {
   ResponseMyInfoDto,
 } from "../types/authType";
 import { axiosInstance } from "./axios";
-import axios from "axios";
 
 export const postSignup = async (
   body: RequestSignupDto
@@ -26,11 +25,7 @@ export const postSignin = async (
 };
 
 export const getMyInfo = async (): Promise<ResponseMyInfoDto> => {
-  const { data } = await axios.get("/v1/users/me", {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  });
+  const { data } = await axiosInstance.get("/v1/users/me", {});
   console.log(data);
   return data;
 };

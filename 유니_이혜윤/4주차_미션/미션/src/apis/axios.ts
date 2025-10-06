@@ -7,8 +7,10 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem(LOCAL_STORAGE_KEY.accessToken);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (token === null) return config;
+  const parseToken = JSON.parse(token);
+  if (parseToken) {
+    config.headers.Authorization = `Bearer ${parseToken}`;
   }
   return config;
 });
