@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { getMyInfo } from "../apis/auth.ts";
 import { type ResponseMyInfoDto } from "../types/authType.ts";
+import { useAuth } from "../context/AuthContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 const MyPage = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [data, setData] = useState<ResponseMyInfoDto | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +23,11 @@ const MyPage = () => {
     };
     getData();
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const user = data?.data;
 
@@ -60,6 +69,12 @@ const MyPage = () => {
           <p>가입일 : {new Date(user.createdAt).toLocaleDateString()}</p>
           <p>최근 수정일 : {new Date(user.updatedAt).toLocaleDateString()}</p>
         </div>
+        <button
+          onClick={handleLogout}
+          className="bg-[#acacac] p-1 text-xs rounded cursor-pointer"
+        >
+          로그아웃
+        </button>
       </div>
     </div>
   );
