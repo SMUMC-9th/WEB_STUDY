@@ -50,7 +50,9 @@ const MyPage = () => {
       <div className="bg-white shadow-md rounded-2xl p-8 w-full max-w-md flex flex-col items-center gap-6 border border-gray-100">
         <img
           src={
-            "https://i.pinimg.com/736x/ee/5c/aa/ee5caacd1bb467e148a0bd25ce464dd0.jpg"
+            user?.avatar
+              ? user.avatar
+              : "https://i.pinimg.com/736x/ee/5c/aa/ee5caacd1bb467e148a0bd25ce464dd0.jpg"
           }
           alt="프로필 이미지"
           className="w-28 h-28 rounded-full object-cover"

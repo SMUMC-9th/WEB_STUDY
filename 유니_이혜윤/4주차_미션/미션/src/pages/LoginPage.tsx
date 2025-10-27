@@ -27,6 +27,11 @@ const LoginPage = () => {
     await login(values);
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href =
+      import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
+  };
+
   const isDisabled =
     Object.values(errors || {}).some((e) => e.length > 0) || // 오류 있으면 true
     Object.values(values).some((v) => v === ""); // 입력값 비어있으면 true
@@ -74,6 +79,17 @@ const LoginPage = () => {
         >
           login
         </button>
+        <div
+          className="flex justify-center items-center gap-2 bg-gray-200 p-2 rounded cursor-pointer"
+          onClick={handleGoogleLogin}
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+            alt="Google Logo"
+            className="w-5 h-5"
+          />
+          <span>구글 로그인</span>
+        </div>
       </div>
     </div>
   );

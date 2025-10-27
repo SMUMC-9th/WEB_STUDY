@@ -3,7 +3,14 @@ import {
   RouterProvider,
   type RouteObject,
 } from "react-router-dom";
-import { HomePage, NotFoundPage, LoginPage, SignupPage, MyPage } from "./pages";
+import {
+  HomePage,
+  NotFoundPage,
+  LoginPage,
+  SignupPage,
+  MyPage,
+  GoogleLoginRedirectPage,
+} from "./pages";
 import HomeLayout from "./layouts/HomeLayout";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedLayout from "./layouts/ProtectedLayout";
@@ -21,6 +28,7 @@ const publicRoutes: RouteObject[] = [
       },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
+      { path: "v1/auth/google/callback", element: <GoogleLoginRedirectPage /> },
     ],
   },
 ];
