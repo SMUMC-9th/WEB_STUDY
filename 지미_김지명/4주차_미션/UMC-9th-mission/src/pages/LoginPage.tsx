@@ -17,6 +17,9 @@ const LoginPage = () => {
         validate: validateSignin,
       });
       
+      const handleGoogleLogin= () => {
+        window.location.href = `${import.meta.env.VITE_SERVER_API_URL}/v1/auth/google/login`;
+      };
 
     const handleSubmit = async () => {
         try {
@@ -37,6 +40,11 @@ const LoginPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center h-full gap-4">
+            <button 
+            onClick={handleGoogleLogin}
+            className="cursor-pointer">
+                <img className="w-70" src="https://images.velog.io/images/flowersayo/post/0a7e010e-3335-40d9-bfa2-07427ce4bbbc/KakaoTalk_20220204_005919952.jpg" alt="구글 로그인" />
+            </button>
             <div className="flex flex-row items-center w-80 px-4 py-2">
                 <div 
                 onClick={() => navigate('/')}
