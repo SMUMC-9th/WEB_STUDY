@@ -5,7 +5,7 @@
 // 4. ContextHook 만들기
 // 5. Provider를 main.tsx에 App에 감싸주기
 
-import { createContext, useState, useContext, type ReactNode } from "react";
+import { createContext, useState, type ReactNode } from "react";
 
 interface ILoginContext {
     isLogined: boolean;

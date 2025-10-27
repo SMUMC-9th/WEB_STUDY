@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouteObject, RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
 import './App.css'
 import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
@@ -7,35 +7,61 @@ import HomeLayout from './layouts/HomeLayout'
 import SignupPage from './pages/SignupPage'
 import MyPage from './pages/MyPage'
 import LoginRedirect from './pages/LoginRedirect'
-import type { PropsWithChildren } from 'react'
+import ProtectedLayout from './layouts/ProtectedLayout'
+import { AuthProvider } from './providers/AuthProvider'
 
-const ProtectedRoute = ({children}:PropsWithChildren) => {
-  const isLogin = false;
-  if (isLogin === false) {
-    alert("여기는 로그인 한 사용자만 접근할 수 있습니다.");
-    window.location.href='/login';
-  } 
-  return children;
-}
+// RootLayout - AuthProvider를 Router 내부에 배치
+const RootLayout = () => {
+  return (
+    <AuthProvider>
+      <Outlet />
+    </AuthProvider>
+  );
+};
 
-const router = createBrowserRouter([
+// publicRoutes : 인증 없이 접근 가능한 라우트
+const publicRoutes: RouteObject[] = [
   {
-    path: '/',
+    path: "/",
     element: <HomeLayout />,
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'login', element: <LoginPage /> },
-      { path: 'signup', element: <SignupPage /> },
-      { path: 'my', element: <ProtectedRoute><MyPage /></ProtectedRoute>},
-      { path: 'v1/auth/google/callback', element: <LoginRedirect />},
-    ]
-  }
-])
+      { path: "login", element: <LoginPage /> },
+      { path: "signup", element: <SignupPage /> },
+      { path: "v1/auth/google/callback", element: <LoginRedirect /> },
+    ],
+  },
+];
+
+// protectedRoutes: 인증이 필요한 라우트
+const protectedRoutes: RouteObject[] = [
+  {
+    path: "/",
+    element: <ProtectedLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: "my",
+        element: <MyPage />,
+      },
+    ],
+  },
+];
+
+// RootLayout으로 감싸진 라우트 구조
+const rootRoutes: RouteObject[] = [
+  {
+    element: <RootLayout />,
+    children: [...publicRoutes, ...protectedRoutes],
+  },
+];
+
+const router = createBrowserRouter(rootRoutes);
 
 function App() {
-
   return <RouterProvider router={router} />;
 }
+
 
 export default App
