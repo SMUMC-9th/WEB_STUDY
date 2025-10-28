@@ -1,6 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-//tanstack query 연결하기
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import RootLayout from "./layout/rootLayout";
 import Auth from "./pages/auth";
@@ -9,8 +7,6 @@ import Home from "./pages/home";
 import Mypage from "./pages/mypage";
 import RedirectPage from "./pages/RedirectPage"; // 새로 만든 컴포넌트
 import ProtectedRoute from "./layout/ProtectedRoute";
-
-const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -31,11 +27,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

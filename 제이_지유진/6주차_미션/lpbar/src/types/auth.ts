@@ -25,3 +25,15 @@ export interface SignInResponse {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface MeResponse {
+  data: {
+    id: number;
+    name: string;
+    email: string;
+    bio?: string;
+    avatar?: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}

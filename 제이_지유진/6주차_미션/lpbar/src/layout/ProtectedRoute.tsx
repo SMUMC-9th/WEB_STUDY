@@ -1,16 +1,47 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth";
+import { Plus } from "lucide-react";
 
 const ProtectedRoute = () => {
   const { isLogged } = useAuth();
+  const navigate = useNavigate();
 
-  // 아직 로그인 상태를 확인 중일 때는 (예: 비동기 확인 중이라면) 로딩 표시
-  // 하지만 지금은 상태가 즉시 결정되므로 생략 가능
   if (!isLogged) {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  const handleClick = () => {
+    navigate("/create");
+  };
+
+  return (
+    <div className="relative min-h-screen">
+      <Outlet />
+
+      <button
+        onClick={handleClick}
+        className="
+          fixed
+          bottom-6
+          right-6
+          w-16
+          h-16
+          rounded-full
+          bg-pink-500
+          text-white
+          flex
+          items-center
+          justify-center
+          shadow-lg
+          z-[1000]
+          hover:bg-pink-600
+          transition
+        "
+      >
+        <Plus size={28} />
+      </button>
+    </div>
+  );
 };
 
 export default ProtectedRoute;

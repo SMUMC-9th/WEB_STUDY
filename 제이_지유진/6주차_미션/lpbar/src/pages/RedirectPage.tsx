@@ -15,7 +15,7 @@ export default function RedirectPage() {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("refreshToken", token);
       setIsLogged(true);
-      navigate("/home");
+      navigate("/my");
     }
   }, [location.search, navigate, setIsLogged]);
 
