@@ -1,4 +1,3 @@
-import { da } from 'zod/locales';
 import type { RequestSigninDto, RequestSignupDto, ResponseMyInfoDto, ResponseSigninDto, ResponseSignupDto } from '../types/auth';
 import { axiosInstance } from './axios';
 
