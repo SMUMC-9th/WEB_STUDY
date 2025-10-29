@@ -9,6 +9,8 @@ import MyPage from './pages/MyPage'
 import LoginRedirect from './pages/LoginRedirect'
 import ProtectedLayout from './layouts/ProtectedLayout'
 import { AuthProvider } from './providers/AuthProvider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 // RootLayout - AuthProvider를 Router 내부에 배치
 const RootLayout = () => {
@@ -59,8 +61,15 @@ const rootRoutes: RouteObject[] = [
 
 const router = createBrowserRouter(rootRoutes);
 
+export const queryClient = new QueryClient();
+
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 }
 
 
