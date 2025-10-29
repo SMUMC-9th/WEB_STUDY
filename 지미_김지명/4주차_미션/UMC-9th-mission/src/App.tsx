@@ -12,12 +12,17 @@ import { AuthProvider } from './providers/AuthProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-// RootLayout - AuthProvider를 Router 내부에 배치
+export const queryClient = new QueryClient();
+
+// RootLayout - QueryClientProvider와 AuthProvider를 Router 내부에 배치
 const RootLayout = () => {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Outlet />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 
@@ -61,16 +66,8 @@ const rootRoutes: RouteObject[] = [
 
 const router = createBrowserRouter(rootRoutes);
 
-export const queryClient = new QueryClient();
-
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  );
+  return <RouterProvider router={router} />;
 }
-
 
 export default App

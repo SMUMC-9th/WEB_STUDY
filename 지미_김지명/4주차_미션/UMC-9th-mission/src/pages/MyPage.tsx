@@ -33,7 +33,19 @@ const MyPage = () => {
     return (
         <div className="flex flex-col items-center justify-center h-full gap-6 bg-gray-50">
             <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-                <h1 className="text-3xl font-bold text-center mb-6 text-[#FF007F]">마이페이지</h1>
+            
+                <div className="flex items-center mb-6">
+                    <button
+                        onClick={() => navigate('/')}
+                        className="text-2xl hover:text-[#FF007F] transition-colors cursor-pointer"
+                    >
+                        &lt;
+                    </button>
+                    <h1 className="text-3xl font-bold text-center flex-1 text-[#FF007F]">
+                        마이페이지
+                    </h1>
+                    <div className="w-8"></div> {/* 중앙 정렬을 위한 공간 */}
+                </div>
                 
                 <div className="space-y-4">
                     <div className="border-b pb-3">
