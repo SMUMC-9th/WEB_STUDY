@@ -1,48 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TOrder } from "../constants/enum";
 import SortButton from "./SortButton";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchCommentById } from "../api/lp";
-import type { Comment } from "../types/comment";
+import useGetComment from "../hooks/useGetComment";
+import SkeletonCard from "./SkeletonCard";
+import CommentTab from "./CommentTab";
+import { useInView } from "react-intersection-observer";
 
 export default function CommentDetail() {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<TOrder>("desc");
   const [comment, setComment] = useState("");
+  const [ref, inView] = useInView();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
   };
 
+  // const {
+  //   data: commentsData,
+  //   isLoading,
+  //   isError,
+  //   refetch,
+  // } = useQuery<{ data: Comment[]; hasNext: boolean; nextCursor?: number }>({
+  //   queryKey: ["comments", id, order],
+  //   queryFn: () => fetchCommentById(Number(id)),
+  //   staleTime: 1000 * 60,
+  //   retry: 1,
+  // });
   const {
-    data: commentsData,
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
     isLoading,
     isError,
     refetch,
-  } = useQuery<{ data: Comment[]; hasNext: boolean; nextCursor?: number }>({
-    queryKey: ["comments", id, order],
-    queryFn: () => fetchCommentById(Number(id)),
-    staleTime: 1000 * 60,
-    retry: 1,
-  });
+  } = useGetComment({ order, cursor: 0, lpId: Number(id) });
 
-  const comments = Array.isArray(commentsData?.data) ? commentsData.data : [];
+  // const comments = Array.isArray(commentsData?.data) ? commentsData.data : [];
 
-  if (isLoading) return <div className="text-gray-400">댓글 로딩 중...</div>;
-
-  if (isError)
-    return (
-      <div className="text-gray-400">
-        <p>댓글을 불러오지 못했습니다.</p>
-        <button
-          onClick={() => refetch()}
-          className="mt-2 px-4 py-2 bg-gray-700 text-white rounded"
-        >
-          재시도
-        </button>
-      </div>
-    );
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="mt-8">
@@ -54,6 +56,25 @@ export default function CommentDetail() {
         />
       </div>
 
+      {isLoading && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      )}
+
+      {isError && (
+        <div className="flex flex-col items-center mt-10">
+          <p className="text-red-500 mb-2">데이터를 불러오지 못했습니다.</p>
+          <button
+            className="px-4 py-2 bg-black text-white rounded"
+            onClick={() => refetch()}
+          >
+            재시도
+          </button>
+        </div>
+      )}
       <div className="mt-4 flex gap-2 mb-6">
         <input
           type="text"
@@ -74,30 +95,22 @@ export default function CommentDetail() {
         </button>
       </div>
 
-      {comments.length === 0 ? (
-        <p className="text-gray-400">댓글이 없습니다.</p>
-      ) : (
-        <ul>
-          {comments.map((comment) => (
-            <li
-              key={comment.id}
-              className="mb-4 p-4 border border-gray-600 rounded"
-            >
-              <div className="flex items-center mb-2 gap-2">
-                <img
-                  className="w-7 h-7 rounded-full inline-block mr-2"
-                  src={comment.author?.avatar ?? undefined}
-                ></img>
-                <p className="text-gray-400 text-sm">
-                  {comment.author?.name || "익명"}
-                </p>
-              </div>
-
-              <p className="text-white">{comment.content}</p>
-            </li>
-          ))}
-        </ul>
+      {!isLoading && !isError && (
+        <>
+          <ul>
+            {data?.pages.map((comment) =>
+              comment.data.data.map((c) => (
+                <CommentTab key={c.id} comment={c} />
+              ))
+            )}
+          </ul>
+        </>
       )}
+
+      {/* 무한 스크롤 감지용 div */}
+      <div ref={ref} className="h-10 flex justify-center items-center">
+        {isFetchingNextPage && <p>불러오는 중...</p>}
+      </div>
     </div>
   );
 }

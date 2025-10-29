@@ -54,3 +54,21 @@ export type TGetLPResponse = {
     hasNext: boolean;
   };
 };
+
+export type TGetCommentResponse = {
+  data: {
+    data: TComment[];
+    nextCursor: number;
+    hasNext: boolean;
+  };
+};
+
+export interface TComment {
+  id: number;
+  content: string;
+  lpId: number;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+  author: Author;
+}
