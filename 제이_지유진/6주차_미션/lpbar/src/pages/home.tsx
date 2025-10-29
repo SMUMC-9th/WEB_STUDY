@@ -26,9 +26,6 @@ export default function LpList() {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // 모든 페이지 데이터 합치기
-  const lps = data?.pages?.flatMap((page) => page.data) || [];
-
   return (
     <div className="p-6 mt-24 max-w-7xl mx-auto">
       {/* 정렬 버튼 */}
@@ -85,16 +82,18 @@ export default function LpList() {
       {!isLoading && !isError && (
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {lps.map((lp) => (
-              <LpCard
-                key={lp.id}
-                id={lp.id}
-                title={lp.title}
-                thumbnail={lp.thumbnail}
-                createdAt={lp.createdAt}
-                likes={lp.likes}
-              />
-            ))}
+            {data?.pages.map((lps) =>
+              lps.data.data.map((lp) => (
+                <LpCard
+                  key={lp.id}
+                  id={lp.id}
+                  title={lp.title}
+                  thumbnail={lp.thumbnail}
+                  createdAt={lp.createdAt}
+                  likes={lp.likes}
+                />
+              ))
+            )}
           </div>
 
           {/* 무한 스크롤 감지용 div */}

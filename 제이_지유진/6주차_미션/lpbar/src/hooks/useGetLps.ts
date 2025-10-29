@@ -1,6 +1,5 @@
 import { queryOptions, useInfiniteQuery } from "@tanstack/react-query";
 import type { TOrder } from "../constants/enum";
-import type { TGetLPResponse } from "../types/lp";
 import { getLP } from "../api/lp";
 
 type TGetLPsRequest = {
@@ -9,13 +8,7 @@ type TGetLPsRequest = {
 };
 
 function useGetLps({ order }: TGetLPsRequest) {
-  return useInfiniteQuery<
-    TGetLPResponse,
-    Error,
-    TGetLPResponse,
-    string[],
-    number
-  >({
+  return useInfiniteQuery({
     queryKey: ["getLPs", order],
     queryFn: async ({ pageParam }) => getLP({ order, cursor: pageParam }),
     initialPageParam: 0,
