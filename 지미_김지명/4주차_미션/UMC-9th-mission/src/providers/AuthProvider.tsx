@@ -1,10 +1,10 @@
-import { PropsWithChildren, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { RequestSigninDto } from "../types/auth";
+import { AuthContext } from "../context/AuthContext";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
+import { PropsWithChildren, useState } from "react";
+import { RequestSigninDto } from "../types/auth";
 import { postLogout, postSignin } from "../api/auth";
-import { AuthContext } from "../context/AuthContext";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
@@ -21,11 +21,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     removeItem: removeRefreshTokenFromStorage,
   } = useLocalStorage(LOCAL_STORAGE_KEY.refreshToken);
 
-  const [accessToken, setAccessToken]: [string | null, React.Dispatch<React.SetStateAction<string | null>>] =
-    useState<string | null>(getAccessTokenFromStorage());
+  const [accessToken, setAccessToken] = useState<string | null>(
+    getAccessTokenFromStorage()
+  );
 
-  const [refreshToken, setRefreshToken]: [string | null, React.Dispatch<React.SetStateAction<string | null>>] =
-    useState<string | null>(getRefreshTokenFromStorage());
+  const [refreshToken, setRefreshToken] = useState<string | null>(
+    getRefreshTokenFromStorage()
+  );
 
   const login = async (signinData: RequestSigninDto) => {
     try {
@@ -42,7 +44,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         setRefreshToken(newRefreshToken);
 
         alert("로그인 성공");
-        navigate("/my"); // window.location.href 대신 navigate 사용
+        navigate("/my");
       }
     } catch (error) {
       console.error("로그인 오류", error);
@@ -60,7 +62,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setRefreshToken(null);
 
       alert("로그아웃 성공");
-      navigate("/"); // 홈으로 리다이렉트
+      navigate("/");
     } catch (error) {
       console.error("로그아웃 오류", error);
       alert("로그아웃 실패");
@@ -68,7 +70,16 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, refreshToken, login, logout }}>
+    <AuthContext.Provider 
+      value={{ 
+        accessToken, 
+        refreshToken, 
+        setAccessToken, // ← 추가
+        setRefreshToken, // ← 추가
+        login, 
+        logout 
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

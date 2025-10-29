@@ -26,6 +26,7 @@ const MyPage = () => {
 
     const handleLogout = () => {
         localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
+        localStorage.removeItem(LOCAL_STORAGE_KEY.refreshToken);
         navigate('/');
     };
 
