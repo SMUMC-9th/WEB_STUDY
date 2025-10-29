@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "../api/auth";
+import { useAuth } from "../context/auth";
 
 export default function Mypage() {
+  const { logout } = useAuth();
   const { data: user } = useQuery({
     queryKey: ["me"],
     queryFn: async () => {
@@ -33,7 +35,10 @@ export default function Mypage() {
           <button className="bg-pink-500 hover:bg-pink-400 text-white py-2 px-6 rounded-lg">
             프로필 수정
           </button>
-          <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-6 rounded-lg">
+          <button
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-6 rounded-lg"
+            onClick={logout}
+          >
             로그아웃
           </button>
         </div>

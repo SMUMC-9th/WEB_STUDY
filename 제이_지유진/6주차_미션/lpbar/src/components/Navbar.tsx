@@ -7,17 +7,9 @@ import Sidebar from "./Sidebar";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const { isLogged, setIsLogged } = useAuth();
+  const { isLogged, logout } = useAuth();
   const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.setItem("manualLogout", "true");
-    setIsLogged(false);
-    navigate("/");
-  };
 
   return (
     <>
@@ -46,7 +38,7 @@ const Navbar: React.FC = () => {
 
               <button
                 className="bg-red-500 py-1 rounded-[10px] w-[80px] hover:bg-red-400"
-                onClick={handleLogout}
+                onClick={logout}
               >
                 로그아웃
               </button>

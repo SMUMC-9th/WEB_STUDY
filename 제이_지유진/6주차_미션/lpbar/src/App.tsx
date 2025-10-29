@@ -12,6 +12,7 @@ import Mypage from "./pages/mypage";
 import RedirectPage from "./pages/RedirectPage"; // 새로 만든 컴포넌트
 import ProtectedRoute from "./layout/ProtectedRoute";
 import LpDetail from "./pages/LpDetail";
+import Search from "./pages/Search";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
             element: <LpDetail />,
           },
           { path: "home", element: <Home /> },
+          { path: "/search", element: <Search /> },
         ],
       },
     ],

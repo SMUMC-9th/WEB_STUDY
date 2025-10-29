@@ -31,3 +31,8 @@ export const fetchLPById = async (id: number) => {
   const res = await axiosInstance.get(`/v1/lps/${id}`);
   return res.data.data;
 };
+
+export const fetchCommentById = async (id: number) => {
+  const res = await axiosInstance.get(`/v1/lps/${id}/comments`);
+  return res.data.data;
+};

@@ -4,9 +4,10 @@ import SkeletonCard from "../components/SkeletonCard";
 import useGetLps from "../hooks/useGetLps";
 import type { TOrder } from "../constants/enum";
 import { useInView } from "react-intersection-observer";
+import SortButton from "../components/SortButton";
 
 export default function LpList() {
-  const [order, setOrder] = useState<TOrder>("desc"); // 최신순: desc, 오래된순: asc
+  const [order, setOrder] = useState<TOrder>("desc");
   const [ref, inView] = useInView();
 
   const {
@@ -29,36 +30,12 @@ export default function LpList() {
   return (
     <div className="p-6 mt-24 max-w-7xl mx-auto">
       {/* 정렬 버튼 */}
-      <div className="flex gap-2 mb-6 justify-center">
-        <button
-          className={`px-4 py-2 rounded font-medium border transition-colors duration-200 ${
-            order === "desc"
-              ? "bg-black text-white border-black"
-              : "bg-white text-black border-black"
-          }`}
-          onClick={() => {
-            setOrder("desc");
-            refetch();
-          }}
-        >
-          최신순
-        </button>
-        <button
-          className={`px-4 py-2 rounded font-medium border transition-colors duration-200 ${
-            order === "asc"
-              ? "bg-black text-white border-black"
-              : "bg-white text-black border-black"
-          }`}
-          onClick={() => {
-            setOrder("asc");
-            refetch();
-          }}
-        >
-          오래된순
-        </button>
-      </div>
 
-      {/* 상태별 UI */}
+      <SortButton
+        order={order}
+        onChange={(newOrder: TOrder) => setOrder(newOrder)}
+      />
+
       {isLoading && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (

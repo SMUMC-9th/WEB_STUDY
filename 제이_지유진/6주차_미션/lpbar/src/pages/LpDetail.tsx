@@ -8,6 +8,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import { Heart, Edit2, Trash2 } from "lucide-react";
 import { useAuth } from "../context/auth";
+import CommentDetail from "../components/CommentDetail";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko"); //이거 지림
@@ -124,6 +125,7 @@ export default function LpDetail() {
               <span className="font-medium text-white">{lp.likes.length}</span>
             </div>
           </div>
+          <CommentDetail />
         </div>
       </div>
 

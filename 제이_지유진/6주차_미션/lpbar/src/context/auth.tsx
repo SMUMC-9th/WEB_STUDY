@@ -15,6 +15,7 @@ interface AuthContextType {
   isLogged: boolean;
   user: User | null;
   login: (user: User) => void;
+  logout: () => void;
   setIsLogged: (value: boolean) => void;
 }
 
@@ -25,6 +26,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLogged, setIsLogged] = useState(
     !!localStorage.getItem("accessToken")
   );
+  const logout = useCallback(() => {
+    const isConfirmed = window.confirm("정말 로그아웃하시겠습니까?");
+    if (!isConfirmed) return;
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setUser(null);
+    setIsLogged(false);
+  }, []);
 
   const login = useCallback((userData: User) => {
     setUser(userData);
@@ -32,7 +42,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogged, user, login, setIsLogged }}>
+    <AuthContext.Provider
+      value={{ isLogged, user, login, logout, setIsLogged }}
+    >
       {children}
     </AuthContext.Provider>
   );
