@@ -1,6 +1,6 @@
 import { PaginationDto } from "../types/common.ts";
 import { axiosInstance } from "./axios.ts";
-import { ResponseLpListDto } from "../types/lp.ts";
+import { ResponseLpDetailDto, ResponseLpListDto } from "../types/lp.ts";
 
 export const getLpList = async (
   paginationDto: PaginationDto,
@@ -9,5 +9,10 @@ export const getLpList = async (
     params: paginationDto,
   });
 
+  return data;
+};
+
+export const getLpDetail = async (lpId: number): Promise<ResponseLpDetailDto> => {
+  const { data } = await axiosInstance.get(`/v1/lps/${lpId}`);
   return data;
 };

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
@@ -7,8 +6,6 @@ import { RequestSigninDto } from "../types/auth";
 import { postLogout, postSignin } from "../api/auth";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const navigate = useNavigate();
-
   const {
     getItem: getAccessTokenFromStorage,
     setItem: setAccessTokenInStorage,
@@ -29,7 +26,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     getRefreshTokenFromStorage()
   );
 
-  const login = async (signinData: RequestSigninDto) => {
+  const login = async (signinData: RequestSigninDto): Promise<boolean> => {
     try {
       const { data } = await postSignin(signinData);
 
@@ -44,15 +41,17 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         setRefreshToken(newRefreshToken);
 
         alert("로그인 성공");
-        navigate("/my");
+        return true;
       }
+      return false;
     } catch (error) {
       console.error("로그인 오류", error);
       alert("로그인 실패");
+      return false;
     }
   };
 
-  const logout = async () => {
+  const logout = async (): Promise<boolean> => {
     try {
       await postLogout();
       removeAccessTokenFromStorage();
@@ -62,10 +61,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setRefreshToken(null);
 
       alert("로그아웃 성공");
-      navigate("/");
+      return true;
     } catch (error) {
       console.error("로그아웃 오류", error);
       alert("로그아웃 실패");
+      return false;
     }
   };
 
@@ -74,8 +74,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       value={{ 
         accessToken, 
         refreshToken, 
-        setAccessToken, // ← 추가
-        setRefreshToken, // ← 추가
+        setAccessToken,
+        setRefreshToken,
         login, 
         logout 
       }}
