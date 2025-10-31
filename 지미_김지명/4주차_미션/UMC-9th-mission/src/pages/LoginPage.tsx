@@ -1,13 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import { validateSignin, type UserSigninInformation } from "../utils/validate";
-import { postSignin } from "../api/auth";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { LOCAL_STORAGE_KEY } from "../constants/key";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
 const LoginPage = () => {
-    const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+    const {login, accessToken} = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(accessToken) {
+            navigate('/')
+        }
+    }, [navigate, accessToken]);
 
     const { values, errors, touched, getInputProps } = useForm<UserSigninInformation>({
         initialValue: {
@@ -17,16 +22,13 @@ const LoginPage = () => {
         validate: validateSignin,
       });
       
+      const handleGoogleLogin= () => {
+        window.location.href = `${import.meta.env.VITE_SERVER_API_URL}/v1/auth/google/login`;
+      };
 
     const handleSubmit = async () => {
-        try {
-            const response = await postSignin(values);
-            setItem(response.data.accessToken);
-            console.log(response);
-            navigate('/');
-        } catch(error) {
-            alert((error as Error)?.message || '로그인에 실패했습니다');
-        };
+        await login(values);
+        navigate("/my");
     };
 
     // 오류가 하나라도 있거나, 입력값이 비어있으면 버튼을 비활성화
@@ -37,6 +39,11 @@ const LoginPage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center h-full gap-4">
+            <button 
+            onClick={handleGoogleLogin}
+            className="cursor-pointer">
+                <img className="w-70" src="https://images.velog.io/images/flowersayo/post/0a7e010e-3335-40d9-bfa2-07427ce4bbbc/KakaoTalk_20220204_005919952.jpg" alt="구글 로그인" />
+            </button>
             <div className="flex flex-row items-center w-80 px-4 py-2">
                 <div 
                 onClick={() => navigate('/')}

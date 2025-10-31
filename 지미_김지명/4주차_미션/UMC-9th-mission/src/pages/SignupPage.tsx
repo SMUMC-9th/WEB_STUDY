@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import z from "zod";
 import { postSignup } from "../api/auth";
+import axios from "axios";
 
 const schema = z.object({
     email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
@@ -60,9 +61,19 @@ const SignupPage = () => {
         try {
             const response = await postSignup(rest);
             console.log(response);
+            alert('회원가입이 완료되었습니다!');
             navigate('/login');
         } catch (error) {
             console.error(error);
+            if (axios.isAxiosError(error)) {
+                // 409 에러 (이미 존재하는 이메일)
+                if (error.response?.status === 409) {
+                    alert('이미 존재하는 이메일입니다.');
+                    setStep(1); // 이메일 입력 단계로 돌아가기
+                } else {
+                    alert(error.response?.data?.message || '회원가입에 실패했습니다.');
+                }
+            }
         }
     };
 
