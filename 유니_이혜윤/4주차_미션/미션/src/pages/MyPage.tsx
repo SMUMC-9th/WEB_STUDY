@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { getMyInfo } from "../apis/auth.ts";
 import { type ResponseMyInfoDto } from "../types/authType.ts";
+import { useAuth } from "../context/AuthContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 const MyPage = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [data, setData] = useState<ResponseMyInfoDto | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +23,11 @@ const MyPage = () => {
     };
     getData();
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const user = data?.data;
 
@@ -41,7 +50,9 @@ const MyPage = () => {
       <div className="bg-white shadow-md rounded-2xl p-8 w-full max-w-md flex flex-col items-center gap-6 border border-gray-100">
         <img
           src={
-            "https://i.pinimg.com/736x/ee/5c/aa/ee5caacd1bb467e148a0bd25ce464dd0.jpg"
+            user?.avatar
+              ? user.avatar
+              : "https://i.pinimg.com/736x/ee/5c/aa/ee5caacd1bb467e148a0bd25ce464dd0.jpg"
           }
           alt="프로필 이미지"
           className="w-28 h-28 rounded-full object-cover"
@@ -60,6 +71,12 @@ const MyPage = () => {
           <p>가입일 : {new Date(user.createdAt).toLocaleDateString()}</p>
           <p>최근 수정일 : {new Date(user.updatedAt).toLocaleDateString()}</p>
         </div>
+        <button
+          onClick={handleLogout}
+          className="bg-[#acacac] p-1 text-xs rounded cursor-pointer"
+        >
+          로그아웃
+        </button>
       </div>
     </div>
   );

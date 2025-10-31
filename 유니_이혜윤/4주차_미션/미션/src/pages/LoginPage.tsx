@@ -1,13 +1,19 @@
-import { postSignin } from "../apis/auth";
-import { LOCAL_STORAGE_KEY } from "../constants/key";
 import useForm from "../hooks/useForm";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 import { validateSignin, type UserSigninInformation } from "../utils/validate";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+  const { login, accessToken } = useAuth();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [navigate, accessToken]);
+
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
       initialValue: {
@@ -18,13 +24,12 @@ const LoginPage = () => {
     });
 
   const handleSubmit = async () => {
-    try {
-      const response = await postSignin(values);
-      setItem(response.data.accessToken);
-      navigate("/my");
-    } catch (e) {
-      alert(e);
-    }
+    await login(values);
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href =
+      import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
   };
 
   const isDisabled =
@@ -74,6 +79,17 @@ const LoginPage = () => {
         >
           login
         </button>
+        <div
+          className="flex justify-center items-center gap-2 bg-gray-200 p-2 rounded cursor-pointer"
+          onClick={handleGoogleLogin}
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+            alt="Google Logo"
+            className="w-5 h-5"
+          />
+          <span>구글 로그인</span>
+        </div>
       </div>
     </div>
   );
