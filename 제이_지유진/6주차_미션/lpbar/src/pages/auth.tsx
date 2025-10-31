@@ -3,10 +3,11 @@ import { useForm } from "../hooks/useForm";
 import { signIn } from "../api/auth";
 import { ChevronLeft } from "lucide-react";
 import { useAuth } from "../context/auth";
+import type { AxiosError } from "axios";
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { setIsLogged } = useAuth();
+  const { login } = useAuth();
   const { values, handleChange, errors, validateField } = useForm({
     email: "",
     password: "",
@@ -26,18 +27,20 @@ export default function Auth() {
         password: values.password ?? "",
       });
 
+      //loacalStorage에 토큰 저장
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
 
-      setIsLogged(true);
+      //Context의 login 함수 호출
+      login({ id: data.id, name: data.name });
 
       console.log("로그인 성공:", data);
       navigate("/my");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
       const message =
-        err.response?.data?.message || err.message || "로그인 실패";
-      console.error("로그인 실패:", err.response || err);
+        err.response?.data?.message ?? err.message ?? "로그인 실패";
+      console.error("로그인 실패:", err);
       alert(message);
     }
   };
