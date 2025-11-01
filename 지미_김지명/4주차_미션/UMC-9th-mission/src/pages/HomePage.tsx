@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
 import { getMyInfo } from "../api/auth";
 import axios from "axios";
@@ -19,31 +19,17 @@ const HomePage = () => {
   const { data: lps, isFetching, hasNextPage, isPending, fetchNextPage, isError } = 
     useGetInfiniteLpList(50, search, PAGINATION_ORDER.desc);
 
-  // ref로 마지막 요소 감지
-  const observerTarget = useRef<HTMLDivElement>(null);
+  // react-intersection-observer 사용
+  const { ref: observerRef, inView } = useInView({
+    threshold: 0.1,
+  });
 
-  // Intersection Observer 직접 사용
+  // inView가 true가 되면 다음 페이지 로드
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetching) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentTarget = observerTarget.current;
-    if (currentTarget) {
-      observer.observe(currentTarget);
+    if (inView && hasNextPage && !isFetching) {
+      fetchNextPage();
     }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
-    };
-  }, [hasNextPage, isFetching, fetchNextPage]);
+  }, [inView, hasNextPage, isFetching, fetchNextPage]);
 
   // 인증 체크
   useEffect(() => {
@@ -132,8 +118,8 @@ const HomePage = () => {
           </div>
           
           {/* 무한 스크롤 트리거 */}
-          <div ref={observerTarget} className="mt-8 flex justify-center h-20">
-            {isFetching}
+          <div ref={observerRef} className="mt-8 flex justify-center h-20">
+            {isFetching && <div className="text-white">Loading...</div>}
           </div>
         </div>
       </div>
