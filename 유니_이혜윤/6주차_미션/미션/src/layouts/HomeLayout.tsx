@@ -1,16 +1,20 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import BackToTop from "../components/BackToTop";
 
 const HomeLayout = () => {
   return (
     <div className="h-dvh flex flex-col">
-      <Header />
+      <header className="h-[60px] flex-shrink-0">
+        <Header />
+      </header>
       <main className="flex-1 bg-gray-50">
         <Outlet />
       </main>
-      <footer className="h-[60px] flex items-center justify-center bg-gray-100 text-gray-600 text-xs">
-        푸터입니다 🍪
-      </footer>
+      <Footer />
+
+      <BackToTop threshold={30} />
     </div>
   );
 };
