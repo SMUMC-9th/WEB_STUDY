@@ -70,8 +70,8 @@ axiosInstance.interceptors.response.use(
                     });
                     //새 토큰 반환
                     //훅 대신 localStorage API직접사용함
-                    localStorage.setItem(LOCAL_STORAGE_KEY.accessToken, JSON.stringify(data.access));
-                    localStorage.setItem(LOCAL_STORAGE_KEY.refreshToken, JSON.stringify(data.refresh));
+                    localStorage.setItem(LOCAL_STORAGE_KEY.accessToken, JSON.stringify(data.data.accessToken));
+                    localStorage.setItem(LOCAL_STORAGE_KEY.refreshToken, JSON.stringify(data.data.refreshToken));
 
 
                     return data.access;

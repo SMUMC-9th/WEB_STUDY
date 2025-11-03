@@ -5,19 +5,30 @@ import { LOCAL_STORAGE_KEY } from "../constants/key";
 import { postSignin } from "../apis/auth";
 import { postLogout } from "../apis/auth";
 
+// interface AuthContextType {
+//     accessToken: string | null;
+//     refreshToken: string | null;
+//     login: (signInData: RequestSigninDto) => Promise<void>;
+//     logout: () => Promise<void>;
+// }
+
 interface AuthContextType {
-    accessToken: string | null;
-    refreshToken: string | null;
-    login: (signInData: RequestSigninDto) => Promise<void>;
-    logout: () => Promise<void>;
+  accessToken: string | null;
+  setAccessToken: (token: string | null) => void;
+  refreshToken: string | null;
+  setRefreshToken: (token: string | null) => void;
+  login: (signinData: RequestSigninDto) => Promise<boolean>;
+  logout: () => Promise<boolean>;
 }
 
-export const AuthContext = createContext<AuthContextType>({
-    accessToken: null,
-    refreshToken: null,
-    login: async () => {},
-    logout: async () => {},
-});
+// export const AuthContext = createContext<AuthContextType>({
+//     accessToken: null,
+//     refreshToken: null,
+//     login: async () => {},
+//     logout: async () => {},
+// });
+
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({children}:PropsWithChildren) => {
 
@@ -53,12 +64,15 @@ export const AuthProvider = ({children}:PropsWithChildren) => {
 
                 setAccessToken(newAccessToken);
                 setRefreshToken(newRefreshToken);
-                alert("로그인 성공");
-                window.location.href="mypage"; 
+                // alert("로그인 성공");
+                // window.location.href="mypage"; 
+                return true;
             }
+            return false;
         }catch(error) {
             console.error ("로그인 오류", error);
             alert("로그인 실패");
+            return false;
         }
     };
     const logout = async() =>{
@@ -72,13 +86,15 @@ export const AuthProvider = ({children}:PropsWithChildren) => {
             setAccessToken(null);
             setRefreshToken(null);
             alert("로그아웃 성공");
+            return true;
         } catch(error){
             console.error("로그아웃 오류", error);
             alert("로그아웃 실패");
+            return false;
         }
     }
     return (
-        <AuthContext.Provider value={{accessToken, refreshToken, login, logout}}>
+        <AuthContext.Provider value={{accessToken, setAccessToken,refreshToken, setRefreshToken,login, logout}}>
             {children}
         </AuthContext.Provider>
     )

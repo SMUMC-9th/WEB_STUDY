@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import { loginSchema, type LoginForm } from "../schemas/loginSchema";
 import { useAuth } from "../context/AuthContext";
@@ -9,7 +9,13 @@ import { useAuth } from "../context/AuthContext";
 const LoginPage = () => {
   const nav = useNavigate();
   const {login} = useAuth();
+  const location = useLocation();
+
+  //돌아갈 경로 찾음. state나 from 없으면 홈으로 가도록 설정.
+  const from = location.state?.from?.pathname || "/";
   // const {setItem} = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+
+  
 
   const { errors, getInputProps, handleSubmit } = useForm<LoginForm>({
     initialValue: { email: "", password: "" },
@@ -33,11 +39,16 @@ const LoginPage = () => {
     },
     onSubmit: async(values) => {
       try{
-        await login(values);
+        const success = await login(values);
+        if (success) {
+          alert("로그인 성공!");
+          //mypage가 아니고, 원래 가려고 했던 페이지from으로 이동시킴.
+          nav(from, {replace: true});
+        }
       } catch (error){
         console.error("로그인실패: ",error);
+        alert("로그인 중 알 수 없는 오류가 발생하였습니다");
       }
-      
 
     },
   });
@@ -49,7 +60,7 @@ const LoginPage = () => {
 
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
+    <div className="flex flex-col justify-center items-center min-h-screen text-white">
       <div className="w-full max-w-sm p-6 rounded-lg">
         <div className="relative flex items-center mb-4">
           <button

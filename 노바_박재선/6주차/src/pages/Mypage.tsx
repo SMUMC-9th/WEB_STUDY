@@ -1,5 +1,4 @@
 //내 정보 조회
-
 import { useEffect, useState } from "react";
 import { getMyInfo } from "../apis/auth";
 import { useAuth } from "../context/AuthContext";
@@ -25,10 +24,11 @@ const Mypage = () => {
     }
     
     return (
-        <div>
+        <div className="text-white">
             <h1>{data?.name}님 환영합니다</h1>
             {/* <img src={data?.profileImageUrl} alt="프로필 이미지" /> */}
             <h1>{data?.email}</h1>
+
 
             <button className="cursor-pointer w-30 rounded-md bg-[#ff349a] text-gray-100 p-2 mt-1" onClick={handleLogout}>로그아웃</button>
         </div>
@@ -37,3 +37,4 @@ const Mypage = () => {
 }
 
 export default Mypage;
+
