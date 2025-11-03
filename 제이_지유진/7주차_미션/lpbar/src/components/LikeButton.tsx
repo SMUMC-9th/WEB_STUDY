@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Heart } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { likeLP, unlikeLP } from "../api/lp";
+import type { AxiosError } from "axios";
 
 interface LikeButtonProps {
   lpId: number;
@@ -15,41 +16,35 @@ export default function LikeButton({
   currentUserId,
 }: LikeButtonProps) {
   const queryClient = useQueryClient();
-
-  // 상태는 로컬에서 관리, 초기값은 서버에서 가져온 좋아요 배열
   const [likes, setLikes] = useState(initialLikes);
 
-  // 현재 유저가 좋아요 했는지 여부
   const hasLiked = likes.some((like) => like.userId === currentUserId);
 
   const likeMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({ alreadyLiked }: { alreadyLiked: boolean }) => {
       try {
-        if (hasLiked) {
+        if (alreadyLiked) {
           await unlikeLP(lpId);
         } else {
           await likeLP(lpId);
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
-        if (err.response?.status === 404 || err.response?.status === 409) {
-          return;
-        }
+      } catch (error: unknown) {
+        const err = error as AxiosError;
+        const status = err.response?.status;
+        if (status === 404 || status === 409) return;
         throw err;
       }
     },
-    onMutate: () => {
+
+    onMutate: ({ alreadyLiked }) => {
       setLikes((prev) => {
-        const currentlyLiked = prev.some(
-          (like) => like.userId === currentUserId
-        );
-        if (currentlyLiked) {
+        if (alreadyLiked) {
           return prev.filter((like) => like.userId !== currentUserId);
-        } else {
-          return [...prev, { userId: currentUserId! }];
         }
+        return [...prev, { userId: currentUserId! }];
       });
     },
+
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["lp", lpId] });
     },
@@ -58,7 +53,8 @@ export default function LikeButton({
   return (
     <button
       className="flex items-center gap-2 bg-gray-700 px-4 py-2 rounded-full"
-      onClick={() => likeMutation.mutate()}
+      onClick={() => likeMutation.mutate({ alreadyLiked: hasLiked })}
+      disabled={likeMutation.isPending}
     >
       <Heart
         size={20}

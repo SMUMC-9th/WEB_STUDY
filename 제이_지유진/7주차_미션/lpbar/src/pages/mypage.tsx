@@ -5,7 +5,7 @@ import { useAuth } from "../context/auth";
 import { useNavigate } from "react-router-dom";
 
 export default function Mypage() {
-  const { setIsLogged } = useAuth();
+  const { setIsLogged, login } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -44,6 +44,7 @@ export default function Mypage() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
+      login({ ...user!, name: editName });
       setIsEditing(false);
     },
   });

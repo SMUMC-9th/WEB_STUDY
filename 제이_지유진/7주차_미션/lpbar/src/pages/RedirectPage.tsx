@@ -11,7 +11,7 @@ export default function RedirectPage() {
     const params = new URLSearchParams(location.search);
     const token = params.get("accessToken");
     const refreshToken = params.get("refreshToken");
-    const id = params.get("id");
+    const id = params.get("userId");
     const name = params.get("name");
 
     if (token) {
