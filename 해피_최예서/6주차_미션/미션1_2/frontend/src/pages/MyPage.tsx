@@ -15,9 +15,14 @@ const MyPage = () => {
         console.log(error);
       }
     };
-
     getData();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken"); // 저장된 토큰 삭제
+    window.location.href = "/signin"; // 로그인 페이지로 이동
+  };
+
   return (
     <div>
       {data ? (
@@ -32,6 +37,13 @@ const MyPage = () => {
               <dd>{data?.data.email}</dd>
             </div>
           </dl>
+
+          <button
+            onClick={handleLogout}
+            className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+          >
+            로그아웃
+          </button>
         </>
       ) : (
         <p>Loading...</p>

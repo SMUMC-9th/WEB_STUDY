@@ -7,7 +7,7 @@ import { useForm } from "../hooks/useForm.ts";
 import { postSignin } from "../apis/auth.ts";
 import { useLocalStorage } from "../hooks/useLocalStorage.ts";
 import { LOCAL_STORAGE_KEY } from "../constants/key.ts";
-import { useLogin } from "../context/context.tsx";
+import { useAuth } from "../context/context.tsx";
 
 export default function SigninPage() {
   // 저장만 필요해서 { setItem, getItem, removeItem } 중 setItem만 꺼냄
@@ -16,7 +16,7 @@ export default function SigninPage() {
 
   // useForm에 값 전달 (초기값, 검증 함수)
   // 구조분해할당
-  const { setIsLogin } = useLogin();
+  const { setIsLogin } = useAuth();
 
   const { values, errors, handleChange } = useForm<UseSigninInformation>({
     initialValue: { email: "", password: "" },

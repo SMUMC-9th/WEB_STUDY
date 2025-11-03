@@ -1,10 +1,10 @@
 import { LOCAL_STORAGE_KEY } from "../constants/key.ts";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useLogin } from "../context/context.tsx";
+import { useAuth } from "../context/context.tsx";
 
 export default function RedirectPage() {
-  const { setIsLogin } = useLogin();
+  const { setIsLogin } = useAuth();
   const navigation = useNavigate();
   // location.search: URL의 파라미터 얻어오기
   // new URLSearchParams 함수를 사용하면 location.search 안에 존재하는 [key, value] 형식으로 묶여있는 파라미터를 얻을 수 있다.

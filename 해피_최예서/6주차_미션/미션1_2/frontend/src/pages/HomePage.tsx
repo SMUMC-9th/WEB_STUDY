@@ -14,7 +14,7 @@ const HomePage = () => {
     isPending,
     fetchNextPage,
     isError,
-  } = useGetInfiniteLpList(5, search, "desc");
+  } = useGetInfiniteLpList({ limit: 5, search, order: "desc" });
 
   // ref: 특정한 HTML 요소 감지 가능
   // inView: 그 요소가 화면에 보이면 true

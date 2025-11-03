@@ -7,14 +7,15 @@ import MyPage from "./pages/MyPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import RedirectPage from "./pages/RedirectPage.tsx";
 import type { PropsWithChildren } from "react";
-import { LoginProvider, useLogin } from "./context/context.tsx";
+import { LoginProvider, useAuth } from "./context/context.tsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import LpDetailPage from "./pages/LpDetailPage.tsx";
 
 const ProtectedRoute = ({ children }: PropsWithChildren) => {
-  const { isLogin } = useLogin();
+  const { isLogin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/v1/auth/google/callback",
         element: <RedirectPage />,
+      },
+      {
+        path: "/lps/:lpId",
+        element: <LpDetailPage />,
       },
     ],
   },

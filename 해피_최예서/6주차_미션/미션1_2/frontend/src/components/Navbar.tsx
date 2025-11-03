@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { useLogin } from "../context/context.tsx";
+import { useAuth } from "../context/context.tsx";
 
 export default function Navbar() {
-  const { isLogin } = useLogin();
+  const { isLogin } = useAuth();
 
   return (
     <div className="flex p-2 justify-between bg-[#3086d9]">
