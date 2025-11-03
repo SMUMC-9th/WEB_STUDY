@@ -5,6 +5,7 @@ import type {
   CreateLPPayload,
   TGetCommentResponse,
   TGetLPResponse,
+  UpdateLPPayload,
 } from "../types/lp";
 
 // 공통 GET 파라미터 타입 정의
@@ -105,6 +106,16 @@ export const modifyComment = async (
     `/v1/lps/${lpId}/comments/${commentId}`,
     { content: updatedContent }
   );
+  return res.data;
+};
+
+export const modifyLP = async (lpId: number, updatedData: UpdateLPPayload) => {
+  const res = await axiosInstance.patch(`/v1/lps/${lpId}`, updatedData);
+  return res.data;
+};
+
+export const deleteLP = async (lpId: number) => {
+  const res = await axiosInstance.delete(`/v1/lps/${lpId}`);
   return res.data;
 };
 

@@ -81,3 +81,12 @@ export interface CreateLPPayload {
   tags: string[];
   published: boolean;
 }
+
+// lp수정 관련 Payload 타입
+export interface UpdateLPPayload {
+  title?: string;
+  content?: string;
+  thumbnail?: string;
+  tags?: string[];
+  published?: boolean;
+}
