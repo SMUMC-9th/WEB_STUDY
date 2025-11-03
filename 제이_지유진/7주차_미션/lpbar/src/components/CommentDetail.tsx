@@ -6,6 +6,8 @@ import useGetComment from "../hooks/useGetComment";
 import SkeletonCard from "./SkeletonCard";
 import CommentTab from "./CommentTab";
 import { useInView } from "react-intersection-observer";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createComment } from "../api/lp";
 
 export default function CommentDetail() {
   const { id } = useParams<{ id: string }>();
@@ -13,9 +15,22 @@ export default function CommentDetail() {
   const [comment, setComment] = useState("");
   const [ref, inView] = useInView();
 
+  const queryClient = useQueryClient();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
   };
+
+  const createCommentMutation = useMutation({
+    mutationFn: createComment,
+    onSuccess: () => {
+      setComment("");
+      queryClient.invalidateQueries({
+        queryKey: ["comments", order, Number(id)],
+        refetchType: "active",
+      });
+    },
+  });
 
   const {
     data,
@@ -77,6 +92,12 @@ export default function CommentDetail() {
               ? "bg-pink-600 hover:bg-pink-700"
               : "bg-gray-600 cursor-not-allowed"
           }`}
+          onClick={() =>
+            createCommentMutation.mutate({
+              lpId: Number(id),
+              content: comment,
+            })
+          }
         >
           작성
         </button>
