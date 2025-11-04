@@ -24,7 +24,7 @@ export type Lp = {
   likes: Likes[];
 };
 
-export type ResponseLpDto = CommonResponse<Lp[]>;
+export type ResponseLpDto = CommonResponse<Lp>; // ?? 원래 <Lp[]> 였는데 바꿈
 
 export type RequestLpDto = {
   lpId: number;

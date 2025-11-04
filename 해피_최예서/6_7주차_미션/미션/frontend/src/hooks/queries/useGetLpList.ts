@@ -17,7 +17,7 @@ function useGetLpList({ cursor, search, order, limit }: PaginationDto) {
 
     // 캐싱
     staleTime: 1000 * 60 * 5, // 5m
-    gcTime: 100 * 60 * 10, // 10m
+    : 100 * 60 * 10, // 10m
 
     select: (data) => data.data.data,
   });
