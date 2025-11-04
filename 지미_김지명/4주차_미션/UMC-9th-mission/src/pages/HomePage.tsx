@@ -8,12 +8,15 @@ import { PAGINATION_ORDER } from "../enums/common";
 import LpCard from "../components/LpCard/LpCard";
 import LpCardSkeletonList from "../components/LpCard/LpCardSkeletosList";
 import Sidebar from "../components/\bSidebar";
+import FloatingAddButton from "../components/FloatingAddButton";
+import LpCreationModal from "../components/LpCreationModal";
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [search, setSearch] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // LP 목록 가져오기
   const { data: lps, isFetching, hasNextPage, isPending, fetchNextPage, isError } = 
@@ -57,6 +60,14 @@ const HomePage = () => {
     
     checkAuthStatus();
   }, []);
+
+  const handleAddClick = () => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 서비스입니다.");
+      return;
+    }
+    setIsModalOpen(true);
+  };
 
   // 조건부 return은 모든 hooks 아래에
   if (isError) {
@@ -123,6 +134,14 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+      <FloatingAddButton onClick={handleAddClick} />
+
+      <LpCreationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
     </div>
   );
 }

@@ -81,7 +81,7 @@ const LpDetailPage = () => {
             {lp.data.tags.map((tag) => (
               <span
                 key={tag.id}
-                className="px-3 py-1 bg-[#FF007F] bg-opacity-20 text-[#FF007F] rounded-full text-sm"
+                className="px-3 py-1 bg-[#FF007F] bg-opacity-20 text-[#FFFFFF] rounded-full text-sm"
               >
                 #{tag.name}
               </span>
