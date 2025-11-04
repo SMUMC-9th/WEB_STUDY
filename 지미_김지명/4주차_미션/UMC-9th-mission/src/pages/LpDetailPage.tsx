@@ -4,14 +4,16 @@ import useGetLpDetail from "../hooks/queries/useGetLpDetail";
 import { Heart } from "lucide-react";
 import useGetMyInfo from "../hooks/queries/useGetInfo";
 import { useAuth } from "../context/AuthContext";
-import { deleteLike, postLike } from "../api/lp";
+import CommentModal from "../components/CommentModal";
 import usePostLike from "../hooks/mutations/usePostLike";
 import useDeleteLike from "../hooks/mutations/useDeleteLike";
+import { useState } from "react";
 
 const LpDetailPage = () => {
   const { lpId } = useParams<{ lpId: string }>();
   const {accessToken} = useAuth();
   const navigate = useNavigate();
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const {data:lp, isPending, isError} = useGetLpDetail({lpId: Number(lpId)});
   const {data:me} = useGetMyInfo(accessToken);
@@ -121,6 +123,20 @@ const LpDetailPage = () => {
           </div>
         </div>
       </div>
+      {/* ✨ 댓글 보기 버튼 추가 */}
+      <button
+          onClick={() => setIsCommentModalOpen(true)}
+          className="mt-6 w-full py-3 bg-[#FF007F] text-white rounded-lg hover:bg-pink-600 transition-colors font-semibold"
+        >
+          댓글 보기
+        </button>
+
+      <CommentModal
+        isOpen={isCommentModalOpen}
+        onClose={() => setIsCommentModalOpen(false)}
+        lpId={Number(lpId)}
+        lpTitle={lp.data.title}
+      />
     </div>
   );
 };
