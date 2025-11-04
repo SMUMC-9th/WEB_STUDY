@@ -43,7 +43,7 @@ function usePostLike() {
         previousLpPost?.data.likes.push(newLike);
       }
 
-      // 업데이트된 게시글 데이터를 캐시에 저장
+      // 업데이트된 게시글 데이터 캐시에 저장
       // 이렇게하면 UI가 바로 업데이트 됨, 사용자가 바로 변화 확인 가능
       queryClient.setQueryData([QUERY_KEY.lps, lp.lpId], newLpPost);
 
