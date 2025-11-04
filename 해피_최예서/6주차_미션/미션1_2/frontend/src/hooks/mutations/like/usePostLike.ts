@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteLike } from "../../apis/lp.ts";
-import { queryClient } from "../../App.tsx";
-import { QUERY_KEY } from "../../constants/key.ts";
+import { postLike } from "../../../apis/lp.ts";
+import { queryClient } from "../../../App.tsx";
+import { QUERY_KEY } from "../../../constants/key.ts";
 
-function useDeleteLike() {
+function usePostLike() {
   return useMutation({
-    mutationFn: deleteLike,
+    mutationFn: postLike,
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.lps, data.data.lpId],
@@ -15,4 +15,4 @@ function useDeleteLike() {
   });
 }
 
-export default useDeleteLike;
+export default usePostLike;
