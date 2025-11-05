@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import {getCommentList} from "../../apis/comment.ts";
+import { getCommentList } from "../../apis/comment.ts";
+import { QUERY_KEY } from "../../constants/key.ts";
 
 export default function useGetCommentList(lpId: number) {
   return useQuery({
-    queryKey: ["comments", lpId],
+    queryKey: [QUERY_KEY.comment, lpId],
     queryFn: () => getCommentList(lpId), // getCommentList(lpId)를 호출해서 해당 LP의 댓글 목록을 가져온다.
     enabled: !!lpId, // lpId가 있을 때만 실행
   });

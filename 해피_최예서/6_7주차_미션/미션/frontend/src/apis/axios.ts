@@ -1,8 +1,6 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { LOCAL_STORAGE_KEY } from "../constants/key.ts";
 
-// import { useLocalStorage } from "../hooks/useLocalStorage.ts"; // 훅 임포트 제거
-
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean; // 요청 재시도 여부
 }

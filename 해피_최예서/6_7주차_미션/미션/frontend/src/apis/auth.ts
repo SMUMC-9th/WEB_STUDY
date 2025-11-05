@@ -7,7 +7,10 @@ import type { responseSigninDto } from "../types/auth.ts";
 import type { responseMyInfoDto } from "../types/auth.ts";
 
 import { axiosInstance } from "./axios.ts";
-
+import type {
+  requestMyInfoEditDto,
+  responseMyInfoEditDto,
+} from "../types/auth.ts";
 // 회원가입
 export const postSignup = async (
   body: requestSignupDto, // 함수의 매개변수인 body의 타입은 requestSignupDto,
@@ -42,5 +45,20 @@ export const getMyInfo = async (): Promise<responseMyInfoDto> => {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
   });
+  return data;
+};
+
+// 내 정보 수정
+export const patchMyInfo = async (
+  body: requestMyInfoEditDto,
+): Promise<responseMyInfoEditDto> => {
+  const { data } = await axiosInstance.patch("/v1/users", body);
+  return data;
+};
+
+// 회원 탈퇴
+// todo: 되는지 확인해봐야 함
+export const deleteUser = async () => {
+  const { data } = await axiosInstance.delete("/v1/users");
   return data;
 };

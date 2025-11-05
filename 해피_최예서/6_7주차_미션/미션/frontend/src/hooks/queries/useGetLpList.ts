@@ -16,10 +16,10 @@ function useGetLpList({ cursor, search, order, limit }: PaginationDto) {
       }),
 
     // 캐싱
-    staleTime: 1000 * 60 * 5, // 5m
-    : 100 * 60 * 10, // 10m
+    staleTime: 1000 * 60 * 5, // 5m 동안 신선한 데이터로 간주
+    cacheTime: 1000 * 60 * 10, // 10m 동안 캐시에 유지
 
-    select: (data) => data.data.data,
+    select: (data) => data.data.data, // API 응답 중 필요한 데이터만 가공해서 리턴하는 옵션
   });
 }
 
