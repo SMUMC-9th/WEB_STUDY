@@ -1,4 +1,4 @@
-import type { responseSignupDto } from "../types/auth.ts";
+import type {responseDeleteUserDto, responseSignupDto} from "../types/auth.ts";
 import type { requestSignupDto } from "../types/auth.ts";
 
 import type { requestSigninDto } from "../types/auth.ts";
@@ -58,7 +58,8 @@ export const patchMyInfo = async (
 
 // 회원 탈퇴
 // todo: 되는지 확인해봐야 함
-export const deleteUser = async () => {
+export const deleteUser = async ():Promise<responseDeleteUserDto> => {
   const { data } = await axiosInstance.delete("/v1/users");
   return data;
 };
+

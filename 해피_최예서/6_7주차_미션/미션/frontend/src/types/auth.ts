@@ -60,3 +60,6 @@ export type responseMyInfoEditDto = CommonResponse<{
   createdAt: Date;
   updatedAt: Date;
 }>;
+
+// 회원 탈퇴 delete
+export type responseDeleteUserDto = CommonResponse<{}>;

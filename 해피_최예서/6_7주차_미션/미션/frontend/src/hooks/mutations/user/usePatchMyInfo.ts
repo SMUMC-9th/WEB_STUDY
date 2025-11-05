@@ -12,7 +12,7 @@ export default function usePatchMyInfo() {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.myInfo],
       });
-      alert("프로필 정보가 성공적으로 수정되었습니다!");
+      alert("프로필 정보가 성공적으로 수정되었습니다.");
     },
 
     onError: (error) => {

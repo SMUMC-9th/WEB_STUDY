@@ -8,13 +8,13 @@ import Sidebar from "./Sidebar.tsx";
 export default function Navbar() {
   const { isLogin } = useAuth();
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState("");
   const sidebarRef = useRef<HTMLDivElement>(null);
-
   // 로그인 상태일 때만 유저정보 요청
   const { data, isLoading } = useQuery({
     queryKey: ["myInfo"],
     queryFn: getMyInfo,
-    enabled: isLogin,
+    enabled: !!isLogin,
   });
 
   const handleLogout = () => {
@@ -39,7 +39,6 @@ export default function Navbar() {
       }
     }
 
-
     if (open) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -50,6 +49,13 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open]);
+
+  useEffect(() => {
+    if (data?.data.name) {
+      setUsername(data?.data.name);
+    }
+  }, [data]);
+
 
   return (
     <>
@@ -94,7 +100,7 @@ export default function Navbar() {
               {isLoading ? (
                 <div>로딩중...</div>
               ) : (
-                <div>{data?.data.name}님 반갑습니다.</div>
+                <div>{username}님 반갑습니다.</div>
               )}
               <button
                 onClick={handleLogout}

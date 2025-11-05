@@ -11,7 +11,7 @@ import usePostSignin from "../hooks/mutations/user/usePostSignin.ts";
 export default function SigninPage() {
   const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const navigate = useNavigate();
-  const { setIsLogin } = useAuth();
+  const { setIsLoginState } = useAuth();
   const { mutate: signinMutate, isPending } = usePostSignin();
 
   const { values, errors, handleChange } = useForm<UseSigninInformation>({
@@ -27,13 +27,13 @@ export default function SigninPage() {
         const refreshToken = response.data.refreshToken;
         setItem(accessToken);
         localStorage.setItem(LOCAL_STORAGE_KEY.refreshToken, refreshToken);
-        setIsLogin(true);
+        setIsLoginState(true);
         navigate("/");
       },
       onError: (error) => {
         console.error("로그인 실패:", error);
         alert("이메일 또는 비밀번호를 확인해주세요.");
-        setIsLogin(false);
+        setIsLoginState(false);
       },
     });
   };

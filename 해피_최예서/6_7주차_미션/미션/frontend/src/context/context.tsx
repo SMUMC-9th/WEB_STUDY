@@ -6,9 +6,10 @@ import {
   useEffect,
 } from "react";
 
+
 interface ILoginContext {
-  isLogin: boolean;
-  setIsLogin: (isLogin: boolean) => void;
+  isLogin: boolean|undefined;
+  setIsLoginState: (isLogin: boolean|undefined) => void;
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
 }
@@ -16,7 +17,7 @@ interface ILoginContext {
 export const LoginContext = createContext<ILoginContext | undefined>(undefined);
 
 export const LoginProvider = ({ children }: PropsWithChildren) => {
-  const [isLogin, setIsLoginState] = useState(false);
+  const [isLogin, setIsLoginState] = useState<boolean | undefined>(undefined);
   const [accessToken, setAccessTokenState] = useState<string | null>(null);
 
   // 새로고침 시 accessToken 복원
@@ -25,13 +26,9 @@ export const LoginProvider = ({ children }: PropsWithChildren) => {
     if (token) {
       setAccessTokenState(token);
       setIsLoginState(true);
-    } else {
-      setAccessTokenState(null);
-      setIsLoginState(false);
     }
   }, []);
 
-  const setIsLogin = (value: boolean) => setIsLoginState(value);
 
   // accessToken 관리 함수
   const setAccessToken = (token: string | null) => {
@@ -48,7 +45,7 @@ export const LoginProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <LoginContext.Provider
-      value={{ isLogin, setIsLogin, accessToken, setAccessToken }}
+      value={{ isLogin, setIsLoginState, accessToken, setAccessToken }}
     >
       {children}
     </LoginContext.Provider>

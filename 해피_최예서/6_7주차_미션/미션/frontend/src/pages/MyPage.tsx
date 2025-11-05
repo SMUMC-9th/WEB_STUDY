@@ -4,6 +4,8 @@ import type { ChangeEvent } from "react";
 import type { responseMyInfoDto } from "../types/auth.ts";
 import { Settings, Mail, Check, X } from "lucide-react";
 import usePostAuthImage from "../hooks/mutations/lps/usePostAuthImage.ts";
+import useDeleteUser from "../hooks/mutations/user/useDeleteUser.ts";
+import {useNavigate} from "react-router-dom";
 
 const MyPage = () => {
   const [data, setData] = useState<responseMyInfoDto>();
@@ -11,7 +13,14 @@ const MyPage = () => {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
+
+  // const[ismodalOpen, setIsmodalOpen] = useState(false);
   const { mutate: uploadImage } = usePostAuthImage();
+
+  // 회원 탈퇴
+  const {mutate: deleteUserMutate} = useDeleteUser();
+
+  const navigate = useNavigate();
 
   // 내 정보 가져오기
   useEffect(() => {
@@ -143,6 +152,14 @@ const MyPage = () => {
         <Mail size={16} className="text-gray-400" />
         <p className="text-md text-gray-700">{data.data.email}</p>
       </div>
+
+      <button onClick={() => {
+        alert('정말 탈퇴하겠습니까?');
+        deleteUserMutate();
+        navigate('/');
+      }}>
+        탈퇴하기
+      </button>
     </div>
   );
 };
