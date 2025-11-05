@@ -34,10 +34,11 @@ export function validateSignin(values: UserSigninInformaion) {
 export const addLpSchema = z.object({
   title: z.string().min(1, "제목은 필수입니다."),
   content: z.string().min(1, "설명은 필수입니다."),
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()),
   thumbnail: z.string().optional(),
-  published: z.boolean().default(true),
+  published: z.boolean(),
 });
+//optional 제거함 왜지
 
 // 폼 입력 타입 (UI 전용)
 export type TPostLPInput = z.infer<typeof addLpSchema>;
