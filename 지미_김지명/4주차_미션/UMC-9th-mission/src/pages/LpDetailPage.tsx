@@ -4,34 +4,38 @@ import useGetLpDetail from "../hooks/queries/useGetLpDetail";
 import { Heart } from "lucide-react";
 import useGetMyInfo from "../hooks/queries/useGetInfo";
 import { useAuth } from "../context/AuthContext";
-import CommentModal from "../components/CommentModal";
+import CommentModal from "../components/Comment/CommentModal";
 import usePostLike from "../hooks/mutations/usePostLike";
 import useDeleteLike from "../hooks/mutations/useDeleteLike";
 import { useState } from "react";
 
 const LpDetailPage = () => {
   const { lpId } = useParams<{ lpId: string }>();
-  const {accessToken} = useAuth();
+  const { accessToken } = useAuth();
   const navigate = useNavigate();
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
-  const {data:lp, isPending, isError} = useGetLpDetail({lpId: Number(lpId)});
-  const {data:me} = useGetMyInfo(accessToken);
-  const {mutate:likeMutate} = usePostLike();
-  const {mutate:disLikeMutate} = useDeleteLike();
+  const {
+    data: lp,
+    isPending,
+    isError,
+  } = useGetLpDetail({ lpId: Number(lpId) });
+  const { data: me } = useGetMyInfo(accessToken);
+  const { mutate: likeMutate } = usePostLike();
+  const { mutate: disLikeMutate } = useDeleteLike();
 
   // const isLiked = lp?.data.likes
   //   .map((like)=>like.userId)
   //   .includes(me?.data.id as number);
-  const isLiked = lp?.data.likes.some((like)=> like.userId === me?.data.id);
+  const isLiked = lp?.data.likes.some((like) => like.userId === me?.data.id);
 
   const handleLikeLp = () => {
-    me?.data.id && likeMutate({lpId:Number(lpId)});
-  }
+    me?.data.id && likeMutate({ lpId: Number(lpId) });
+  };
 
   const handleDislikeLp = () => {
-    me?.data.id && disLikeMutate({lpId: Number(lpId)});
-  }
+    me?.data.id && disLikeMutate({ lpId: Number(lpId) });
+  };
 
   if (isPending) {
     return (
@@ -93,11 +97,19 @@ const LpDetailPage = () => {
 
         {/* 내용 */}
         <div className="bg-gray-900 p-6 rounded-lg">
-          <p className="text-lg leading-relaxed whitespace-pre-wrap">{lp.data.content}</p>
+          <p className="text-lg leading-relaxed whitespace-pre-wrap">
+            {lp.data.content}
+          </p>
         </div>
 
-        <button className="cursor-pointer" onClick={isLiked? handleDislikeLp : handleLikeLp}>
-          <Heart color={isLiked ? "red" : "white"} fill={isLiked ? "red" : "transparent"}/>
+        <button
+          className="cursor-pointer"
+          onClick={isLiked ? handleDislikeLp : handleLikeLp}
+        >
+          <Heart
+            color={isLiked ? "red" : "white"}
+            fill={isLiked ? "red" : "transparent"}
+          />
         </button>
 
         {/* 작성자 정보 */}
@@ -118,18 +130,20 @@ const LpDetailPage = () => {
             <div>
               <p className="font-bold">{lp.data.author.name}</p>
               <p className="text-gray-400">{lp.data.author.email}</p>
-              {lp.data.author.bio && <p className="text-sm mt-1">{lp.data.author.bio}</p>}
+              {lp.data.author.bio && (
+                <p className="text-sm mt-1">{lp.data.author.bio}</p>
+              )}
             </div>
           </div>
         </div>
       </div>
       {/* ✨ 댓글 보기 버튼 추가 */}
       <button
-          onClick={() => setIsCommentModalOpen(true)}
-          className="mt-6 w-full py-3 bg-[#FF007F] text-white rounded-lg hover:bg-pink-600 transition-colors font-semibold"
-        >
-          댓글 보기
-        </button>
+        onClick={() => setIsCommentModalOpen(true)}
+        className="mt-6 w-full py-3 bg-[#FF007F] text-white rounded-lg hover:bg-pink-600 transition-colors font-semibold"
+      >
+        댓글 보기
+      </button>
 
       <CommentModal
         isOpen={isCommentModalOpen}
