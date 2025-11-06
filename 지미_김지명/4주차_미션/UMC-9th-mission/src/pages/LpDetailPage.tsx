@@ -137,7 +137,7 @@ const LpDetailPage = () => {
           </div>
         </div>
       </div>
-      {/* ✨ 댓글 보기 버튼 추가 */}
+      {/* 댓글 보기 버튼 추가 */}
       <button
         onClick={() => setIsCommentModalOpen(true)}
         className="mt-6 w-full py-3 bg-[#FF007F] text-white rounded-lg hover:bg-pink-600 transition-colors font-semibold"
@@ -145,12 +145,14 @@ const LpDetailPage = () => {
         댓글 보기
       </button>
 
-      <CommentModal
-        isOpen={isCommentModalOpen}
-        onClose={() => setIsCommentModalOpen(false)}
-        lpId={Number(lpId)}
-        lpTitle={lp.data.title}
-      />
+      {isCommentModalOpen && (
+        <CommentModal
+          isOpen={isCommentModalOpen}
+          onClose={() => setIsCommentModalOpen(false)}
+          lpId={Number(lpId)}
+          lpTitle={lp.data.title}
+        />
+      )}
     </div>
   );
 };
