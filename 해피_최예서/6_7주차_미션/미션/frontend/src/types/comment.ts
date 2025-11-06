@@ -1,7 +1,5 @@
 import type { CommonResponse } from "./common.ts";
 
-// todo: 안될수도있음
-
 // 댓글 작성자 정보 타입
 export type CommentAuthor = {
   id: number;

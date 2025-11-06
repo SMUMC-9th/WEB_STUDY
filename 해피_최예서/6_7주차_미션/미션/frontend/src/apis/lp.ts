@@ -9,6 +9,9 @@ import type {
   ResponseAddLpDto,
   ResponseAuthAddImage,
   ResponseUnAuthAddImage,
+  RequestUpdateLpDto,
+  ResponseUpdateLpDto,
+  ResponseDeleteLpDto,
 } from "../types/lp.ts";
 import type { ResponseTagView } from "../types/tags.ts";
 
@@ -89,3 +92,22 @@ export const postUnAuthImage = async (
   );
   return data;
 };
+
+
+// LP 수정
+export const patchLp = async (
+  lpId: number,
+  body: RequestUpdateLpDto,
+): Promise<ResponseUpdateLpDto> => {
+  const { data } = await axiosInstance.patch(`/v1/lps/${lpId}`, body);
+  return data;
+};
+
+// LP 삭제
+export const deleteLp = async (
+  lpId: number,
+): Promise<ResponseDeleteLpDto> => {
+  const { data } = await axiosInstance.delete(`/v1/lps/${lpId}`);
+  return data;
+};
+

@@ -1,12 +1,13 @@
-import { getMyInfo, patchMyInfo } from "../apis/auth.ts";
+import { getMyInfo } from "../apis/auth.ts";
 import { useEffect, useState } from "react";
 import type { ChangeEvent } from "react";
 import type { responseMyInfoDto } from "../types/auth.ts";
 import { Settings, Mail, Check, X } from "lucide-react";
 import usePostAuthImage from "../hooks/mutations/lps/usePostAuthImage.ts";
-import useDeleteUser from "../hooks/mutations/user/useDeleteUser.ts";
-import {useNavigate} from "react-router-dom";
+import UserDeleteModal from "../components/modal/UserDeleteModal.tsx";
+import usePatchMyInfo from "../hooks/mutations/user/usePatchMyInfo.ts";
 
+// todo: usePatchMyInfo 낙관적 동기화로 바꾼 거 쓰기 !!
 const MyPage = () => {
   const [data, setData] = useState<responseMyInfoDto>();
   const [editMode, setEditMode] = useState(false);
@@ -14,13 +15,9 @@ const MyPage = () => {
   const [bio, setBio] = useState("");
   const [avatar, setAvatar] = useState("");
 
-  // const[ismodalOpen, setIsmodalOpen] = useState(false);
+  const [ismodalOpen, setIsmodalOpen] = useState(false);
   const { mutate: uploadImage } = usePostAuthImage();
-
-  // 회원 탈퇴
-  const {mutate: deleteUserMutate} = useDeleteUser();
-
-  const navigate = useNavigate();
+  const { mutate: patchMyInfoMutate } = usePatchMyInfo();
 
   // 내 정보 가져오기
   useEffect(() => {
@@ -53,19 +50,21 @@ const MyPage = () => {
     });
   };
 
-  // 수정 완료
-  const handleSave = async () => {
-    try {
-      await patchMyInfo({ name, bio, avatar });
-      alert("프로필 수정 완료!");
-      setEditMode(false);
-      const updated = await getMyInfo();
-      setData(updated);
-    } catch (error) {
-      console.error("수정 실패:", error);
-      alert("수정 중 오류가 발생했습니다.");
-    }
+  const handleSave = () => {
+    patchMyInfoMutate(
+      { name, bio, avatar },
+      {
+        onSuccess: () => {
+          setEditMode(false);
+        },
+        onError: (error) => {
+          console.error("수정 실패:", error);
+          alert("수정 중 오류가 발생했습니다.");
+        },
+      }
+    );
   };
+
 
   if (!data) {
     return (
@@ -153,13 +152,20 @@ const MyPage = () => {
         <p className="text-md text-gray-700">{data.data.email}</p>
       </div>
 
-      <button onClick={() => {
-        alert('정말 탈퇴하겠습니까?');
-        deleteUserMutate();
-        navigate('/');
-      }}>
+      <button
+        onClick={() => {
+          setIsmodalOpen(true);
+        }}
+      >
         탈퇴하기
       </button>
+      {ismodalOpen && (
+        <UserDeleteModal
+          onClose={() => {
+            setIsmodalOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

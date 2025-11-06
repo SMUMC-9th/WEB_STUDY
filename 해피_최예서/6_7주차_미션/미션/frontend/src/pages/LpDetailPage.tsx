@@ -1,63 +1,20 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useGetLpDetail from "../hooks/queries/useGetLpDetail.tsx";
-import { Heart, Trash2, Pencil } from "lucide-react";
+import { Heart, Trash2, Pencil, Check, X } from "lucide-react";
 import { useAuth } from "../context/context.tsx";
 import usePostLike from "../hooks/mutations/like/usePostLike.ts";
 import useDeleteLike from "../hooks/mutations/like/useDeleteLike.ts";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo.ts";
-import useGetCommentList from "../hooks/queries/useGetCommentList.ts";
-import useDeleteComment from "../hooks/mutations/comment/useDeleteComment.ts";
+import useDeleteLp from "../hooks/mutations/lps/useDeleteLp.ts";
+import usePatchLp from "../hooks/mutations/lps/usePatchLp.ts";
+import CommentSection from "../components/ui/CommentSection.tsx";
 import { useState } from "react";
-// todo: 태그 고치기
-// import { useGetTags } from "../hooks/queries/useGetTags.ts";
-import usePostComment from "../hooks/mutations/comment/usePostComment.ts";
-import useUpdateComment from "../hooks/mutations/comment/useUpdateComment.ts";
 
 export default function LpDetailPage() {
   const { lpId } = useParams();
   const { accessToken, isLogin } = useAuth();
+  const navigate = useNavigate();
 
-  // 댓글 수정
-  const { mutate: updateCommentMutate } = useUpdateComment();
-  const [newComment, setNewComment] = useState("");
-  const [editCommentId, setEditCommentId] = useState<number | null>(null);
-  const [editContent, setEditContent] = useState("");
-
-  const handleEditClick = (commentId: number, content: string) => {
-    setEditCommentId(commentId);
-    setEditContent(content);
-  };
-
-  const handleUpdateComment = (commentId: number) => {
-    if (!editContent.trim()) return alert("수정할 내용을 입력하세요.");
-    updateCommentMutate({
-      lpId: Number(lpId),
-      commentId,
-      body: { content: editContent },
-    });
-    setEditCommentId(null);
-  };
-
-  // 댓글 작성
-  const { mutate: postCommentMutate } = usePostComment();
-  const handleAddComment = () => {
-    if (!newComment.trim()) return;
-
-    postCommentMutate({
-      lpId: Number(lpId),
-      body: { content: newComment },
-    });
-
-    setNewComment("");
-  };
-
-  // 댓글 삭제
-  const { mutate: deleteCommentMutate } = useDeleteComment();
-
-  // 태그 쿼리 데이터 받아오기
-  // const { data: tag } = useGetTags();
-
-  // LP 상세, 유저 정보
   const {
     data: lp,
     isPending: lpLoading,
@@ -65,44 +22,111 @@ export default function LpDetailPage() {
   } = useGetLpDetail({ lpId: Number(lpId) });
   const { data: me } = useGetMyInfo(accessToken);
 
-  // 좋아요 관련
   const { mutate: likeMutate } = usePostLike();
   const { mutate: dislikeMutate } = useDeleteLike();
+  const { mutate: deleteLp } = useDeleteLp();
+  const { mutate: patchLp } = usePatchLp();
 
-  // 댓글 목록
-  const {
-    data: commentsData,
-    isLoading: commentLoading,
-    isError: commentError,
-  } = useGetCommentList(Number(lpId));
+  const [editMode, setEditMode] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   const isLiked =
     lp?.data?.likes?.map((like) => like.userId).includes(me?.data?.id ?? -1) ??
     false;
 
+  const isAuthor = lp?.data?.authorId === me?.data?.id;
+
   const handleLikeLp = () => likeMutate({ lpId: Number(lpId) });
   const handleDislikeLP = () => dislikeMutate({ lpId: Number(lpId) });
 
+  const handleDelete = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      deleteLp(Number(lpId));
+      navigate("/");
+    }
+  };
+
+  const handleEditClick = () => {
+    if (!isAuthor) return alert("작성자만 수정할 수 있습니다.");
+    setTitle(lp?.data?.title ?? "");
+    setContent(lp?.data?.content ?? "");
+    setEditMode(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditMode(false);
+  };
+
+  const handleSaveEdit = () => {
+    if (!title.trim() || !content.trim()) {
+      alert("제목과 내용을 모두 입력하세요.");
+      return;
+    }
+
+    patchLp({
+      lpId: Number(lpId),
+      body: {
+        title,
+        content,
+        thumbnail: lp?.data?.thumbnail ?? null,
+        tagIds: lp?.data?.tags?.map((t) => t.id) ?? [],
+      },
+    });
+    setEditMode(false);
+  };
+
   if (lpLoading) return <div className="mt-12">게시글 불러오는 중...</div>;
   if (lpError || !lp) return <div className="mt-12">게시글 불러오기 실패</div>;
-  if (commentLoading) return <div className="mt-12">댓글 불러오는 중...</div>;
-  if (commentError) return <div className="mt-12">댓글 불러오기 실패</div>;
 
   return (
     <div className="max-w-3xl mx-auto mt-12 px-4 py-6 bg-white rounded-lg shadow-md">
-      {/* 제목 + 수정/삭제 버튼 */}
       <div className="flex items-center justify-between mb-4 border-b pb-2">
-        <h1 className="text-2xl font-bold text-gray-800">{lp.data.title}</h1>
-        <div className="flex items-center gap-2">
-          <button className="p-2 text-gray-500 hover:text-blue-600 transition">
-            <Pencil size={20} />
-          </button>
-          <button className="p-2 text-gray-500 hover:text-red-600 transition">
-            <Trash2 size={20} />
-          </button>
-        </div>
+        {editMode ? (
+          <input
+            className="text-2xl font-bold text-gray-800 border-b border-gray-300 focus:outline-none w-full"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        ) : (
+          <h1 className="text-2xl font-bold text-gray-800">{lp.data.title}</h1>
+        )}
+
+        {isAuthor && !editMode && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleEditClick}
+              className="p-2 text-gray-500 hover:text-blue-600 transition"
+            >
+              <Pencil size={20} />
+            </button>
+            <button
+              onClick={handleDelete}
+              className="p-2 text-gray-500 hover:text-red-600 transition"
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
+        )}
+
+        {editMode && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleSaveEdit}
+              className="p-2 text-green-600 hover:text-green-800 transition"
+            >
+              <Check size={20} />
+            </button>
+            <button
+              onClick={handleCancelEdit}
+              className="p-2 text-gray-500 hover:text-gray-700 transition"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        )}
       </div>
-      {/* 썸네일 */}
+
       {lp.data.thumbnail && (
         <img
           src={lp.data.thumbnail}
@@ -110,13 +134,21 @@ export default function LpDetailPage() {
           className="w-full h-64 object-cover rounded-md mb-6"
         />
       )}
-      {/* 본문 */}
-      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap mb-6">
-        {lp.data.content}
-      </p>
-      {/* 태그 렌더링 */}
+
+      {editMode ? (
+        <textarea
+          className="w-full border border-gray-300 rounded-md p-2 mb-6 h-48 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+      ) : (
+        <p className="text-gray-700 leading-relaxed whitespace-pre-wrap mb-6">
+          {lp.data.content}
+        </p>
+      )}
+
       태그들어갈자리
-      {/* 좋아요 버튼 */}
+
       <button
         onClick={isLiked ? handleDislikeLP : handleLikeLp}
         className="flex items-center gap-1 text-gray-600 hover:text-red-600 transition mb-6"
@@ -127,115 +159,12 @@ export default function LpDetailPage() {
         />
         <span className="text-sm">{lp.data.likes?.length ?? 0}</span>
       </button>
-      {/* 댓글 섹션 */}
-      <div className="border-t pt-4">
-        <h2 className="text-lg font-semibold text-gray-800 mb-3">댓글</h2>
-        {/* 댓글 입력 */}
-        {isLogin ? (
-          <div className="flex items-start gap-2 mb-4">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="댓글을 입력하세요..."
-              className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-400"
-            />
-            <button
-              onClick={handleAddComment}
-              className="bg-[#3086d9] text-white px-4 py-2 rounded-md hover:bg-[#256bb3] transition"
-            >
-              등록
-            </button>
-          </div>
-        ) : (
-          <p className="text-sm text-gray-500 mb-4">
-            로그인 후 댓글을 작성할 수 있습니다.
-          </p>
-        )}
-        {/* 댓글 목록 */}
-        <div className="space-y-3">
-          {commentsData?.data?.data?.length ? (
-            commentsData.data.data.map((comment) => (
-              <div
-                key={comment.id}
-                className="border border-gray-200 rounded-md p-3 flex justify-between items-start"
-              >
-                <div className="flex gap-3 w-full">
-                  <img
-                    src={comment.author.avatar}
-                    alt="avatar"
-                    className="w-10 h-10 rounded-full border"
-                  />
-                  <div className="flex-1">
-                    <p className="font-semibold text-gray-800">
-                      {comment.author.name}
-                    </p>
 
-                    {/* 수정 중일 때는 textarea */}
-                    {editCommentId === comment.id ? (
-                      <>
-                        <textarea
-                          value={editContent}
-                          onChange={(e) => setEditContent(e.target.value)}
-                          className="w-full border border-gray-300 rounded-md mt-2 px-2 py-1 focus:ring-1 focus:ring-[#3086d9]"
-                        />
-                        <div className="flex gap-2 mt-2">
-                          <button
-                            onClick={() => handleUpdateComment(comment.id)}
-                            className="text-sm bg-[#3086d9] text-white px-3 py-1 rounded hover:bg-[#256bb3]"
-                          >
-                            수정 완료
-                          </button>
-                          <button
-                            onClick={() => setEditCommentId(null)}
-                            className="text-sm bg-gray-300 text-gray-700 px-3 py-1 rounded hover:bg-gray-400"
-                          >
-                            취소
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <p className="text-gray-700 whitespace-pre-line mt-1">
-                        {comment.content}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/*댓글삭제 + 수정버튼*/}
-                {/* 작성자 본인에게만 삭제 버튼 노출되게 */}
-                {comment.author.id === me?.data?.id && (
-                  <button
-                    onClick={() =>
-                      deleteCommentMutate({
-                        lpId: Number(lpId),
-                        commentId: comment.id,
-                      })
-                    }
-                    className="text-gray-400 hover:text-red-500 transition ml-2"
-                  >
-                    🗑️
-                  </button>
-                )}
-
-                {/* 작성자 본인에게만 수정 버튼 노출되게  */}
-                {comment.author.id === me?.data?.id &&
-                  editCommentId !== comment.id && (
-                    <button
-                      onClick={() =>
-                        handleEditClick(comment.id, comment.content)
-                      }
-                      className="text-gray-400 hover:text-blue-500 transition ml-2"
-                    >
-                      <Pencil size={16} />
-                    </button>
-                  )}
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500 text-sm">아직 댓글이 없습니다.</p>
-          )}
-        </div>
-      </div>
+      <CommentSection
+        lpId={Number(lpId)}
+        isLogin={isLogin}
+        myId={me?.data?.id}
+      />
     </div>
   );
 }

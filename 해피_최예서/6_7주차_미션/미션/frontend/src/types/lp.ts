@@ -75,3 +75,30 @@ export type RequestUnAuthAddImage = {
 export type ResponseUnAuthAddImage = CommonResponse<{
   imageUrl: string;
 }>;
+
+// LP 정보 업데이트
+export type RequestUpdateLpDto = {
+  title: string;
+  content: string;
+  thumbnail: string;
+  tags: string[];
+  published: boolean;
+};
+
+export type ResponseUpdateLpDto = CommonResponse<{
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  published: boolean;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+  tags: {
+    id: number;
+    name: string;
+  }[];
+}>;
+
+// LP 삭제
+export type ResponseDeleteLpDto = CommonResponse<{}>;

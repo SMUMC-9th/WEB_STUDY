@@ -2,17 +2,23 @@ import {useMutation} from "@tanstack/react-query";
 import {deleteUser} from "../../../apis/auth.ts";
 import {queryClient} from "../../../App.tsx";
 import {QUERY_KEY} from "../../../constants/key.ts";
+import {useNavigate} from "react-router-dom";
 
 
 export default function useDeleteUser() {
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: deleteUser,
     onSuccess:() => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.lps],
       });
+      navigate('/signin');
+
       alert("탈퇴되었습니다.");
+
     },
+
 
     onError: (error) => {
       console.log("탈퇴 실패 : ", error);
