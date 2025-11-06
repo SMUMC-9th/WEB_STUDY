@@ -12,6 +12,7 @@ import type {
   RequestUpdateLpDto,
   ResponseUpdateLpDto,
   ResponseDeleteLpDto,
+  ResponseLpDto,
 } from "../types/lp.ts";
 import type { ResponseTagView } from "../types/tags.ts";
 
@@ -27,7 +28,6 @@ export const getLpList = async (
 };
 
 // lp 생성
-// ?? 맞나
 export const postLp = async (
   body: RequestAddLpDto,
 ): Promise<ResponseAddLpDto> => {
@@ -38,7 +38,7 @@ export const postLp = async (
 // lp 상세 조회
 export const getLpDetail = async ({
   lpId,
-}: RequestLpDto): Promise<ResponseLpListDto> => {
+}: RequestLpDto): Promise<ResponseLpDto> => {
   const { data } = await axiosInstance.get(`/v1/lps/${lpId}`);
 
   return data;

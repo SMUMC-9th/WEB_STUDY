@@ -92,9 +92,11 @@ export default function CommentSection({
             >
               <div className="flex gap-3 w-full">
                 <img
-                  src={comment.author.avatar}
+                  src={
+                    comment.author.avatar ?? "/images/default-avatar.png"
+                  }
                   alt="avatar"
-                  className="w-10 h-10 rounded-full border"
+                  className="w-10 h-10 rounded-full border object-cover"
                 />
                 <div className="flex-1">
                   <p className="font-semibold text-gray-800">
