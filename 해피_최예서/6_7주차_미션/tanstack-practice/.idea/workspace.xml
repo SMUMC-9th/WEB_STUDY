@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="41bcea97-ea67-4d11-9554-a0485421df5e" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/../미션1_2/frontend/src/components/common/Sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/eslint.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/public/vite.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/App.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/apis/auth.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/apis/axios.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/components/Navbar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/components/footer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/components/signup/EmailStep.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/components/signup/NicknameStep.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/components/signup/PasswordStep.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/constants/key.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/context/context.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/hooks/useForm.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/hooks/useLocalStorage.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/hooks/useToggle.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/layout/root-layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/main.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/pages/HomePage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/pages/MyPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/pages/RedirectPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/pages/SigninPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/pages/SignupPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/schemas/authSchemas.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/schemas/commonSchemas.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/types/auth.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/types/common.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/src/utils/validate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/tsconfig.app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/tsconfig.node.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/vite-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../5주차_미션/미션1/frontend/vite.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../미션1_2/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../미션1_2/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../미션1_2/frontend/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../미션1_2/frontend/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../미션1_2/frontend/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../미션1_2/frontend/src/components/common/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../미션1_2/frontend/src/components/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../미션1_2/frontend/src/components/common/footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../미션1_2/frontend/src/layout/root-layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../미션1_2/frontend/src/layout/root-layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../미션1_2/frontend/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../미션1_2/frontend/src/pages/HomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../미션1_2/frontend/src/pages/LpDetailPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../미션1_2/frontend/src/pages/LpDetailPage.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="34z6YvwsSvbh9sIZqoMYaiLNAsw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/yeseo/Desktop/programming/front/UMC-9th/WEB_STUDY/해피_최예서/6주차_미션/tanstack-practice",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-WS-241.18034.50" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="41bcea97-ea67-4d11-9554-a0485421df5e" name="변경" comment="" />
+      <created>1762204103687</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762204103687</updated>
+      <workItem from="1762204105478" duration="613000" />
+      <workItem from="1762228748216" duration="88000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
