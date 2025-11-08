@@ -38,6 +38,26 @@ export type LpDetail = Lp & {
   author: Author;
 };
 
+export type RequestLpDto = {
+  lpId: number;
+};
+
 export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
 export type ResponseLpDetailDto = CommonResponse<LpDetail>;
+
+export type ResponseLikeLpDto = CommonResponse<{
+  id: number;
+  userId: number;
+  lpId: number;
+}>;
+
+export type RequestCreateLpDto = {
+  title: string;
+  content: string;
+  thumbnail: string;
+  tags: string[];
+  published: boolean;
+}
+
+export type ResponseCreateLpDto = CommonResponse<Lp>;

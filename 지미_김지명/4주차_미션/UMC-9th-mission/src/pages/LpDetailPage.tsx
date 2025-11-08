@@ -1,16 +1,41 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getLpDetail } from "../api/lp";
+
+import useGetLpDetail from "../hooks/queries/useGetLpDetail";
+import { Heart } from "lucide-react";
+import useGetMyInfo from "../hooks/queries/useGetInfo";
+import { useAuth } from "../context/AuthContext";
+import CommentModal from "../components/Comment/CommentModal";
+import usePostLike from "../hooks/mutations/usePostLike";
+import useDeleteLike from "../hooks/mutations/useDeleteLike";
+import { useState } from "react";
 
 const LpDetailPage = () => {
   const { lpId } = useParams<{ lpId: string }>();
+  const { accessToken } = useAuth();
   const navigate = useNavigate();
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
-  const { data, isPending, isError } = useQuery({
-    queryKey: ["lp", lpId],
-    queryFn: () => getLpDetail(Number(lpId)),
-    enabled: !!lpId,
-  });
+  const {
+    data: lp,
+    isPending,
+    isError,
+  } = useGetLpDetail({ lpId: Number(lpId) });
+  const { data: me } = useGetMyInfo(accessToken);
+  const { mutate: likeMutate } = usePostLike();
+  const { mutate: disLikeMutate } = useDeleteLike();
+
+  // const isLiked = lp?.data.likes
+  //   .map((like)=>like.userId)
+  //   .includes(me?.data.id as number);
+  const isLiked = lp?.data.likes.some((like) => like.userId === me?.data.id);
+
+  const handleLikeLp = () => {
+    me?.data.id && likeMutate({ lpId: Number(lpId) });
+  };
+
+  const handleDislikeLp = () => {
+    me?.data.id && disLikeMutate({ lpId: Number(lpId) });
+  };
 
   if (isPending) {
     return (
@@ -20,15 +45,13 @@ const LpDetailPage = () => {
     );
   }
 
-  if (isError || !data) {
+  if (isError || !lp) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-black">
         <div className="text-white text-2xl">LP를 찾을 수 없습니다.</div>
       </div>
     );
   }
-
-  const lp = data.data;
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -43,28 +66,28 @@ const LpDetailPage = () => {
 
         {/* 썸네일 */}
         <img
-          src={lp.thumbnail}
-          alt={lp.title}
+          src={lp.data.thumbnail}
+          alt={lp.data.title}
           className="w-full h-96 object-cover rounded-lg mb-6"
         />
 
         {/* 제목 */}
-        <h1 className="text-4xl font-bold mb-4">{lp.title}</h1>
+        <h1 className="text-4xl font-bold mb-4">{lp.data.title}</h1>
 
         {/* 작성자 & 날짜 */}
         <div className="flex items-center gap-4 mb-6 text-gray-400">
-          <span>{lp.author.name}</span>
-          <span>{new Date(lp.createdAt).toLocaleDateString()}</span>
-          <span>{lp.likes.length} 좋아요</span>
+          <span>{lp.data.author.name}</span>
+          <span>{new Date(lp.data.createdAt).toLocaleDateString()}</span>
+          <span>{lp.data.likes.length} 좋아요</span>
         </div>
 
         {/* 태그 */}
-        {lp.tags.length > 0 && (
+        {lp.data.tags.length > 0 && (
           <div className="flex gap-2 mb-6">
-            {lp.tags.map((tag) => (
+            {lp.data.tags.map((tag) => (
               <span
                 key={tag.id}
-                className="px-3 py-1 bg-[#FF007F] bg-opacity-20 text-[#FF007F] rounded-full text-sm"
+                className="px-3 py-1 bg-[#FF007F] bg-opacity-20 text-[#FFFFFF] rounded-full text-sm"
               >
                 #{tag.name}
               </span>
@@ -74,17 +97,29 @@ const LpDetailPage = () => {
 
         {/* 내용 */}
         <div className="bg-gray-900 p-6 rounded-lg">
-          <p className="text-lg leading-relaxed whitespace-pre-wrap">{lp.content}</p>
+          <p className="text-lg leading-relaxed whitespace-pre-wrap">
+            {lp.data.content}
+          </p>
         </div>
+
+        <button
+          className="cursor-pointer"
+          onClick={isLiked ? handleDislikeLp : handleLikeLp}
+        >
+          <Heart
+            color={isLiked ? "red" : "white"}
+            fill={isLiked ? "red" : "transparent"}
+          />
+        </button>
 
         {/* 작성자 정보 */}
         <div className="mt-8 p-6 bg-gray-900 rounded-lg">
           <h2 className="text-xl font-bold mb-4">작성자 정보</h2>
           <div className="flex items-center gap-4">
-            {lp.author.avatar ? (
+            {lp.data.author.avatar ? (
               <img
-                src={lp.author.avatar}
-                alt={lp.author.name}
+                src={lp.data.author.avatar}
+                alt={lp.data.author.name}
                 className="w-16 h-16 rounded-full"
               />
             ) : (
@@ -93,13 +128,31 @@ const LpDetailPage = () => {
               </div>
             )}
             <div>
-              <p className="font-bold">{lp.author.name}</p>
-              <p className="text-gray-400">{lp.author.email}</p>
-              {lp.author.bio && <p className="text-sm mt-1">{lp.author.bio}</p>}
+              <p className="font-bold">{lp.data.author.name}</p>
+              <p className="text-gray-400">{lp.data.author.email}</p>
+              {lp.data.author.bio && (
+                <p className="text-sm mt-1">{lp.data.author.bio}</p>
+              )}
             </div>
           </div>
         </div>
       </div>
+      {/* 댓글 보기 버튼 추가 */}
+      <button
+        onClick={() => setIsCommentModalOpen(true)}
+        className="mt-6 w-full py-3 bg-[#FF007F] text-white rounded-lg hover:bg-pink-600 transition-colors font-semibold"
+      >
+        댓글 보기
+      </button>
+
+      {isCommentModalOpen && (
+        <CommentModal
+          isOpen={isCommentModalOpen}
+          onClose={() => setIsCommentModalOpen(false)}
+          lpId={Number(lpId)}
+          lpTitle={lp.data.title}
+        />
+      )}
     </div>
   );
 };
