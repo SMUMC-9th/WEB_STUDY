@@ -120,7 +120,6 @@ const MyLpListSection = () => {
 
 const Mypage = () => {
   const { data: user, isPending, isError } = useGetMyInfo();
-  const nav = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -250,16 +249,6 @@ const Mypage = () => {
             <p className="text-lg text-gray-500 mt-2">{user.email}</p>
           </div>
         </div>
-
-        {/* <div className="pt-6 mt-10 border-t border-neutral-700">
-          <button
-            className="cursor-pointer w-30 rounded-md bg-[#ff349a] text-gray-100 font-bold p-2 mt-1 hover:bg-pink-700 transition"
-            onClick={handleLogout}
-            disabled={isUpdating || isEditingProfile} //프로필수정할때는 로그아웃 못하도록 설정.
-          >
-            로그아웃
-          </button>
-        </div> */}
       </div>
       <MyLpListSection />
       <button

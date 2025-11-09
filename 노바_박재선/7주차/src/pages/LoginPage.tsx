@@ -3,61 +3,57 @@ import useForm from "../hooks/useForm";
 import { loginSchema, type LoginForm } from "../schemas/loginSchema";
 import { useAuth } from "../context/AuthContext";
 
-
-
-
 const LoginPage = () => {
   const nav = useNavigate();
-  const {login} = useAuth();
+  const { login } = useAuth();
   const location = useLocation();
 
   //돌아갈 경로 찾음. state나 from 없으면 홈으로 가도록 설정.
   const from = location.state?.from?.pathname || "/";
   // const {setItem} = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
 
-  
-
   const { errors, getInputProps, handleSubmit } = useForm<LoginForm>({
     initialValue: { email: "", password: "" },
     validate: (values) => {
-
       const errors: Record<keyof LoginForm, string> = {
         email: "",
         password: "",
       };
 
-      const emailCheck = loginSchema.pick({email: true}).safeParse({email:values.email});
-      if(!emailCheck.success) {
+      const emailCheck = loginSchema
+        .pick({ email: true })
+        .safeParse({ email: values.email });
+      if (!emailCheck.success) {
         errors.email = emailCheck.error.issues[0].message;
       }
-      const pwdCheck = loginSchema.pick({password: true}).safeParse({password:values.password});
-      if(!pwdCheck.success) {
+      const pwdCheck = loginSchema
+        .pick({ password: true })
+        .safeParse({ password: values.password });
+      if (!pwdCheck.success) {
         errors.password = pwdCheck.error.issues[0].message;
       }
 
       return errors;
     },
-    onSubmit: async(values) => {
-      try{
+    onSubmit: async (values) => {
+      try {
         const success = await login(values);
         if (success) {
           alert("로그인 성공!");
           //mypage가 아니고, 원래 가려고 했던 페이지from으로 이동시킴.
-          nav(from, {replace: true});
+          nav(from, { replace: true });
         }
-      } catch (error){
-        console.error("로그인실패: ",error);
+      } catch (error) {
+        console.error("로그인실패: ", error);
         alert("로그인 중 알 수 없는 오류가 발생하였습니다");
       }
-
     },
   });
 
-
   const handleGoogleLogin = () => {
-    window.location.href = import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
+    window.location.href =
+      import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
   };
-
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen text-white">

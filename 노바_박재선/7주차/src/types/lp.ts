@@ -32,7 +32,7 @@ export type Lp = {
   updatedAt: Date;
   tags: Tag[];
   likes: Likes[];
-}
+};
 
 export type LpDetail = Lp & {
   author: Author;

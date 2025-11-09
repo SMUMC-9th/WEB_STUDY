@@ -1,49 +1,45 @@
-
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import {z} from "zod";
+import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { postSignup } from "../apis/auth";
 import type { ResponseSignupDto } from "../types/auth";
 
 const signupSchema = z
   .object({
-    email: z.string().email({message: "올바른 이메일 형식이 아닙니다."}),
-    password: z.string().min(6, {message: "비밀번호는 최소 6자 이상이어야 합니다."}),
+    email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
+    password: z
+      .string()
+      .min(6, { message: "비밀번호는 최소 6자 이상이어야 합니다." }),
     confirmPwd: z.string(),
-    nickname: z.string().min(2, {message: "닉네임은 두글자 이상이어야합니다."}),
+    nickname: z
+      .string()
+      .min(2, { message: "닉네임은 두글자 이상이어야합니다." }),
   })
   .superRefine((data, ctx) => {
-    if (data.password.length >= 6 && data.password !== data.confirmPwd){
+    if (data.password.length >= 6 && data.password !== data.confirmPwd) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "비밀번호가 일치하지 않습니다.",
         path: ["confirmPwd"],
-      })
+      });
     }
-  })
-  // .refine((data) => data.password === data.confirmPwd, {
-  //   message: "비밀번호가 일치하지 않습니다.",
-  //   path: ["confirmPwd"],
-  // });
+  });
 
 type FormFields = z.infer<typeof signupSchema>;
-
-
 
 const SignupPage = () => {
   const nav = useNavigate();
   const [step, setStep] = useState(1);
-  const [showPwd,setShowPwd] = useState(false);
+  const [showPwd, setShowPwd] = useState(false);
   const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const {
-    register, 
-    handleSubmit, 
+    register,
+    handleSubmit,
     trigger,
-    formState: {errors, isSubmitting},
+    formState: { errors, isSubmitting },
     getValues,
   } = useForm<FormFields>({
     resolver: zodResolver(signupSchema),
@@ -51,30 +47,30 @@ const SignupPage = () => {
     defaultValues: {
       email: "",
       password: "",
-      confirmPwd : "",
+      confirmPwd: "",
       nickname: "",
     },
   });
 
   const handleNextFromStep1 = async () => {
     const valid = await trigger("email");
-      if(valid) setStep(2);
-  }
+    if (valid) setStep(2);
+  };
   const handleNextFromStep2 = async () => {
     const valid = await trigger(["password", "confirmPwd"]);
-      if(valid) setStep(3);
-  }
-  const onSubmit:SubmitHandler<FormFields> = async(data) => {
-    const {confirmPwd, nickname, ...rest} = data;
+    if (valid) setStep(3);
+  };
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    const { confirmPwd, nickname, ...rest } = data;
 
     const requestBody = {
       ...rest,
       name: nickname,
-    }
-    const response:ResponseSignupDto = await postSignup(requestBody);
+    };
+    const response: ResponseSignupDto = await postSignup(requestBody);
     console.log(response);
-    nav("/",{replace: true});
-  }
+    nav("/", { replace: true });
+  };
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen text-white">
@@ -86,7 +82,9 @@ const SignupPage = () => {
           >
             {`<`}
           </button>
-          <h2 className="font-bold text-2xl text-center w-full mb-3">회원가입</h2>
+          <h2 className="font-bold text-2xl text-center w-full mb-3">
+            회원가입
+          </h2>
         </div>
         {step === 1 && (
           <>
@@ -111,7 +109,9 @@ const SignupPage = () => {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mb-2">{errors.email.message}</p>
+              <p className="text-red-500 text-sm mb-2">
+                {errors.email.message}
+              </p>
             )}
 
             <button
@@ -157,10 +157,14 @@ const SignupPage = () => {
               </button>
             </div>
             {errors.password && (
-              <p className="text-red-500 text-sm mb-2">{errors.password.message}</p>
+              <p className="text-red-500 text-sm mb-2">
+                {errors.password.message}
+              </p>
             )}
             {errors.confirmPwd && (
-              <p className="text-red-500 text-sm mb-2">{errors.confirmPwd.message}</p>
+              <p className="text-red-500 text-sm mb-2">
+                {errors.confirmPwd.message}
+              </p>
             )}
 
             <button
@@ -186,7 +190,9 @@ const SignupPage = () => {
               {...register("nickname")}
             />
             {errors.nickname && (
-              <p className="text-red-500 text-sm mb-2">{errors.nickname?.message}</p>
+              <p className="text-red-500 text-sm mb-2">
+                {errors.nickname?.message}
+              </p>
             )}
 
             <button
@@ -196,13 +202,11 @@ const SignupPage = () => {
             >
               {isSubmitting ? "가입중,," : "회원가입 완료"}
             </button>
-            
           </form>
         )}
       </div>
     </div>
+  );
+};
 
-  )
-}
-
-export default SignupPage
+export default SignupPage;

@@ -1,3 +1,4 @@
+// 기존에 만들었던, intro 화면
 // import useGetLpList from "../hooks/queries/useGetLpList";
 // import { useState } from "react";
 
@@ -39,6 +40,7 @@ import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
 import { PAGINATION_ORDER } from "../enums/common";
 import { useInView } from "react-intersection-observer";
 import CardSkeleton from "../components/CardSkeleton";
+import { FaHeart } from "react-icons/fa";
 
 type SortOrder = "newest" | "oldest";
 
@@ -148,7 +150,7 @@ const HomePage = () => {
                           </p>
                         </div>
                         <div className="text-right font-bold">
-                          🤍 {lp.likes?.length || 0}
+                          <FaHeart /> {lp.likes?.length || 0}
                         </div>
                       </div>
                     </div>

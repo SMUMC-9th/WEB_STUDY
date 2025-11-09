@@ -1,7 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-// import { useEffect, useState } from "react";
-// import { getMyInfo } from "../apis/auth";
 import { Search } from "lucide-react";
 import useLogout from "../hooks/mutations/useLogout";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo";
@@ -12,31 +9,8 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const nav = useNavigate();
-  const { accessToken } = useAuth();
-  // const [userName, setUserName] = useState<string | null>(null);
-  // const [isLoading, setIsLoading] = useState(true);
   const { mutate: logoutUser, isPending } = useLogout();
-
   const { data: user, isPending: isUserLoading } = useGetMyInfo();
-
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     if (accessToken) {
-  //       try {
-  //         const response = await getMyInfo();
-  //         setUserName(response.data.name);
-  //       } catch (error) {
-  //         console.error("사용자 정보 가져오기 실패:", error);
-  //         setUserName(null);
-  //       }
-  //     } else {
-  //       setUserName(null);
-  //     }
-  //     setIsLoading(false);
-  //   };
-
-  //   fetchUserInfo();
-  // }, [accessToken]);
 
   const handleLogout = async () => {
     logoutUser();

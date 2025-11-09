@@ -173,11 +173,6 @@ const CommentSection = ({ lpid }: CommentSectionProps) => {
       { lpid, content: commentText, order: order },
       { onSettled: () => setCommentText("") }
     );
-    // onSuccess: () => {
-    //     queryClient.invalidateQueries({
-    //         queryKey: ['lpComments', lpid, order]
-    //     })
-    // }
   };
   const activeStyle =
     "text-white font-semibold border-b-2 border-white pb-1 cursor-pointer transition";
@@ -261,7 +256,6 @@ const CommentSection = ({ lpid }: CommentSectionProps) => {
 
 const LpDetailPage = () => {
   const { lpid } = useParams();
-  const nav = useNavigate();
   const { data, isPending, isError } = useGetLpDetail(lpid ?? "");
   const { mutate: toggleLike, isPending: isToggling } = useToggleLike();
   const { data: myInfo } = useGetMyInfo();

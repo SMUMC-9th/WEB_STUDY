@@ -5,7 +5,6 @@ import { axiosInstance } from "./axios";
 export interface UpdateInfoDto {
   name?: string;
   bio?: string;
-  // avator?: string;
 }
 
 //현재 로그인하고 있는 유저 정보가져옴

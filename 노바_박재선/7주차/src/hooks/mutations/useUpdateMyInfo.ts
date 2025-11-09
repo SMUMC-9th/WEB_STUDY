@@ -51,30 +51,3 @@ const useUpdateMyInfo = () => {
 };
 
 export default useUpdateMyInfo;
-
-//mutations으로 폴더 새로 생성한이유
-//hook중에서 조회에 해당하는 훅들은 queries로 넣고
-//수정, 변경에 해당하는 훅들은 mutations로 넣는것이 효율적임
-
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { updateMyInfo, type UpdateInfoDto } from "../../apis/user";
-// import type { ResponseUserDto } from "../../types/user";
-// import { QUERY_KEY } from "../../constants/key";
-
-// const useUpdateMyInfo = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (dto: UpdateInfoDto) => updateMyInfo(dto),
-//     onSuccess: (updatedUserResponse: ResponseUserDto) => {
-//       queryClient.setQueryData([QUERY_KEY.me], updatedUserResponse);
-//       alert("프로필 수정이 완료되었습니다");
-//     },
-//     onError: (error) => {
-//       console.error("프로필 수정 실패: ", error);
-//       alert("프로필 수정에 실패했습니다. 다시해주세요");
-//     },
-//   });
-// };
-
-// export default useUpdateMyInfo;

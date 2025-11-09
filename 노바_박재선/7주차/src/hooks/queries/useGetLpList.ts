@@ -1,3 +1,4 @@
+// 설명페이지. 이해안될때 보기
 // import { useQuery } from "@tanstack/react-query";
 // import type { ResponseLpListDto } from "../../types/lp";
 // import type { PaginationDto } from "../../types/common";
@@ -36,7 +37,6 @@
 //     gcTime: 1000 * 60 * 10, // 10분
 
 //     refetchInterval: 100 *60, // 10초
-    
 
 //     //retry: 쿼리 요청이 실패했을 때 자동으로 재시도할 횟수를 지정한다
 //     // 기본값은 3회정도, 네트워크 오류등 임시적인 문제를 보완할 수 있다
