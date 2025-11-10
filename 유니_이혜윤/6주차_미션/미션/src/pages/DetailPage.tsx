@@ -28,7 +28,7 @@ const DetailPage = () => {
     useGetLpComments({ lpId, order });
 
   const { data: my } = useGetMyInfo();
-  console.log(my);
+  // console.log(my);
 
   const { mutate: likeMutate } = usePostLike();
   const { mutate: disLikeMutate } = useDeleteLike();
@@ -57,7 +57,6 @@ const DetailPage = () => {
 
   const handleDisLike = () => {
     disLikeMutate({ lpId: Number(lpId) });
-    console.log("좋아요 취소 성공");
   };
 
   if (isLpError) {
