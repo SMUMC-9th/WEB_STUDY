@@ -124,3 +124,13 @@ export type ResponseLikeLpDto = {
   message: string;
   data: LpLike;
 };
+
+// Lp 댓글 생성
+export type CreateCommentRequest = {
+  content: string;
+};
+
+export type DeleteCommentRequest = {
+  lpId: number;
+  commentId: number;
+};

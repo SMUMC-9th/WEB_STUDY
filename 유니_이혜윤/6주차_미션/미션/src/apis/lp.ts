@@ -6,6 +6,8 @@ import type {
   LpDetailResponse,
   ResponseLikeLpDto,
   CreateLpRequest,
+  CreateCommentRequest,
+  DeleteCommentRequest,
 } from "../types/lp";
 import { axiosInstance } from "./axios";
 
@@ -63,5 +65,42 @@ export const deleteLike = async ({
 
 export const createLp = async (body: CreateLpRequest) => {
   const { data } = await axiosInstance.post("/v1/lps", body);
+  return data;
+};
+
+export const createLpComment = async ({
+  lpId,
+  body,
+}: {
+  lpId: number;
+  body: CreateCommentRequest;
+}) => {
+  const { data } = await axiosInstance.post(`/v1/lps/${lpId}/comments`, body);
+  return data;
+};
+
+export const updateLpComment = async ({
+  lpId,
+  commentId,
+  body,
+}: {
+  lpId: number;
+  commentId: number;
+  body: CreateCommentRequest;
+}) => {
+  const { data } = await axiosInstance.patch(
+    `/v1/lps/${lpId}/comments/${commentId}`,
+    body
+  );
+  return data;
+};
+
+export const deleteLpComment = async ({
+  lpId,
+  commentId,
+}: DeleteCommentRequest) => {
+  const { data } = await axiosInstance.delete(
+    `/v1/lps/${lpId}/comments/${commentId}`
+  );
   return data;
 };

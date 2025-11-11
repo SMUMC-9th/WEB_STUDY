@@ -8,3 +8,5 @@ export { default as OrderToggle } from "./OrderToggle";
 export { default as PasswordInput } from "./PasswordInput";
 export { default as Sidebar } from "./Sidebar";
 export { default as LpCreateModal } from "./LpCreateModal";
+export { default as LpDetailContent } from "./LpDetailContent";
+export { default as LpComments } from "./LpComments";
