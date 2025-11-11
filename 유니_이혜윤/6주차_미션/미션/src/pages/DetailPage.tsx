@@ -76,6 +76,19 @@ const DetailPage = () => {
                 alt={lp.title}
                 className="w-full h-100 object-cover"
               />
+              {lp.tags?.length ? (
+                <div className="absolute top-4 left-3 z-30 flex flex-wrap gap-1 max-w-[75%]">
+                  {lp.tags.map((tag) => (
+                    <span
+                      key={tag.id}
+                      className="inline-flex items-center rounded-full bg-black/40 text-white px-2 py-1.5 text-[11px] leading-none"
+                      title={`#${tag.name}`}
+                    >
+                      # {tag.name}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
               <button
                 onClick={isLiked ? handleDisLike : handleLike}
                 className="z-20 absolute top-3 right-3 cursor-pointer"

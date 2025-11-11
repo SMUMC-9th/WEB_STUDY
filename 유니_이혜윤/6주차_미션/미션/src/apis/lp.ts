@@ -5,6 +5,7 @@ import type {
   RequestLpDto,
   LpDetailResponse,
   ResponseLikeLpDto,
+  CreateLpRequest,
 } from "../types/lp";
 import { axiosInstance } from "./axios";
 
@@ -57,5 +58,10 @@ export const deleteLike = async ({
   lpId,
 }: RequestLpDto): Promise<ResponseLikeLpDto> => {
   const { data } = await axiosInstance.delete(`/v1/lps/${lpId}/likes`);
+  return data;
+};
+
+export const createLp = async (body: CreateLpRequest) => {
+  const { data } = await axiosInstance.post("/v1/lps", body);
   return data;
 };

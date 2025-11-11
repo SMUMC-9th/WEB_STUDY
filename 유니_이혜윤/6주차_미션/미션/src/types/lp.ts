@@ -34,6 +34,15 @@ export type ResponseLpListDto = {
   };
 };
 
+// Lp 생성
+export type CreateLpRequest = {
+  title: string;
+  content: string;
+  thumbnail: string;
+  tags: string[];
+  published: boolean;
+};
+
 // Lp 상세페이지
 export type RequestLpDto = {
   lpId: number;
@@ -59,7 +68,7 @@ export type LpDetailData = {
   createdAt: string;
   updatedAt: string;
   author: LpAuthor;
-  tags: string[];
+  tags: Tag[];
   likes: LpLike[];
 };
 
