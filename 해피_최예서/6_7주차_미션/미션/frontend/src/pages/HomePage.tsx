@@ -5,11 +5,15 @@ import LpCard from "../components/LpCard/LpCard.tsx";
 import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList.tsx";
 import { Plus } from "lucide-react";
 import WriteModal from "../components/modal/WriteModal.tsx";
+import useDebounce from "../hooks/useDebounce.ts";
+import {SEARCH_DEBOUNCE_DELAY} from "../constants/delay.ts";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
   const [order, setOrder] = useState<"desc" | "asc">("desc");
 const [ismodalOpen, setIsModalOpen] = useState(false);
+
+const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
 
   const {
     data: lps,
@@ -18,7 +22,7 @@ const [ismodalOpen, setIsModalOpen] = useState(false);
     isPending,
     fetchNextPage,
     isError,
-  } = useGetInfiniteLpList({ limit: 5, search, order });
+  } = useGetInfiniteLpList(10, debouncedValue, order );
 
   // ref: 특정한 HTML 요소 감지 가능
   // inView: 그 요소가 화면에 보이면 true
