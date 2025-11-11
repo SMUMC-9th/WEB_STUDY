@@ -41,6 +41,7 @@ import { PAGINATION_ORDER } from "../enums/common";
 import { useInView } from "react-intersection-observer";
 import CardSkeleton from "../components/CardSkeleton";
 import { FaHeart } from "react-icons/fa";
+import LpCreateModal from "../components/LpCreateModal";
 
 type SortOrder = "newest" | "oldest";
 
@@ -48,6 +49,8 @@ const HomePage = () => {
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
   const nav = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const apiOrderValue =
     sortOrder === "newest" ? PAGINATION_ORDER.desc : PAGINATION_ORDER.asc;
@@ -171,12 +174,16 @@ const HomePage = () => {
       </div>
 
       <button
-        onClick={() => nav("/new")}
+        onClick={() => setIsModalOpen(true)}
         className="fixed bottom-10 right-10 w-13 h-13 bg-pink-600 rounded-full flex items-center justify-center text-white text-3xl hover:bg-pink-700 transition-colors cursor-pointer"
         aria-label="새 LP 추가"
       >
         +
       </button>
+      <LpCreateModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

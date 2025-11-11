@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import useLogout from "../hooks/mutations/useLogout";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo";
+import { useAuth } from "../context/AuthContext";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -11,7 +12,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   const nav = useNavigate();
   const { mutate: logoutUser, isPending } = useLogout();
   const { data: user, isPending: isUserLoading } = useGetMyInfo();
-
+  const { accessToken } = useAuth();
   const handleLogout = async () => {
     logoutUser();
   };
@@ -49,7 +50,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
       </div>
 
       <div className="flex flex-row gap-3 items-center">
-        {isUserLoading ? (
+        {isUserLoading && accessToken ? (
           <div className="text-white text-sm">로딩중...</div>
         ) : user?.name ? (
           <>

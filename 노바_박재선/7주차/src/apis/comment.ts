@@ -1,4 +1,8 @@
-import type { PaginationDto, ResponseCommentDto } from "../types/common";
+import type {
+  PaginationDto,
+  ResponseCommentDto,
+  ResponseCommentListDto,
+} from "../types/common";
 import type { ResponseUserDto } from "../types/user";
 import { axiosInstance } from "./axios";
 
@@ -6,7 +10,7 @@ import { axiosInstance } from "./axios";
 export const getLpComments = async (
   lpid: string,
   { cursor, order, limit }: Omit<PaginationDto, "search">
-): Promise<ResponseCommentDto> => {
+): Promise<ResponseCommentListDto> => {
   const { data } = await axiosInstance.get(`/v1/lps/${lpid}/comments`, {
     params: { cursor, order, limit },
   });
@@ -17,7 +21,7 @@ export const postLpComment = async (
   lpid: string,
   content: string
 ): Promise<ResponseCommentDto> => {
-  const { data } = await axiosInstance.post(`v1/lps/${lpid}/comments`, {
+  const { data } = await axiosInstance.post(`/v1/lps/${lpid}/comments`, {
     content,
   });
   return data;
@@ -30,7 +34,7 @@ export const updateLpComment = async (
   content: string
 ): Promise<ResponseCommentDto> => {
   const { data } = await axiosInstance.patch(
-    `v1/lps/${lpid}/comments/${commentId}`,
+    `/v1/lps/${lpid}/comments/${commentId}`,
     {
       content,
     }
@@ -47,11 +51,11 @@ export const deleteLpComment = async (
 };
 
 export const getMyInfo = async (): Promise<ResponseUserDto> => {
-  const { data } = await axiosInstance.get(`v1/users/me`);
+  const { data } = await axiosInstance.get(`/v1/users/me`);
   return data;
 };
 
 export const getUserInfo = async (id: number): Promise<ResponseUserDto> => {
-  const { data } = await axiosInstance.get(`v1/users/${id}`);
+  const { data } = await axiosInstance.get(`/v1/users/${id}`);
   return data;
 };

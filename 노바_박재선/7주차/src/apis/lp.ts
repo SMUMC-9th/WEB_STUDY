@@ -1,7 +1,17 @@
-import { AwardIcon } from "lucide-react";
 import type { PaginationDto } from "../types/common";
 import type { ResponseLpDetailDto, ResponseLpListDto } from "../types/lp";
 import { axiosInstance } from "./axios";
+
+// 이미지 업로드: 파일을 서버에 업로드하고 URL을 반환
+export const uploadImage = async (file: File): Promise<string> => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const { data } = await axiosInstance.post("/v1/uploads", formData);
+  console.log("업로드 응답:", data); // 디버깅용
+  const imageUrl = data.url || data.data?.url || data;
+  console.log("반환되는 이미지 URL:", imageUrl); // 디버깅용
+  return imageUrl;
+};
 
 export const getLpList = async (
   paginationDto: PaginationDto
@@ -29,10 +39,14 @@ export const getMyLps = async (
   return data;
 };
 
-export const createLp = async (
-  formData: FormData
-): Promise<ResponseLpDetailDto> => {
-  const { data } = await axiosInstance.post("v1/lps", formData);
+export const createLp = async (lpData: {
+  title: string;
+  content: string;
+  thumbnail: string;
+  published: boolean;
+  tags: string[];
+}): Promise<ResponseLpDetailDto> => {
+  const { data } = await axiosInstance.post("/v1/lps", lpData);
   return data;
 };
 
@@ -45,19 +59,9 @@ export const updateLp = async (
 };
 
 export const toggleLpLikes = async (lpid: string, isLiked: boolean) => {
-  //이미 isLiked가 true면 이미 좋아요 누른거니까 취소
-  //false면 좋아요를 새로누르는 거니까 post
   if (isLiked) {
-    await axiosInstance.delete(`v1/lps/${lpid}/likes`);
+    return await axiosInstance.delete(`v1/lps/${lpid}/likes`);
   } else {
-    await axiosInstance.post(`v1/lps/${lpid}/likes`);
+    return await axiosInstance.post(`v1/lps/${lpid}/likes`);
   }
 };
-
-// export const toggleLpLikes = async (lpid: string, isLiked: boolean) => {
-//   //이미 isLiked가 true면 이미 좋아요 누른거니까 취소
-//   //false면 좋아요를 새로누르는 거니까 post
-//   const method = isLiked ? "delete" : "post";
-//   const { data } = await axiosInstance.request({url: `v1/lps/${lpid}/lies`, method});
-//   return data;
-// };
