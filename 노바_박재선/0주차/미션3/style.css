@@ -1,0 +1,89 @@
+* {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 50px;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 50px auto;
+        }
+
+        .Header {
+            border: none;
+            border-bottom: 1px solid rgb(226,226,226);
+            width: 700px;
+        }
+        .Header h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 70px;
+        }
+        .Editor {
+            display: flex;
+            margin: 20px;
+        }
+        .Editor #todo-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid;
+            font-style: oblique;
+            cursor: pointer;  
+        }
+        .Editor #todo-input:focus{
+            border: 2px solid rgb(41, 41, 203);
+            outline: none;
+        }
+
+        .List {
+            display: flex;
+            justify-content: space-between;
+            width: 700px;
+            margin-top: 20px;
+            
+        }
+        .todo-section, .done-section {
+            flex: 1;
+            padding: 0 20px;
+        }
+        
+        .List h3 {
+            display: flex;
+            position: relative;
+            text-align: center;
+            border: none;
+            border-bottom: 3px solid rgb(226,226,226);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            width: 100%;
+            justify-content: center;
+
+        }
+        .List ul {
+            list-style-type: none;
+        }
+        .List li {
+            padding: 15px 0px;
+            width: 100%;
+            border: none;
+            border-bottom: 3px solid rgb(181, 204, 255);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        li button {
+            background-color: rgb(181,204,255);
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }

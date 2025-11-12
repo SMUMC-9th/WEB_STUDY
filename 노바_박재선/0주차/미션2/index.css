@@ -1,0 +1,79 @@
+body{
+            margin: 0;
+            font-size: 30px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .top {
+            display: flex;
+        }
+        .header {
+            flex: 1;
+            background-color: #0f2047;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .menu {
+            flex: 3;
+            background-color: #e83040;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90px;
+        }
+        .hero {
+            flex: none;
+            background-color: #4c82a4;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 350px;
+        }
+        .content {
+            display: grid;
+            grid-template-areas:
+                "main . image"
+                "main . extra";
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            flex: 1;
+        }
+        .main {
+            grid-area: main;
+            background-color: #1f3b62;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image {
+            grid-area: image;
+            background-color: #9af3f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .extra {
+            grid-area: extra;
+            background-color: #35a89b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .banner {
+            flex: none;
+            background-color: #e4ff82;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+        }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMUMC</title>
+    <link rel="stylesheet" href="nav.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="main-nav">
+            <a href="/home" class="main-nav__home">
+                <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z"></path>
+                </svg>
+            </a>
+            <a href="/projects" class="main-nav__project">Projects</a>
+            <a href="/members" class="main-nav__members">Members</a>
+            <a href="/FAQ" class="main-nav__FAQ">FAQ</a>
+        </nav>
+
+        <!-- 모바일 햄버거 버튼 -->
+        <button class="hamburger" id="hamburgerBtn">
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+        </button>
+
+        <!-- 모바일 사이드바 -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar__content">
+                <a href="/home" class="sidebar__item">
+                    <svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z"></path>
+                    </svg>
+                    Home
+                </a>
+                <a href="/projects" class="sidebar__item">Projects</a>
+                <a href="/members" class="sidebar__item">Members</a>
+                <a href="/FAQ" class="sidebar__item">FAQ</a>
+            </div>
+        </div>
+
+        <!-- 사이드바 배경 오버레이 -->
+        <div class="sidebar__overlay" id="sidebarOverlay"></div>
+    </header>
+
+    <script>
+        // 기존 데스크톱 네비게이션 스크립트
+        const navLinks = document.querySelectorAll('.main-nav a');
+        const navBar = document.querySelector('.main-nav');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                navLinks.forEach(nav => nav.classList.remove('nav-active'));
+                this.classList.add('nav-active');
+
+                if (this.classList.contains('main-nav__home') || 
+                    this.classList.contains('main-nav__project')) {
+                    navBar.style.backgroundColor = '#000000';
+                } else {
+                    navBar.style.backgroundColor = '#9D9FA7';
+                }
+            });
+        });
+
+        // 모바일 사이드바 스크립트
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarItems = document.querySelectorAll('.sidebar__item');
+
+        // 햄버거 버튼 클릭
+        hamburgerBtn.addEventListener('click', function() {
+            this.classList.toggle('hamburger--open');
+            sidebar.classList.toggle('sidebar--open');
+            sidebarOverlay.classList.toggle('sidebar__overlay--visible');
+            document.body.classList.toggle('no-scroll');
+        });
+
+        // 오버레이 클릭 시 사이드바 닫기
+        sidebarOverlay.addEventListener('click', function() {
+            hamburgerBtn.classList.remove('hamburger--open');
+            sidebar.classList.remove('sidebar--open');
+            sidebarOverlay.classList.remove('sidebar__overlay--visible');
+            document.body.classList.remove('no-scroll');
+        });
+
+        // 사이드바 메뉴 클릭
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 모든 사이드바 아이템에서 active 제거
+                sidebarItems.forEach(menu => menu.classList.remove('sidebar__item--active'));
+                
+                // 클릭된 아이템에 active 추가
+                this.classList.add('sidebar__item--active');
+                
+                // 사이드바 닫기
+                setTimeout(() => {
+                    hamburgerBtn.classList.remove('hamburger--open');
+                    sidebar.classList.remove('sidebar--open');
+                    sidebarOverlay.classList.remove('sidebar__overlay--visible');
+                    document.body.classList.remove('no-scroll');
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

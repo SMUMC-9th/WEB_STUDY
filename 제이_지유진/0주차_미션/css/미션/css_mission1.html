@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMUMC</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: #0d0d0d;
+        font-family: sans-serif;
+        overflow-x: hidden;
+      }
+      nav {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 28px;
+        border-radius: 9999px;
+        background-color: rgba(26, 26, 26, 0.8);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        width: auto;
+        max-width: 90%;
+        z-index: 1000;
+      }
+
+      .menu {
+        display: flex;
+        gap: 28px;
+      }
+
+      .menu a {
+        position: relative;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 9999px;
+        transition: color 0.3s ease;
+        cursor: pointer;
+      }
+
+      .menu a::before {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: -8px;
+        right: -8px;
+        bottom: -4px;
+        border-radius: 9999px;
+        background-color: #22c55e;
+        transform: scale(0);
+        transition: transform 0.3s ease;
+        z-index: -1;
+      }
+
+      .menu a:hover::before,
+      .menu a.active::before {
+        transform: scale(1);
+      }
+
+      .menu a.active {
+        color: black;
+      }
+
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 25px;
+        height: 20px;
+        cursor: pointer;
+        z-index: 1100;
+        position: fixed;
+        top: 30px;
+        right: 20px;
+        border-radius: 100%;
+        background-color: rgba(26, 26, 26, 0.8);
+      }
+
+      .hamburger span {
+        display: block;
+        height: 3px;
+        background-color: white;
+        border-radius: 2px;
+        transform-origin: center center;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+
+      .slide-menu {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: 100%;
+        background-color: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        padding-top: 60px;
+        gap: 20px;
+        transition: right 0.3s ease;
+        z-index: 1050;
+      }
+
+      .slide-menu a {
+        padding: 12px 20px;
+        font-size: 18px;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background 0.3s;
+      }
+
+      .slide-menu a:hover,
+      .slide-menu a.active {
+        color: #22c55e;
+      }
+
+      .slide-menu.show {
+        right: 0;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="menu">
+        <a href="#">home</a>
+        <a href="#projects" class="active">Projects</a>
+        <a href="#members">Members</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </nav>
+
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="slide-menu">
+      <a href="#">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#members">Members</a>
+      <a href="#faq">FAQ</a>
+    </div>
+
+    <script>
+      const menuLinks = document.querySelectorAll(".menu a");
+      const slideLinks = document.querySelectorAll(".slide-menu a");
+      const hamburger = document.querySelector(".hamburger");
+      const slideMenu = document.querySelector(".slide-menu");
+
+      hamburger.addEventListener("click", () => {
+        slideMenu.classList.toggle("show");
+        hamburger.classList.toggle("open");
+      });
+
+      [...menuLinks, ...slideLinks].forEach((link) => {
+        link.addEventListener("click", () => {
+          [...menuLinks, ...slideLinks].forEach((l) =>
+            l.classList.remove("active")
+          );
+          link.classList.add("active");
+          slideMenu.classList.remove("show");
+          hamburger.classList.remove("open");
+        });
+      });
+    </script>
+  </body>
+</html>

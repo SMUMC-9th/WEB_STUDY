@@ -1,7 +1,14 @@
+# macOS
 .DS_Store
 ._.DS_Store
 **/.DS_Store
 **/._.DS_Store
 
+# Node
 node_modules/
 package-lock.json
+
+# 환경 변수
+.env
+.env.*
+!.env.example   

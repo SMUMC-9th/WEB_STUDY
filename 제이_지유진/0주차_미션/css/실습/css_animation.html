@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 예제</title>
+    <style>
+      body {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+
+      .box {
+        width: 100px;
+        height: 100px;
+        background: tomato;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+      }
+
+      @keyframes slideRight {
+        0% {
+          transform: translateX(0);
+          background: tomato;
+        }
+        50% {
+          transform: translateX(150px);
+          background: orange;
+        }
+        100% {
+          transform: translateX(0);
+          background: tomato;
+        }
+      }
+
+      @keyframes rotate360 {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes scaleUp {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .box1 {
+        animation-name: slideRight;
+        animation-duration: 2s;
+        animation-timing-function: ease-in-out;
+        animation-delay: 0s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-fill-mode: forwards;
+      }
+
+      .box2 {
+        animation: rotate360 3s linear 0s infinite normal both;
+      }
+
+      .box3 {
+        animation: scaleUp 1.5s ease-in-out 0.2s 3 alternate forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box box1">slide</div>
+    <div class="box box2">rotate</div>
+    <div class="box box3">scale</div>
+  </body>
+</html>
