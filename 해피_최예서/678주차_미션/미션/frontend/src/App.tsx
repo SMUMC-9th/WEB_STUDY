@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import LpDetailPage from "./pages/LpDetailPage.tsx";
+import ThrottlePage from "./pages/ThrottlePage.tsx";
 
 const ProtectedRoute = ({ children }: PropsWithChildren) => {
   const { isLogin } = useAuth();
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/lps/:lpId",
         element: <LpDetailPage />,
+      },
+      {
+        path: "/throttle",
+        element: <ThrottlePage />
       },
     ],
   },

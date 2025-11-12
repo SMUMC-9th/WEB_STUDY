@@ -26,7 +26,7 @@ function useGetInfiniteLpList(
 
     // 빈 문자열 / 공백이면 요청 막음
     // enabled: 쿼리 실행 여부를 제어하는 옵션 (특정 조건일 때만 요청 보내고 싶을 때 사용)
-    // ?????
+    // ??
     enabled: search.trim() === "" || search.trim().length > 0
   });
 }
