@@ -1,21 +1,29 @@
 import { ArrowUp } from "lucide-react";
 import { useState, useEffect } from "react";
+import useThrottle from "../hooks/useThrottle";
 
 interface BackToTopProps {
   threshold?: number; // 버튼 표시 시작 스크롤 높이
+  delay?: number; // throttle 간격
 }
 
-const BackToTop = ({ threshold = 300 }: BackToTopProps) => {
+const BackToTop = ({ threshold = 300, delay = 200 }: BackToTopProps) => {
+  const [scrollY, setScrollY] = useState(0);
+  const throttledScrollY = useThrottle(scrollY, delay);
   const [isVisible, setVisible] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
-      setVisible(window.scrollY > threshold);
+      setScrollY(window.scrollY);
     };
-    onScroll();
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [threshold]);
+  }, []);
+
+  useEffect(() => {
+    setVisible(throttledScrollY > threshold);
+  }, [throttledScrollY, threshold]);
 
   const scrollToTop = () => {
     const reduce = window.matchMedia?.(

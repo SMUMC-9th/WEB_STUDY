@@ -18,7 +18,6 @@ const HomePage = () => {
   const [order, setOrder] = useState<"desc" | "asc">("desc");
   const [openCreate, setOpenCreate] = useState(false);
   const [search, setSearch] = useState("");
-
   const debouncedSearch = useDebounce(search, 300);
 
   const {
