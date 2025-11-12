@@ -11,11 +11,15 @@ import type { CreateLpRequest } from "../types/lp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createLp } from "../apis/lp";
 import { QUERY_KEY } from "../constants/key";
-import { Pencil } from "lucide-react";
+import { Pencil, Search } from "lucide-react";
+import { useDebounce } from "../hooks/useDebounce";
 
 const HomePage = () => {
   const [order, setOrder] = useState<"desc" | "asc">("desc");
   const [openCreate, setOpenCreate] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const debouncedSearch = useDebounce(search, 300);
 
   const {
     data,
@@ -26,7 +30,7 @@ const HomePage = () => {
     isLoading,
     isError,
     isFetchingNextPage,
-  } = useGetLpList({ order });
+  } = useGetLpList({ order, search: debouncedSearch });
   const { ref, inView } = useInView({ threshold: 0 });
 
   useEffect(() => {
@@ -63,9 +67,21 @@ const HomePage = () => {
 
   return (
     <div className="h-full bg-gray-50 p-5">
-      <OrderToggle order={order} onChange={setOrder} />
+      <div className="flex justify-between">
+        <div className="relative w-60">
+          <Search className="absolute left-2 top-4 -translate-y-1/2 text-gray-400 w-4 h-4" />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          <input
+            className="w-full pl-7 pr-2 py-1 border border-gray-400 rounded outline-none"
+            placeholder="검색어를 입력하세요"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <OrderToggle order={order} onChange={setOrder} />
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-5">
         {!data && isLoading && <LpCardSkeletonList count={20} />}
 
         {data?.pages.map((lps) =>
