@@ -10,6 +10,12 @@ import LpCardSkeletonList from "../components/LpCard/LpCardSkeletosList";
 import Sidebar from "../components/\bSidebar";
 import FloatingAddButton from "../components/FloatingAddButton";
 import LpCreationModal from "../components/LpCreationModal";
+import useDebounce from "../hooks/queries/useDebounce";
+import {
+  SEARCH_DEBOUNCE_DELAY,
+  SEARCH_THROTTLE_DELAY,
+} from "../constants/delay";
+import useThrottle from "../hooks/useThrottle";
 
 const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,6 +23,7 @@ const HomePage = () => {
   const [search, setSearch] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
 
   // LP 목록 가져오기
   const {
@@ -26,19 +33,20 @@ const HomePage = () => {
     isPending,
     fetchNextPage,
     isError,
-  } = useGetInfiniteLpList(50, search, PAGINATION_ORDER.desc);
+  } = useGetInfiniteLpList(50, debouncedValue, PAGINATION_ORDER.desc);
 
   // react-intersection-observer 사용
   const { ref: observerRef, inView } = useInView({
     threshold: 0.1,
   });
 
+  const throttledInView = useThrottle(inView, SEARCH_THROTTLE_DELAY);
   // inView가 true가 되면 다음 페이지 로드
   useEffect(() => {
     if (inView && hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, isFetching, fetchNextPage]);
+  }, [throttledInView, hasNextPage, isFetching, fetchNextPage]);
 
   // 인증 체크
   useEffect(() => {
