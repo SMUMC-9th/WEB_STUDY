@@ -1,17 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { Menu } from "lucide-react";
 import useGetMyInfo from "../hooks/useGetMyInfo";
 import { useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEY } from "../constants/key";
+import useSidebar from "../hooks/useSidebar";
 
 const Header = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { accessToken, logout } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const { open, closeSidebar, toggleSidebar } = useSidebar({
+    defaultOpen: false,
+    lockScroll: true,
+    closeOnEsc: true,
+    closeOnRouteChange: true,
+  });
 
   const { data: my } = useGetMyInfo(!!accessToken);
   const userName = my?.data?.name;
@@ -67,7 +73,7 @@ const Header = () => {
               </button>
 
               <button
-                onClick={() => setSidebarOpen(true)}
+                onClick={toggleSidebar}
                 aria-label="사이드바 열기"
                 className="ml-1 p-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
               >
@@ -77,7 +83,7 @@ const Header = () => {
           )}
         </div>
       </nav>
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar open={open} onClose={closeSidebar} />
     </>
   );
 };
