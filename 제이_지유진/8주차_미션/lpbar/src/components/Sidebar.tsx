@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Search, UserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Search, UserRound } from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -13,11 +12,34 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpenModal }) => {
   const navigate = useNavigate();
 
+  // ✅ ESC 키로 닫기 + 배경 스크롤 방지
+  useEffect(() => {
+    if (isOpen) {
+      // ESC 닫기 핸들러
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose();
+      };
+      window.addEventListener("keydown", handleKeyDown);
+
+      // 배경 스크롤 방지
+      document.body.style.overflow = "hidden";
+
+      // cleanup
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "";
+      };
+    } else {
+      // 닫혔을 때 원복 (안전용)
+      document.body.style.overflow = "";
+    }
+  }, [isOpen, onClose]);
+
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* 배경 어둡게 */}
+          {/* 어두운 배경 */}
           <motion.div
             className="fixed inset-0 bg-black/50 z-40"
             onClick={onClose}
@@ -26,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpenModal }) => {
             exit={{ opacity: 0 }}
           />
 
-          {/* 사이드바 본체 */}
+          {/* 사이드바 */}
           <motion.div
             className="fixed top-0 left-0 h-full w-64 bg-neutral-900 text-white z-50 flex flex-col justify-between p-5 shadow-lg"
             initial={{ x: -300 }}
@@ -53,6 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpenModal }) => {
                   <Search className="inline-block mr-2" size={20} />
                   찾기
                 </button>
+
                 <button
                   onClick={() => {
                     navigate("/my");
