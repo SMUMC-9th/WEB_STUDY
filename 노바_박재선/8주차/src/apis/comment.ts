@@ -59,14 +59,3 @@ export const getUserInfo = async (id: number): Promise<ResponseUserDto> => {
   const { data } = await axiosInstance.get(`/v1/users/${id}`);
   return data;
 };
-
-//image mutationFn 적용 API요청
-export const updateLpImage = async (
-  imageUrl: string,
-  lpid: string
-): Promise<ResponseCommentDto> => {
-  const { data } = await axiosInstance.patch(`/v1/lps/${lpid}`, {
-    imageUrl,
-  });
-  return data;
-};

@@ -1,9 +1,6 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import useCreateLp from "../hooks/mutations/useCreateLp";
-import { uploadImage } from "../apis/lp";
 import { FaPlus, FaTimes } from "react-icons/fa";
-import { useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEY } from "../constants/key";
 
 interface LpCreateModalProps {
   isOpen: boolean;
@@ -19,7 +16,7 @@ const LpCreateModal = ({ isOpen, onClose }: LpCreateModalProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const queryClient = useQueryClient();
+
   const { mutate: createLp, isPending } = useCreateLp();
   if (!isOpen) return null;
 
@@ -50,48 +47,31 @@ const LpCreateModal = ({ isOpen, onClose }: LpCreateModalProps) => {
   };
 
   //폼 제출
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!file || !title || !content) {
       alert("사진과 LP이름 그리고 내용 작성해주세요");
       return;
     }
 
-    try {
-      // 1단계: 이미지를 /v1/uploads로 업로드하고 URL 받기
-      console.log("이미지 업로드 시작:", file.name);
-      const thumbnailUrl = await uploadImage(file);
-      console.log("업로드된 이미지 URL:", thumbnailUrl.data.imageUrl);
+    //서버한테 보낼 FormData 생성
+    const formData = new FormData();
+    formData.append("thumbnail", file);
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("tags", JSON.stringify(tags));
 
-      // 2단계: 받은 URL을 포함하여 lpData JSON 객체 생성
-      const lpData = {
-        title: title,
-        content: content,
-        thumbnail: thumbnailUrl.data.imageUrl,
-        published: true, // 기본값: 발행됨
-        tags: tags,
-      };
-      console.log("LP 생성 요청 데이터:", lpData);
-
-      // 3단계: JSON 데이터를 /v1/lps로 전송
-      createLp(lpData, {
-        onSuccess: () => {
-          //서버한테 보내는거 성공하면 폼 초기화시키고, 모달 닫기
-          setTitle("");
-          setContent("");
-          setTags([]);
-          setFile(null);
-          setPreviewUrl(null);
-          onClose();
-          queryClient.invalidateQueries({ queryKey: [QUERY_KEY.comment] });
-        },
-      });
-    } catch (error) {
-      console.error("LP 생성 중 오류:", error);
-      alert("이미지 업로드에 실패했습니다");
-    }
+    createLp(formData, {
+      onSuccess: () => {
+        //서버한테 보내는거 성공하면 폼 초기화시키고, 모달 닫기
+        setTitle("");
+        setContent("");
+        setTags([]);
+        setFile(null);
+        setPreviewUrl(null);
+        onClose();
+      },
+    });
   };
-
-  
 
   return (
     //바깥에 누르면 닫기 되도로 설정

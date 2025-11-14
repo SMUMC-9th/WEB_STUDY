@@ -6,11 +6,6 @@ import useToggleLike from "../hooks/mutations/useToggleLikes";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 import useUpdateLp from "../hooks/mutations/useUpdateLp";
 import CommentSection from "../components/CommentSection";
-import { uploadImage } from "../apis/lp";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEY } from "../constants/key";
-import type { Tag } from "../types/lp";
-import useDeleteLp from "../hooks/mutations/useDeleteLp";
 
 const LpDetailPage = () => {
   const { lpid } = useParams();
@@ -19,14 +14,11 @@ const LpDetailPage = () => {
   const { data: myInfo } = useGetMyInfo();
   const { mutate: updateLp, isPending: isUpdating } = useUpdateLp();
 
-  const { mutate: deleteLp, isPending: isDeleting } = useDeleteLp();
-
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(data?.data.title);
-  const [content, setContent] = useState(data?.data.content);
-  const [preview, setPreview] = useState<string | null>();
-  const [imageUrl, setImageUrl] = useState(data?.data.thumbnail);
-  const [tags, setTags] = useState<string[] | undefined>();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const lp = data?.data;
 
@@ -34,19 +26,11 @@ const LpDetailPage = () => {
 
   const isOwner = lp?.author?.id === myInfo?.id;
 
-  const queryClient = useQueryClient();
-
   useEffect(() => {
     if (lp) {
       setTitle(lp.title);
       setContent(lp.content);
       setPreview(lp.thumbnail);
-      //TODO: tags 안에 있는 tag 이름만 빼와서 리스트로 만들고, setTags()로 state 설정하기
-      // const tagsData = () => {
-
-      // }
-      const tagsData: string[] = lp.tags.map((item) => item.name);
-      setTags(tagsData);
     }
   }, [lp]);
 
@@ -54,21 +38,16 @@ const LpDetailPage = () => {
     if (!lpid) return;
     toggleLike({ lpid, isLiked: !!isLiked });
   };
-  //LP타입 다시 깔끔하게 정리하기.
+
   const handleUpdateLp = () => {
     if (!lpid) return;
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    if (thumbnail) formData.append("thumbnail", thumbnail);
 
     updateLp(
-      {
-        lpid,
-        lp: {
-          title: title!,
-          content: content!,
-          thumbnail: imageUrl!,
-          tags: [],
-          published: true,
-        },
-      },
+      { lpid, formData },
       {
         onSuccess: () => {
           setIsEditing(false);
@@ -77,41 +56,11 @@ const LpDetailPage = () => {
     );
   };
 
-  const handleLpDelete = () => {
-    if (!lpid) return;
-    if (
-      window.confirm(
-        "정말 LP삭제하실건가요? 한번 삭제한 LP는 되돌릴 수 없습니다."
-      )
-    ) {
-      deleteLp(lpid);
-    }
-  };
-
-  const useUploadUrl = () => {
-    return useMutation({
-      mutationFn: ({ file }: { file: File }) => uploadImage(file),
-      onError: (error) => {
-        console.error("이미지 업로드 실패: ", error);
-        alert("LP 수정에 실패했습니다");
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries({
-          queryKey: [QUERY_KEY.content],
-        });
-      },
-      onSuccess: (data) => {
-        setImageUrl(data.data.imageUrl);
-      },
-    });
-  };
-  const { mutate } = useUploadUrl();
   const handelThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setThumbnail(file);
       setPreview(URL.createObjectURL(file));
-      mutate({ file });
-      setImageUrl(imageUrl);
     }
   };
 
@@ -179,8 +128,6 @@ const LpDetailPage = () => {
               </button>
             )}
             <button
-              onClick={handleLpDelete}
-              disabled={isDeleting}
               className="hover:text-white cursor-pointer transition"
               title="삭제"
             >

@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createLp } from "../../apis/lp";
 import { QUERY_KEY } from "../../constants/key";
-import type { LP } from "../../types/lp";
 
 const useCreateLp = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (lpData: LP) => createLp(lpData),
+    mutationFn: (formData: FormData) => createLp(formData),
     onSuccess: () => {
       //이거는 홈페이지에 모든 Lp목록
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.lps] });

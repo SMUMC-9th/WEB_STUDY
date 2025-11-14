@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateLp } from "../../apis/lp";
 import { QUERY_KEY } from "../../constants/key";
-import type { DefaultLp } from "../../types/lp";
 
 interface UpdateLpVariables {
   lpid: string;
-  lp: DefaultLp;
+  formData: FormData;
 }
 
 const useUpdateLp = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ lpid, lp }: UpdateLpVariables) => updateLp(lpid, lp),
-    onSuccess: (_, variables) => {
+    mutationFn: ({ lpid, formData }: UpdateLpVariables) =>
+      updateLp(lpid, formData),
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.lps, variables.lpid],
+        queryKey: [QUERY_KEY.lpComments, variables.lpid],
       });
       alert("Lp 수정완료");
     },

@@ -21,33 +21,23 @@ export type Author = {
   updatedAt: Date;
 };
 
-export type DefaultLp = {
+export type Lp = {
+  id: number;
   title: string;
   content: string;
   thumbnail: string;
-  tags: Tag[];
   published: boolean;
-};
-
-export type LP = DefaultLp & {
-  id: number;
-
   authorId: number;
   createdAt: Date;
   updatedAt: Date;
+  tags: Tag[];
   likes: Likes[];
 };
 
-export type LpDetail = LP & {
+export type LpDetail = Lp & {
   author: Author;
 };
 
-export type Image = {
-  imageUrl: string;
-};
-
-export type ResponseLpListDto = CursorBasedResponse<LP[]>;
+export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
 export type ResponseLpDetailDto = CommonResponse<LpDetail>;
-
-export type ResponseImageUrlDto = CommonResponse<Image>;

@@ -7,7 +7,7 @@ import { getLpComments } from "../../apis/comment";
 
 function useGetInfiniteLpComments(lpid: string, order: PAGINATION_ORDER) {
   return useInfiniteQuery({
-    queryKey: [QUERY_KEY.comment, lpid, order],
+    queryKey: [QUERY_KEY.content, lpid, order],
 
     //pageParam은 getNextPageParam에서 반환된 nextCursor값임.
     queryFn: ({ pageParam = 0 }) =>
