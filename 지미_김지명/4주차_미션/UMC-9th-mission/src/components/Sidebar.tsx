@@ -11,7 +11,10 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
@@ -25,11 +28,31 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     };
   }, [isOpen, onClose]);
 
+  // ESC 키로 사이드바 닫기
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscapeKey);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <>
       {/* 오버레이 */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={onClose} />
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={onClose}
+        />
       )}
 
       {/* 사이드바 - 스크롤 따라오기 */}
@@ -44,7 +67,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <div className="mb-8 pb-4 border-b border-gray-700">
             <h2 className="text-2xl font-bold text-[#FF007F]">카테고리</h2>
           </div>
-          
+
           {/* 네비게이션 */}
           <nav className="space-y-2">
             <button className="w-full text-left px-4 py-3 rounded-lg bg-[#FF007F] text-white font-semibold">
