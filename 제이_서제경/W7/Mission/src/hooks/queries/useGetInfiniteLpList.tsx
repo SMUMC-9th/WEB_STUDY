@@ -19,6 +19,10 @@ function useGetInfiniteLpList(
     getNextPageParam: (lastPage: ResponseLpListDto) => {
       return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
     },
+    // enabled: search.trim().length > 0, // 검색어 비어있으면 쿼리 실행 X
+
+    staleTime: 1000 * 30,
+    gcTime: 1000 * 60 * 5,
   });
 }
 

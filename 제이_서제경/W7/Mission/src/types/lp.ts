@@ -41,8 +41,8 @@ export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 export type TPostLPDto = {
   title: string;
   content: string;
-  tags: string[];
   thumbnail?: string;
+  tags: string[];
   published: boolean;
 };
 

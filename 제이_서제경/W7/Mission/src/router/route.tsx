@@ -1,10 +1,10 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
-import HomePage from "../pages/common/HomePage";
+import HomePage from "../pages/home/HomePage";
 import Layout from "../layout/Layout";
 import LoginPage from "../pages/auth/LoginPage";
 import Mypage from "../pages/auth/Mypage";
 import SignupWizard from "../pages/auth/SignupWizard";
-import NotFoundPage from "../pages/common/ErrorPage";
+import NotFoundPage from "../pages/error/ErrorPage";
 import GoogleLoginRedirectPage from "../pages/auth/GoogleLoginRedirectPage";
 import ProtectedLayout from "../layout/ProtectedLayout";
 import LpDetailPage from "../pages/lps/LpDetailPage";

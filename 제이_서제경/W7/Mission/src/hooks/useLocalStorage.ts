@@ -6,10 +6,17 @@ export const useLocalStorage = (key: string) => {
       console.log(error);
     }
   };
+
   const getItem = () => {
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
+      if (!item) return null;
+
+      try {
+        return JSON.parse(item); //JSON이면 객체로 반환
+      } catch {
+        return item; // 아니면 그냥 문자열로 반환
+      }
     } catch (error) {
       console.log(error);
       return null;

@@ -1,13 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Menu } from "lucide-react";
-import type { Dispatch, SetStateAction } from "react";
 
 type HeaderProps = {
-  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
+  onMenuClick: () => void;
 };
 
-export default function Header({ setSidebarOpen }: HeaderProps) {
+export default function Header({ onMenuClick }: HeaderProps) {
   const navigate = useNavigate();
   const { accessToken, user, logout } = useAuth();
 
@@ -31,7 +30,7 @@ export default function Header({ setSidebarOpen }: HeaderProps) {
           {/* 왼쪽 로고 + 메뉴 */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setSidebarOpen(true)}
+              onClick={onMenuClick}
               className="text-[22px] text-neutral-800 hover:opacity-70 transition-all duration-200 active:scale-95"
               aria-label="메뉴 열기"
             >
@@ -99,9 +98,3 @@ export default function Header({ setSidebarOpen }: HeaderProps) {
     </header>
   );
 }
-
-// Point :
-// NavLink의 className에 isActive를 활용하여 현재 경로에 따라 스타일이 동적으로 변경되도록 구현
-// isActive가 true일 때와 false일 때 각각 다른 스타일을 적용
-// [].join(" ")를 사용하여 여러 클래스를 하나의 문자열로 결합
-// accessToken의 존재 여부에 따라 로그인/회원가입 버튼과 마이페이지/로그아웃 버튼을 조건부로 렌더링
