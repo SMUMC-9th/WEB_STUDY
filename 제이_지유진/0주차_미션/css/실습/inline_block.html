@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display Test</title>
+    <style>
+      .block {
+        display: block;
+        width: 200px;
+        height: 50px;
+        background-color: tomato;
+        margin-bottom: 10px;
+        color: white;
+        text-align: center;
+        line-height: 50px;
+      }
+
+      .inline {
+        display: inline;
+        width: 200px; /* 무시됨 */
+        height: 50px; /* 무시됨 */
+        background-color: skyblue;
+        margin-right: 10px;
+        color: white;
+        text-align: center;
+      }
+
+      .inline-block {
+        display: inline-block;
+        width: 200px;
+        height: 50px;
+        background-color: green;
+        margin-right: 10px;
+        color: white;
+        text-align: center;
+        line-height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Block, Inline, Inline-block 실습</h2>
+
+    <div class="block">Block</div>
+    <div class="block">Block</div>
+
+    <span class="inline">Inline</span>
+    <span class="inline">Inline</span>
+
+    <div class="inline-block">Inline-block</div>
+    <div class="inline-block">Inline-block</div>
+  </body>
+</html>

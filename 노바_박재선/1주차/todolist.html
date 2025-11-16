@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="todolist.css">
+</head>
+<body>
+    <div class="container">
+        <div class="Header">
+            <h3>⭐SEON TODO⭐</h3>
+        </div>
+        <div class="Editor">
+            <input id="todo-input" placeholder="할 일 입력"/>
+            <button>할 일 추가</button>
+        </div>
+        <div class="List">
+            <div class="List-todoSection">
+                <h4>할 일</h4>
+                <ul id="todo-list"></ul>
+            </div>
+            <div class="List-doneSection">
+                <h4>완료</h4>
+                <ul id="done-list"></ul>
+            </div>
+        </div>
+    </div>
+    <script src="./dist/todolist.js"></script>
+</body>
+</html>

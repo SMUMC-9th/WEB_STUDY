@@ -1,0 +1,149 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aliceblue;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.todo-container {
+  width: 500px;
+  height: 700px;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  padding: 50px 0;
+}
+
+.todo-container__header {
+  font-size: 30px;
+  margin-bottom: 40px;
+}
+
+.todo-container__input {
+  width: 60%;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.todo-container__button {
+  border: none;
+  border-radius: 7px;
+  background-color: #c0e2ff;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 10px 15px;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: #a9d7ff;
+  }
+}
+
+.render-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 50px;
+  gap: 10px;
+}
+
+.render-container__title {
+  font-size: 18px;
+  margin-bottom: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.render-container__section {
+  width: 100%;
+  text-align: left;
+}
+
+.render-container__title {
+  font-size: 17px;
+  margin: 15px 0;
+
+  display: flex;
+  justify-content: center;
+}
+
+.render-container__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.render-container__item-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #b32c3a;
+  }
+}
+
+/* js 스타일 */
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  gap: 2px;
+}
+
+.text {
+  flex: 1;
+}
+
+.item.done .text {
+  color: #888;
+  text-decoration: line-through;
+}
+
+.btn {
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn.ok {
+  background-color: #4cd083;
+
+  &:hover {
+    background-color: #389760;
+  }
+}
+
+.btn.del {
+  border-color: #2b1a1a;
+  background: #ec7e7e;
+
+  &:hover {
+    background-color: #bf6464;
+  }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0주차 Layout</title>
+    <style>
+      body {
+        margin: 0;
+        font-size: x-large;
+        font-weight: bold;
+        text-align: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      header {
+        display: flex;
+        color: #fff;
+      }
+      header div:first-child {
+        flex: 1;
+        background: #0f1b2b;
+        padding: 30px;
+      }
+      header div:last-child {
+        flex: 4;
+        background: #ef4655;
+        padding: 30px;
+      }
+
+      section {
+        background: #558ed6;
+        color: #fff;
+        padding: 170px;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 50% 25% 25%;
+        grid-template-areas: "main . side";
+        min-height: 300px;
+      }
+
+      .main {
+        grid-area: main;
+        background: #1e2b3b;
+        color: #fff;
+        display: grid;
+        place-items: center;
+      }
+
+      .side {
+        grid-area: side;
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+      }
+
+      .image {
+        background: #cfecee;
+        display: grid;
+        place-items: center;
+      }
+
+      .extra {
+        background: #45b693;
+        display: grid;
+        place-items: center;
+      }
+
+      footer {
+        background: #f6c85f;
+        padding: 25px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <header>
+        <div>HEADER</div>
+        <div>MENU</div>
+      </header>
+
+      <section>HERO</section>
+
+      <main>
+        <div class="main">MAIN</div>
+        <div class="side">
+          <div class="image">IMAGE</div>
+          <div class="extra">EXTRA</div>
+        </div>
+      </main>
+
+      <footer>BANNER</footer>
+    </div>
+  </body>
+</html>

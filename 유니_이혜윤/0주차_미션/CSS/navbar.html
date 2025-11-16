@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0주차 SMUMC Navbar</title>
+    <style>
+      body {
+        margin: 0;
+        background: #0d0d0d;
+        color: #fff;
+      }
+
+      /* Navbar 레이아웃 */
+      .header {
+        position: fixed;
+        top: 10px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        z-index: 100;
+      }
+
+      .menu {
+        display: flex;
+        gap: 24px;
+        background: #151722;
+        padding: 12px 20px;
+        border-radius: 9999px;
+      }
+      .menu a {
+        color: #f7f7f7;
+        font-size: 15px;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 9999px;
+        transition: 0.2s;
+        cursor: pointer;
+      }
+      .menu a:hover {
+        color: #888;
+      }
+      .menu a.active {
+        background: #12b76a;
+        color: #fff;
+      }
+
+      /* 햄버거 버튼 */
+      .hamburger {
+        display: none;
+        position: fixed;
+        top: 30px;
+        right: 20px;
+        width: 30px;
+        cursor: pointer;
+        z-index: 200;
+      }
+      .hamburger span,
+      .hamburger span::before,
+      .hamburger span::after {
+        content: "";
+        display: block;
+        height: 3px;
+        background: #fff;
+        border-radius: 2px;
+        position: relative;
+      }
+      .hamburger span::before {
+        top: -8px;
+        position: absolute;
+        width: 100%;
+      }
+      .hamburger span::after {
+        top: 8px;
+        position: absolute;
+        width: 100%;
+      }
+
+      /* 사이드바 */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 220px;
+        height: 100%;
+        background: #151722;
+        padding: 60px 25px;
+        transform: translateX(100%);
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      .sidebar a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .sidebar a.active {
+        background: #12b76a;
+        color: #fff;
+        border-radius: 8px;
+        padding: 5px;
+      }
+      .sidebar.show {
+        transform: translateX(0);
+      }
+
+      /* 반응형 */
+      @media (max-width: 768px) {
+        .menu {
+          display: none;
+        }
+        .hamburger {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="menu">
+        <a>home</a>
+        <a>Projects</a>
+        <a>Members</a>
+        <a>FAQ</a>
+      </nav>
+    </header>
+
+    <!-- 햄버거 메뉴 + 사이드바 -->
+    <div
+      class="hamburger"
+      onclick="document.querySelector('.sidebar').classList.toggle('show')"
+    >
+      <span></span>
+    </div>
+    <div class="sidebar">
+      <a>home</a>
+      <a>Projects</a>
+      <a>Members</a>
+      <a>FAQ</a>
+    </div>
+
+    <script>
+      // 메뉴 모두 가져오기
+      const allLinks = document.querySelectorAll(".menu a, .sidebar a");
+      const sidebar = document.querySelector(".sidebar");
+      const hamburger = document.querySelector(".hamburger");
+
+      allLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          // 기존 active 제거
+          allLinks.forEach((l) => l.classList.remove("active"));
+          // 클릭한 메뉴에 active 추가
+          link.classList.add("active");
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!sidebar.classList.contains("show")) return;
+        if (sidebar.contains(e.target) || hamburger.contains(e.target)) return;
+        sidebar.classList.remove("show");
+      });
+    </script>
+  </body>
+</html>
