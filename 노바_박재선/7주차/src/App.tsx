@@ -15,6 +15,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Mypage from "./pages/Mypage";
 import LpDetailPage from "./pages/LpDetailPage";
+import ThrottlePage from "./pages/ThrottlePage";
 
 export const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const publicRoutes: RouteObject[] = [
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
       { path: "v1/auth/google/callback", element: <GoogleRedirectPage /> },
+      { path: "/throttle", element: <ThrottlePage /> },
     ],
   },
 ];

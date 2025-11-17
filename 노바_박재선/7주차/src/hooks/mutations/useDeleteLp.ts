@@ -20,7 +20,7 @@ const useDeleteLp = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.lps] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.myLps] });
 
-      nav("/", { replace: true });
+      nav(-1, { replace: true });
     },
 
     onError: (error) => {
