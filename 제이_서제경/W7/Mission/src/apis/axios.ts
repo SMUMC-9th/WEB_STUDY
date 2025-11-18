@@ -3,7 +3,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
 
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
-  _retry?: boolean; 
+  _retry?: boolean;
 }
 
 //전역변수로 refresh 요청에 promise를 저장해서 중복 요청을 방지한다.
