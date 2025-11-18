@@ -9,7 +9,6 @@ import CommentSection from "../components/CommentSection";
 import { uploadImage } from "../apis/lp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEY } from "../constants/key";
-import type { Tag } from "../types/lp";
 import useDeleteLp from "../hooks/mutations/useDeleteLp";
 
 const LpDetailPage = () => {

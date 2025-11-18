@@ -4,6 +4,7 @@ import useGetInfiniteLpComments from "../hooks/queries/useGetInfiniteLpComments"
 import { useInView } from "react-intersection-observer";
 import useCreateLpComment from "../hooks/useCreateLpComments";
 import CommentItem from "./CommentItem";
+import useThrottle from "../hooks/useThrottle";
 
 interface CommentSectionProps {
   lpid: string;
@@ -26,11 +27,13 @@ const CommentSection = ({ lpid }: CommentSectionProps) => {
     useCreateLpComment();
   const { ref, inView } = useInView({ threshold: 0.5, delay: 100 });
 
+  const throttledInView = useThrottle(inView, 1000);
+
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
+    if (throttledInView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [throttledInView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleSubmitComment = () => {
     if (commentText.trim().length === 0) {

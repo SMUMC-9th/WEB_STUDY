@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { SidebarContent } from "../components/SidebarContent";
 import { useSidebar } from "../hooks/useSidebar";

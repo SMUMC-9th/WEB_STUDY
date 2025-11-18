@@ -2,33 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
 import { postSignup } from "../apis/auth";
 import type { ResponseSignupDto } from "../types/auth";
-
-const signupSchema = z
-  .object({
-    email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
-    password: z
-      .string()
-      .min(6, { message: "비밀번호는 최소 6자 이상이어야 합니다." }),
-    confirmPwd: z.string(),
-    nickname: z
-      .string()
-      .min(2, { message: "닉네임은 두글자 이상이어야합니다." }),
-  })
-  .superRefine((data, ctx) => {
-    if (data.password.length >= 6 && data.password !== data.confirmPwd) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "비밀번호가 일치하지 않습니다.",
-        path: ["confirmPwd"],
-      });
-    }
-  });
-
-type FormFields = z.infer<typeof signupSchema>;
+import { signupSchema, type SignupForm } from "../schemas/authSchema";
 
 const SignupPage = () => {
   const nav = useNavigate();
@@ -41,7 +18,7 @@ const SignupPage = () => {
     trigger,
     formState: { errors, isSubmitting },
     getValues,
-  } = useForm<FormFields>({
+  } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
     mode: "onBlur",
     defaultValues: {
@@ -60,7 +37,7 @@ const SignupPage = () => {
     const valid = await trigger(["password", "confirmPwd"]);
     if (valid) setStep(3);
   };
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<SignupForm> = async (data) => {
     const { confirmPwd, nickname, ...rest } = data;
 
     const requestBody = {
