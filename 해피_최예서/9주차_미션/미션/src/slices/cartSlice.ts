@@ -63,7 +63,7 @@ const cartSlice = createSlice({
     },
 
     // 총액 계산
-    calculateTotlas: (state) => {
+    calculateTotals: (state) => {
       let amount = 0;
       let total = 0;
 
@@ -78,7 +78,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const { increase, decrease, removeItem, clearCart, calculateTotlas} = cartSlice.actions;
+export const { increase, decrease, removeItem, clearCart, calculateTotals} = cartSlice.actions;
 
 // dudck pattern reducer는 export default로 내보내야 함
 const cartReducer = cartSlice.reducer;
