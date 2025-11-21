@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/auth";
 import { Search } from "lucide-react";
 import HamburgerButton from "./HamburgerButton";
 import Sidebar from "./Sidebar";
 import { useMutation, QueryClient } from "@tanstack/react-query";
 import { logout, withdraw } from "../api/auth";
+import { useAuthStore } from "../context/useAuthStore";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { isLogged, user, setIsLogged } = useAuth();
+  const { isLogged, user, setIsLogged } = useAuthStore();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
