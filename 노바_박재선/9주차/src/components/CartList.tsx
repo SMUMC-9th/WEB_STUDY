@@ -17,7 +17,7 @@ const CartList = () => {
         ))}
       </ul>
       <button
-        className="p-4 border rounded-md my-10"
+        className="p-4 border rounded-md my-10 hover:bg-red-400 hover:border-red-400 cursor-pointer transition-colors"
         onClick={handleAllClearButton}
       >
         전체삭제

@@ -1,23 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { deleteUser } from "../../apis/user";
-import { LOCAL_STORAGE_KEY } from "../../constants/key";
+import { useAuthActions } from "../../store/useAuthStore";
 
 const useDeleteUser = () => {
   const nav = useNavigate();
-
-  const { setAccessToken, setRefreshToken } = useAuth();
+  const { clearTokens } = useAuthActions();
 
   return useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
-      localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
-      localStorage.removeItem(LOCAL_STORAGE_KEY.refreshToken);
-
-      setAccessToken(null);
-      setRefreshToken(null);
-
+      clearTokens();
       alert("회원 탈퇴가 완료되었습니다.");
       nav("/", { replace: true });
     },
