@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import { validateSignin, type UserSigninInformation } from "../utils/validate";
-import { useAuth } from "../context/AuthContext";
+import { useAuthStore } from "../stores/useAuthStore";
 import { useEffect } from "react";
 
 const LoginPage = () => {
-  const { login, accessToken } = useAuth();
+  // Zustand store 사용
+  const { login, accessToken } = useAuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {

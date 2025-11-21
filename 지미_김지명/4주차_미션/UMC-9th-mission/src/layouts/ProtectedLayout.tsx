@@ -1,8 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuthStore } from "../stores/useAuthStore";
 
 const ProtectedLayout = () => {
-  const { accessToken }: { accessToken: string | null } = useAuth();
+  // Zustand store 사용
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   if (!accessToken) {
     return <Navigate to="/login" replace />;
