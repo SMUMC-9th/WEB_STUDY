@@ -20,7 +20,7 @@ import { useAuthStore } from "./store/useAuthStore";
 export const queryClient = new QueryClient();
 
 function Protected({ children }: { children: React.ReactNode }) {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const { accessToken } = useAuth();
   const nav = useNavigate();
   if (!accessToken) {
     alert("로그인후 접근이 가능합니다!");
