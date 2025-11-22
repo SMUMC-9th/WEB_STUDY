@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useAuthActions } from "../store/useAuthStore";
 
 const GoogleRedirectPage = () => {
   const nav = useNavigate();
-  const { setItem: setAccessToken } = useLocalStorage("accessToken");
-  const { setItem: setRefreshToken } = useLocalStorage("refreshToken");
+  const { setAccessToken, setRefreshToken } = useAuthActions();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);

@@ -11,11 +11,11 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import GoogleRedirectPage from "./pages/GoogleRedirectPage";
-import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Mypage from "./pages/Mypage";
 import LpDetailPage from "./pages/LpDetailPage";
 import ThrottlePage from "./pages/ThrottlePage";
+import { useAuthStore } from "./store/useAuthStore";
 
 export const queryClient = new QueryClient();
 
@@ -25,6 +25,7 @@ function Protected({ children }: { children: React.ReactNode }) {
   if (!accessToken) {
     alert("로그인후 접근이 가능합니다!");
     nav("/");
+    return null;
   }
   return <>{children}</>;
 }
@@ -68,10 +69,8 @@ const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </AuthProvider>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

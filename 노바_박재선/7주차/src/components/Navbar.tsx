@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import useLogout from "../hooks/mutations/useLogout";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo";
-import { useAuth } from "../context/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import useDebounce from "../hooks/useDebounce";
+import { useAuthStore } from "../store/useAuthStore";
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -12,7 +12,7 @@ interface NavbarProps {
 
 export default function Navbar({ onMenuClick }: NavbarProps) {
   const nav = useNavigate();
-  const { accessToken } = useAuth();
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");

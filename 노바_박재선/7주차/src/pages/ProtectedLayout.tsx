@@ -1,12 +1,13 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import { getMyInfo } from "../apis/auth";
 import { SidebarContent } from "../components/SidebarContent";
+import { useAuthActions, useAuthStore } from "../store/useAuthStore";
 
 const ProtectedLayout = () => {
   const nav = useNavigate();
-  const { accessToken, logout } = useAuth();
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const { logout } = useAuthActions();
   const [userName, setUserName] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 

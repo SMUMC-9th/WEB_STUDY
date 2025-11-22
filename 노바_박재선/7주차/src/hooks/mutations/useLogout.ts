@@ -1,23 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import { postLogout } from "../../apis/auth";
-import { LOCAL_STORAGE_KEY } from "../../constants/key";
+import { useAuthActions } from "../../store/useAuthStore";
 
 const useLogout = () => {
   const nav = useNavigate();
-
-  const { setAccessToken, setRefreshToken } = useAuth();
+  const { clearTokens } = useAuthActions();
 
   return useMutation({
     mutationFn: postLogout,
     onSuccess: () => {
-      localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
-      localStorage.removeItem(LOCAL_STORAGE_KEY.refreshToken);
-
-      setAccessToken(null);
-      setRefreshToken(null);
-
+      clearTokens();
       alert("로그아웃이 완료되었습니다.");
       nav("/", { replace: true });
     },

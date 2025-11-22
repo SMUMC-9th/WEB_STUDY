@@ -10,7 +10,6 @@ interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
 //나중에 null로 재할당해야 하기 때문에 const가 아닌 let으로 선언함.
 let refreshPromise: Promise<string> | null = null;
 
-
 export const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_SERVER_API_URL,
 })

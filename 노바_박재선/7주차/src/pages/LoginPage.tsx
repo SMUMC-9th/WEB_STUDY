@@ -1,12 +1,11 @@
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import useForm from "../hooks/useForm";
-
-import { useAuth } from "../context/AuthContext";
 import { loginSchema, type LoginForm } from "../schemas/authSchema";
+import { useAuthActions } from "../store/useAuthStore";
 
 const LoginPage = () => {
   const nav = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuthActions();
   const location = useLocation();
 
   //돌아갈 경로 찾음. state나 from 없으면 홈으로 가도록 설정.
