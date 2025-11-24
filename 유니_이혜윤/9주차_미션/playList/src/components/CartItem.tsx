@@ -1,5 +1,4 @@
-import { useAppDispatch } from "../hooks/useCustomRedux";
-import { increase, decrease, removeItem } from "../slices/cartSlice";
+import { useCartActions } from "../hooks/useCartStore";
 import type { Lp } from "../types/cart";
 import { CircleMinus, CirclePlus } from "lucide-react";
 
@@ -8,18 +7,18 @@ interface CartItemProps {
 }
 
 const CartItem = ({ lp }: CartItemProps) => {
-  const dispatch = useAppDispatch();
+  const { increase, decrease, removeItem } = useCartActions();
 
   const handleIncreaseCount = () => {
-    dispatch(increase({ id: lp.id }));
+    increase(lp.id);
   };
 
   const handleDecreaseCount = () => {
     if (lp.amount === 1) {
-      dispatch(removeItem({ id: lp.id }));
+      removeItem(lp.id);
       return;
     }
-    dispatch(decrease({ id: lp.id }));
+    decrease(lp.id);
   };
 
   return (

@@ -1,15 +1,14 @@
 import { ShoppingCart } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "../hooks/useCustomRedux";
 import { useEffect } from "react";
-import { totalPrice } from "../slices/cartSlice";
+import { useCartActions, useCartInfo } from "../hooks/useCartStore";
 
 const Navbar = () => {
-  const { amount, cartItems } = useAppSelector((state) => state.cart);
-  const dispatch = useAppDispatch();
+  const { amount, cartItems } = useCartInfo();
+  const { totalPrice } = useCartActions();
 
   useEffect(() => {
-    dispatch(totalPrice());
-  }, [dispatch, cartItems]);
+    totalPrice();
+  }, [totalPrice, cartItems]);
 
   return (
     <header className="w-full bg-white shadow-sm">

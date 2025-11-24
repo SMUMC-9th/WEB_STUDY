@@ -1,24 +1,24 @@
-import { useAppDispatch, useAppSelector } from "../hooks/useCustomRedux";
-import { clearCart } from "../slices/cartSlice";
-import { openModal, closeModal } from "../slices/modalSlice";
+import { useCartActions, useCartInfo } from "../hooks/useCartStore";
+import { useModalActions, useModalInfo } from "../hooks/useModalStore";
 import Modal from "./Modal";
 
 const TotalPrice = () => {
-  const { total } = useAppSelector((state) => state.cart);
-  const { isOpen } = useAppSelector((state) => state.modal);
-  const dispatch = useAppDispatch();
+  const { total } = useCartInfo();
+  const { clearCart } = useCartActions();
+  const { isOpen } = useModalInfo();
+  const { open, close } = useModalActions();
 
   const handleOpenModal = () => {
-    dispatch(openModal());
+    open();
   };
 
   const handleConfirm = () => {
-    dispatch(clearCart());
-    dispatch(closeModal());
+    clearCart();
+    close();
   };
 
   const handleCancel = () => {
-    dispatch(closeModal());
+    close();
   };
 
   return (
