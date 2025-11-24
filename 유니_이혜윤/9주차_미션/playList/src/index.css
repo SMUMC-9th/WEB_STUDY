@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Gowun Dodum", sans-serif;
+}
+
+button {
+  cursor: pointer;
 }
