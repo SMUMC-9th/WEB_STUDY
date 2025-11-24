@@ -5,7 +5,7 @@ import { validateSignin } from "../utils/validate.ts";
 import { useForm } from "../hooks/useForm.ts";
 import { useLocalStorage } from "../hooks/useLocalStorage.ts";
 import { LOCAL_STORAGE_KEY } from "../constants/key.ts";
-import { useAuth } from "../context/context.tsx";
+import {useAuth} from "../hooks/useAuth.ts";
 import usePostSignin from "../hooks/mutations/user/usePostSignin.ts";
 
 export default function SigninPage() {

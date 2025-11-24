@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import useGetLpDetail from "../hooks/queries/useGetLpDetail.tsx";
 import { Heart, Trash2, Pencil, Check, X } from "lucide-react";
-import { useAuth } from "../context/context.tsx";
 import usePostLike from "../hooks/mutations/like/usePostLike.ts";
 import useDeleteLike from "../hooks/mutations/like/useDeleteLike.ts";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo.ts";
@@ -9,6 +8,7 @@ import useDeleteLp from "../hooks/mutations/lps/useDeleteLp.ts";
 import usePatchLp from "../hooks/mutations/lps/usePatchLp.ts";
 import CommentSection from "../components/ui/CommentSection.tsx";
 import { useState } from "react";
+import {useAuth} from "../hooks/useAuth.ts";
 
 export default function LpDetailPage() {
   const { lpId } = useParams();

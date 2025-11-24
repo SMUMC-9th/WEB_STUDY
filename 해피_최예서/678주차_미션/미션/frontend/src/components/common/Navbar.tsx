@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../context/context.tsx";
+import {useAuth} from "../../hooks/useAuth.ts";
 import { useQuery } from "@tanstack/react-query";
 import { getMyInfo } from "../../apis/auth.ts";
 import { useRef, useState, useEffect } from "react";

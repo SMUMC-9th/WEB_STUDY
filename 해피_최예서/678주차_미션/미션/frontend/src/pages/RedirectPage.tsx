@@ -1,17 +1,12 @@
 import { LOCAL_STORAGE_KEY } from "../constants/key.ts";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useAuth } from "../context/context.tsx";
+import { useAuth } from "../hooks/useAuth.ts";
 
 export default function RedirectPage() {
-  const { setIsLoginState } = useAuth();
-  const navigation = useNavigate();
-  // location.search: URL의 파라미터 얻어오기
-  // new URLSearchParams 함수를 사용하면 location.search 안에 존재하는 [key, value] 형식으로 묶여있는 파라미터를 얻을 수 있다.
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  // searchParams에서 accessToken, refreshToken 받아오기
-
-  // location.href: 현재 페이지 전체 URL 가져올 수 있음.
   const urlParams = new URL(location.href).searchParams;
 
   const accessToken = urlParams.get("accessToken");
@@ -19,15 +14,16 @@ export default function RedirectPage() {
 
   useEffect(() => {
     if (accessToken && refreshToken) {
-      localStorage.setItem(LOCAL_STORAGE_KEY.accessToken, accessToken);
+
+      // accessToken은 Redux에 저장
+      login(accessToken);
+
+      // refreshToken은 localStorage 저장
       localStorage.setItem(LOCAL_STORAGE_KEY.refreshToken, refreshToken);
-      setIsLoginState(true);
-      navigation("/");
+
+      navigate("/");
     }
-  }, [accessToken, refreshToken]);
-  // 두개 다 존재하면, 로컬스토리지에 저장한다
-  // { accessToken && refreshToken ? (//로컬스토리지에 저장)}
-  //   : (//저장x)
+  }, [accessToken, refreshToken, login, navigate]);
 
   return <div>RedirectPage</div>;
 }
