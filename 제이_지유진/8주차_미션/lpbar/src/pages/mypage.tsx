@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getMe, logout, updateMe } from "../api/auth";
-import { useAuth } from "../context/auth";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../context/useAuthStore";
 
 export default function Mypage() {
-  const { setIsLogged, login } = useAuth();
+  const { setIsLogged, login } = useAuthStore();
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 

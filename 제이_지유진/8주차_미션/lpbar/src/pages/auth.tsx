@@ -2,12 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import { signIn } from "../api/auth";
 import { ChevronLeft } from "lucide-react";
-import { useAuth } from "../context/auth";
 import type { AxiosError } from "axios";
+import { useAuthStore } from "../context/useAuthStore";
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  // const { login } = useAuth();
+  const { login } = useAuthStore();
   const { values, handleChange, errors, validateField } = useForm({
     email: "",
     password: "",
