@@ -14,7 +14,9 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
   const [includeAdult, setIncludeAdult] = useState<boolean>(false);
   const [language, setLanguage] = useState("ko-KR");
 
-  const handleSubmit = (): void => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
+
     const filters: MovieFilters = {
       query,
       include_adult: includeAdult,
@@ -24,7 +26,10 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
   };
 
   return (
-    <div className="transform space-y-6 rounded-2xl border-gray-300 bg-white p-6 shadow-xl transition-all hover:shadow-2xl">
+    <form
+      onSubmit={handleSubmit}
+      className="transform space-y-6 rounded-2xl border-gray-300 bg-white p-6 shadow-xl transition-all hover:shadow-2xl"
+    >
       <div className="flex flex-wrap gap-6">
         <div className="min-w-[450px] flex-1">
           <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -56,13 +61,17 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
             className="w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:outline-none
              foucs:ring-2 focus:ring-blue-500"
           />
-        </div>{" "}
-        {/* /.min-w-[250px].flex-1 */}
+        </div>
         <div className="pt-4">
-          <button onClick={handleSubmit}>영화 검색</button>
+          <button
+            type="submit"
+            className="rounded-lg bg-blue-600 px-6 py-2 font-semibold text-white shadow-md transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            영화 검색
+          </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
