@@ -1,0 +1,273 @@
+:root {
+  /* 기본 디자인 토큰 설정함 */
+  --bg: #0f1015;
+  --fg: #ffffff;
+
+  --capsule-bg: rgba(17, 24, 39, 0.4);
+  --capsule-border: transparent;
+
+  --active: #06b653;
+  --active-text: #ffffff;
+
+  --hover-fg: #d1d5db;
+  --hover-bg: rgba(255, 255, 255, 0.08);
+
+  --nav-weight: 250;
+
+  /* 햄버거 버튼 */
+  --hamburger-size: 44px;
+  --hamburger-bar-w: 22px;
+  --hamburger-bar-h: 2px;
+  --hamburger-gap: 6px;
+  --hamburger-bg: rgba(43, 43, 43, 0.1);
+  --hamburger-open-bg: #141a22;
+
+  /* 사이드바 */
+  --sidebar-width: min(420px, 80vw);
+  --sidebar-pad-x: 28px;
+  --sidebar-pad-y: 84px;
+  --sidebar-gap: 45px;
+
+  /* 캡슐 네브바 */
+  --capsule-pad-y: 6px;
+  --capsule-pad-x: 18px;
+  --capsule-min-h: 50px;
+
+  /*트랜지션 속도 지정*/
+  --t-fast: 0.18s ease;
+  --t-med: 0.22s ease;
+  --t-slow: 0.32s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+}
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    "Apple SD Gothic Neo",
+    Inter,
+    Roboto,
+    "Noto Sans KR",
+    sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 12px 10px;
+}
+
+.nav.nav--capsule {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: clamp(15px, 3vw, 54px);
+  background: var(--capsule-bg);
+  border: 1px solid var(--capsule-border);
+  border-radius: 999px;
+  padding: var(--capsule-pad-y) var(--capsule-pad-x);
+  min-height: var(--capsule-min-h);
+}
+
+.nav__link {
+  position: relative;
+  font-weight: var(--nav-weight);
+  font-size: 14px;
+  line-height: 1;
+  padding: 10px 22px;
+  border-radius: 999px;
+  color: #fff;
+  transition:
+    background-color var(--t-fast),
+    color var(--t-fast);
+}
+.nav__link:hover {
+  color: var(--hover-fg);
+}
+.nav__link.is-active {
+  background: var(--active);
+  color: var(--active-text);
+}
+
+.nav__link--home {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 40px;
+  padding: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: transparent;
+}
+.nav__link--home:hover {
+  background: var(--hover-bg);
+}
+.nav__link--home.is-active {
+  background: var(--active);
+}
+.nav__link--home svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+
+.hamburger {
+  border: 0;
+  box-shadow: none;
+  outline: none;
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 60;
+  width: var(--hamburger-size);
+  height: var(--hamburger-size);
+  border-radius: 999px;
+  background: var(--hamburger-bg);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--t-med);
+}
+
+.hamburger__bars {
+  position: relative;
+  width: var(--hamburger-bar-w);
+  height: var(--hamburger-bar-h);
+  background: #fff;
+  border-radius: 2px;
+  transition: background-color var(--t-med);
+}
+.hamburger__bars::before,
+.hamburger__bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: var(--hamburger-bar-w);
+  height: var(--hamburger-bar-h);
+  background: #fff;
+  border-radius: 2px;
+  transition:
+    transform var(--t-med),
+    top var(--t-med),
+    opacity var(--t-med);
+}
+.hamburger__bars::before {
+  top: calc(-1 * var(--hamburger-gap));
+}
+.hamburger__bars::after {
+  top: var(--hamburger-gap);
+}
+
+.hamburger.is-open {
+  background: var(--hamburger-open-bg);
+}
+.hamburger.is-open .hamburger__bars {
+  background: transparent;
+}
+.hamburger.is-open .hamburger__bars::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+.hamburger.is-open .hamburger__bars::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: auto;
+  bottom: 0;
+  width: var(--sidebar-width);
+  translate: 100% 0;
+  transition: translate var(--t-slow);
+  background: linear-gradient(180deg, #101319 0%, #0d1016 100%);
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar--open {
+  translate: 0 0;
+}
+
+/* 사이드바 메뉴 -> flex로 푸터 바닥으로 밀어냄 */
+.sidebar__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--sidebar-gap);
+  padding: var(--sidebar-pad-y) var(--sidebar-pad-x) 28px;
+}
+
+.sidebar__item {
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #e5eaf1;
+  transform-origin: left center;
+  transition:
+    transform var(--t-fast),
+    color var(--t-fast);
+}
+.sidebar__item:hover {
+  color: var(--hover-fg);
+  transform: scale(0.9);
+}
+.sidebar__item.is-active {
+  color: var(--active);
+}
+
+.sidebar__divider {
+  margin: auto var(--sidebar-pad-x) 0;
+  height: 1px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+.sidebar__footer {
+  padding: 5px var(--sidebar-pad-x) 28px;
+  color: #9aa3ae;
+  font-size: 12px;
+}
+
+.sidebar__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-fast);
+}
+.sidebar__overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 반응형 설정 */
+@media (max-width: 880px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav.nav--capsule {
+    display: none;
+  }
+}

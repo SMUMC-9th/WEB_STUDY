@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SPA with History API</title>
+  <style>
+    /* 네비게이션 링크 스타일 */
+    nav a {
+      margin: 0 10px;           /* 링크 간격 */
+      cursor: pointer;          /* 마우스 올리면 포인터 표시 */
+      text-decoration: underline;
+      color: blue
+    }
+  </style>
+</head>
+<body>
+<!-- 네비게이션 바 -->
+<nav>
+  <a href="/" data-link>Home</a>       <!-- 홈 페이지 링크 -->
+  <a href="/about" data-link>About</a> <!-- 소개 페이지 링크 -->
+  <a href="/contact" data-link>Contact</a> <!-- 연락처 페이지 링크 -->
+</nav>
+
+<!-- SPA 콘텐츠가 들어갈 영역 -->
+<div id="app"></div>
+
+<script>
+  // SPA 목표: 브라우저 URL을 바꾸면서 페이지 전체 새로고침 없이 콘텐츠만 바꾸기
+
+  // 각 URL 경로에 대응하는 페이지 콘텐츠 정의
+  // 키: 경로, 값: 해당 경로를 렌더할 함수(문자열 반환)
+  const routes = {
+    '/': () => '<h1>Home Page</h1><p>Welcome to the home page</p>',  // 홈 페이지
+    '/about': () => '<h1>About Page</h1><p>This is the about page</p>', // 소개 페이지
+    '/contact': () => '<h1>Contact Page</h1><p>This is the contact page</p>', // 연락처 페이지
+  }
+
+  // 문서 전체에서 클릭 이벤트 감지
+  document.addEventListener('click', e => {
+    // 클릭한 요소부터 부모까지 올라가면서 data-link 속성을 가진 a 태그 찾기
+    const link = e.target.closest('[data-link]')
+    if (!link) return  // data-link가 아니면 무시
+
+    e.preventDefault()  // 기본 a 태그 동작(페이지 새로고침) 막기
+    navigateTo(link.href)  // SPA 방식으로 URL 변경 + 화면 렌더
+  })
+
+  // URL 변경 + 화면 렌더 함수
+  function navigateTo(url) {
+    // 브라우저 주소창 URL 변경 (페이지 새로고침 없음)
+    history.pushState(null, null, url)
+    router()  // 새 URL에 맞는 콘텐츠 렌더
+  }
+
+  // 현재 URL 기준으로 콘텐츠를 렌더하는 라우터 함수
+  function router() {
+    const path = window.location.pathname  // 현재 경로 가져오기
+    if(routes[path]) {  // 정의된 경로이면
+      document.getElementById('app').innerHTML = routes[path]()  // 해당 콘텐츠 렌더
+    } else {  // 정의되지 않은 경로이면
+      document.getElementById('app').innerHTML = ''  // 빈 화면
+    }
+  }
+
+  // 브라우저 뒤로가기/앞으로가기 버튼 클릭 시 라우터 실행
+  window.addEventListener('popstate', router)
+
+  // 초기 페이지 로드 시 현재 URL에 맞게 콘텐츠 렌더
+  document.addEventListener('DOMContentLoaded', router)
+</script>

@@ -6,6 +6,7 @@ import { useAuthStore } from "../context/useAuthStore";
 
 export default function Mypage() {
   const { setIsLogged, login } = useAuthStore();
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 

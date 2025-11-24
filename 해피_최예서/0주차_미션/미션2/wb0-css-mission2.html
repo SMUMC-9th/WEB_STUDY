@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+    body{
+      background-color: white;
+      height: 100vh;
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .header{
+      display:flex;
+      color:white
+    }
+
+    h1{
+      all: unset; /* h1 기본 스타일 전부 제거 */
+    }
+
+    .header__logo{
+      width: 30%;
+      height: 80px;
+      background-color: black;
+    }
+
+    .header__nav{
+      width: 70%;
+      height: 80px;
+      background-color: #f03d4d;
+    }
+
+    .hero__content{
+      width: 100%;
+      height: 300px;
+      background-color: #4e86c7;
+      color: white;
+    }
+
+    .grid-container{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr; /* 4열 */
+      grid-template-rows: 150px 150px; /* 2행이니까 두 개만 */
+      grid-template-areas: /* 총 2행 */
+          "main main blank image"
+          "main main blank extra";
+    }
+
+    .main {
+      background-color: #23344c;
+      color: white;
+      grid-area: main;
+    }
+
+    .blank {
+      grid-area: blank;
+    }
+
+    .aside__image{
+      background-color: #c0e4e7;
+      color: black;
+      grid-area: image;
+    }
+
+    .aside__extra{
+      background-color: #4ebd98;
+      color: black;
+      grid-area: extra;
+    }
+
+    .footer__banner{
+      background-color: #ffd169;
+      height: 84px;
+    }
+
+    .header__logo,
+    .header__nav,
+    .hero__content,
+    .main,
+    .aside__image,
+    .aside__extra,
+    .footer__banner {
+      display: flex;
+      justify-content: center; /* 가로 중앙 */
+      align-items: center;     /* 세로 중앙 */
+    }
+
+  </style>
+</head>
+<body>
+<header class="header">
+  <h1 class="header__logo">HEADER</h1>
+  <nav class="header__nav">MENU</nav>
+</header>
+<section class="hero">
+  <div class="hero__content">HERO</div>
+</section>
+<div class="grid-container">
+  <main class="main">MAIN</main>
+  <div class="blank"></div>
+  <div class="aside__image">IMAGE</div>
+  <div class="aside__extra">EXTRA</div>
+</div>
+<footer class="footer">
+  <div class="footer__banner">BANNER</div>
+</footer>
+
+
+</body>
+</html>
