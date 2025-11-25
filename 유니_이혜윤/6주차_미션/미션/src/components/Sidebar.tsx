@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
+import { House, CircleUserRound } from "lucide-react";
 
 interface SidebarProps {
   open: boolean;
@@ -9,25 +9,6 @@ interface SidebarProps {
 
 const Sidebar = ({ open, onClose }: SidebarProps) => {
   const navigate = useNavigate();
-
-  // ESC 키로 닫기 + 스크롤 잠금
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-
-    if (open) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [open, onClose]);
 
   return createPortal(
     <>
@@ -60,18 +41,18 @@ const Sidebar = ({ open, onClose }: SidebarProps) => {
               navigate("/");
               onClose();
             }}
-            className="w-full px-3 py-2 text-left rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
+            className="w-full flex gap-3 px-3 py-2 text-left rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
           >
-            홈
+            <House /> 홈
           </button>
           <button
             onClick={() => {
               navigate("/my");
               onClose();
             }}
-            className="w-full px-3 py-2 text-left rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
+            className="w-full flex gap-3 px-3 py-2 text-left rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
           >
-            마이페이지
+            <CircleUserRound /> 마이페이지
           </button>
         </div>
       </aside>

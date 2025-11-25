@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+body {
+  font-family: "Gowun Dodum", sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
