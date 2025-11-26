@@ -23,18 +23,19 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
   const [includeAdult, setIncludeAdult] = useState<boolean>(false);
   const [language, setLanguage] = useState("ko-KR");
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
     const filters: MoiveFilters = {
       query,
       include_adult: includeAdult,
       language,
     };
-    console.log(filters);
     onChange(filters);
   };
 
   return (
-    <div className="transform space-y-6 rounded-2xl border-gray-300 bg-white p-6 shadow-xl transition-all hover:shadow-2xl">
+    <form className="transform space-y-6 rounded-2xl border-gray-300 bg-white p-6 shadow-xl transition-all hover:shadow-2xl">
       <div className="flex flex-wrap gap-6">
         <div className="min-w-[450px] flex-1">
           <label className="mb-2 block text-sm font-semibold text-gray-900">
@@ -73,13 +74,14 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
         <div className="pt-4">
           <button
             onClick={handleSubmit}
+            type="submit"
             className="shrink-0 rounded-lg bg-black px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 active:bg-gray-900 sm:w-auto w-full"
           >
             영화 검색
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

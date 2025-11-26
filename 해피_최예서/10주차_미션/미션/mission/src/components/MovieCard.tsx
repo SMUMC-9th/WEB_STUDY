@@ -1,15 +1,23 @@
 import type { Movie } from "../types/movie.ts";
+import { useMovie } from "../Context/MovieContext.tsx";
 
 interface MovieCardProps {
   movie: Movie;
 }
 
 const MovieCard = ({ movie }: MovieCardProps) => {
+  const { setSelectedMovie } = useMovie();
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
   const fallbackImage = "https://via.placeholder.com/640x960?text=No+Image";
 
   return (
-    <div className="group relative w-full overflow-hidden rounded-xl bg-gray-900 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <div
+      onClick={() => setSelectedMovie(movie)} // 카드 클릭하면 영화 선택됨
+      // 카드 클릭 → setSelectedMovie(movie) 실행
+      // MovieContext의 selectedMovie 값 변경
+      // Context 변경되면 Provider 아래 전체 컴포넌트가 다시 렌더됨
+      className="group relative w-full overflow-hidden rounded-xl bg-gray-900 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+    >
       {/* 포스터 이미지 영역 */}
       <div className="relative aspect-[2/3] w-full overflow-hidden">
         <img

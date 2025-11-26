@@ -9,7 +9,7 @@ interface InputProps {
 export const Input = ({
   value,
   onChange,
-  placeholder = "검색어를 입력하세요.",
+  placeholder = "영화 제목을 입력하세요.",
   className = "",
 }: InputProps) => {
   return (

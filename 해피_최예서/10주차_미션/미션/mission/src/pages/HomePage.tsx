@@ -9,8 +9,12 @@ import MovieFilter from "../components/MovieFilter.tsx";
 // useMemo → “값”을 메모이제이션 (숫자, 객체, 배열 등)
 // useCallback → “함수”를 메모이제이션
 import { useCallback, useMemo, useState } from "react";
+import { useMovie } from "../Context/MovieContext.tsx";
+import MovieModal from "../components/MovieModal.tsx";
 
 export default function HomePage() {
+  const { selectedMovie, setSelectedMovie } = useMovie();
+
   const [filters, setFilters] = useState<MoiveFilters>({
     query: "F1",
     include_adult: false,
@@ -57,6 +61,13 @@ export default function HomePage() {
         // moives라는 이름으로 Movie 배열 넘김.
         // 데이터 있으면 data.result 전달하고, 없으면 빈 배열 전달함.
         <MovieList movies={data?.results || []} />
+      )}
+
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
       )}
     </div>
   );
