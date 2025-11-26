@@ -1,0 +1,9 @@
+## TODO
+
+1. 의존성 배열(deps) 관리 신중하게 하기
+   - count를 deps에 넣지 않으면 최신 값이 반영되지 않는 stale 문제 발생 가능.
+   - 불필요하게 많은 값을 deps에 넣으면 useCallback 최적화 효과가 줄어듦.
+
+2. useCallback의 Trade-Off 이해
+   - useCallback은 함수를 메모리에 저장하므로 비용이 있음.
+   - props로 넘길 함수가 자주 재생성되어 문제가 되는 상황에서만 사용하기.
