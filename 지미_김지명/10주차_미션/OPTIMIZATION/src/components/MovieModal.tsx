@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import type { Movie } from "../types/movie";
 
 interface MovieModalProps {
@@ -6,11 +6,12 @@ interface MovieModalProps {
   onClose: () => void;
 }
 
-const MovieModal = ({ movie, onClose }: MovieModalProps) => {
-  const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
-  const backdropBaseUrl = "https://image.tmdb.org/t/p/original";
-  const fallbackImage = "http://via.placeholder.com/300x450";
+// 최적화: 상수를 컴포넌트 외부로 이동
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+const BACKDROP_BASE_URL = "https://image.tmdb.org/t/p/original";
+const FALLBACK_IMAGE = "http://via.placeholder.com/300x450";
 
+const MovieModal = ({ movie, onClose }: MovieModalProps) => {
   // ESC 키로 모달 닫기
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -54,7 +55,7 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
         {/* 닫기 버튼 (우측 상단) */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg transition-all hover:bg-gray-100 cursor-pointer"
+          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg transition-all hover:bg-gray-100"
           aria-label="닫기"
         >
           ✕
@@ -65,7 +66,7 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
           {movie.backdrop_path && (
             <>
               <img
-                src={`${backdropBaseUrl}${movie.backdrop_path}`}
+                src={`${BACKDROP_BASE_URL}${movie.backdrop_path}`}
                 alt={`${movie.title} 배경`}
                 className="h-full w-full object-cover opacity-40"
               />
@@ -97,8 +98,8 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
               <img
                 src={
                   movie.poster_path
-                    ? `${imageBaseUrl}${movie.poster_path}`
-                    : fallbackImage
+                    ? `${IMAGE_BASE_URL}${movie.poster_path}`
+                    : FALLBACK_IMAGE
                 }
                 alt={`${movie.title} 포스터`}
                 className="h-auto w-full rounded-lg shadow-lg md:w-64"
@@ -164,13 +165,13 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
               <div className="flex gap-3">
                 <button
                   onClick={handleImdbSearch}
-                  className="rounded-lg bg-blue-600 px-6 py-2.5 font-semibold text-white shadow-md transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 cursor-pointer"
+                  className="rounded-lg bg-blue-600 px-6 py-2.5 font-semibold text-white shadow-md transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
                 >
                   IMDb에서 검색
                 </button>
                 <button
                   onClick={onClose}
-                  className="rounded-lg border border-gray-300 bg-white px-6 py-2.5 font-semibold text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 cursor-pointer"
+                  className="rounded-lg border border-gray-300 bg-white px-6 py-2.5 font-semibold text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
                 >
                   닫기
                 </button>
@@ -183,4 +184,5 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
   );
 };
 
-export default MovieModal;
+// 최적화: React.memo로 movie나 onClose가 변경되지 않으면 리렌더링 방지
+export default memo(MovieModal);

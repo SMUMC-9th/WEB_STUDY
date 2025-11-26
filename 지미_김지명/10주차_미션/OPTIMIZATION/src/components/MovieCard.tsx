@@ -1,13 +1,16 @@
+import { memo } from "react";
 import type { Movie } from "../types/movie";
 
 interface MovieCardProps {
   movie: Movie;
   onClick?: () => void;
 }
-const MovieCard = ({ movie, onClick }: MovieCardProps) => {
-  const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
-  const fallbackImageImage = "http://via.placeholder.com/640x480";
 
+// 최적화: 상수를 컴포넌트 외부로 이동 (매 렌더링마다 재생성 방지)
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+const FALLBACK_IMAGE = "http://via.placeholder.com/640x480";
+
+const MovieCard = ({ movie, onClick }: MovieCardProps) => {
   return (
     <div
       onClick={onClick}
@@ -17,8 +20,8 @@ const MovieCard = ({ movie, onClick }: MovieCardProps) => {
         <img
           src={
             movie.poster_path
-              ? `${imageBaseUrl}${movie.poster_path}`
-              : fallbackImageImage
+              ? `${IMAGE_BASE_URL}${movie.poster_path}`
+              : FALLBACK_IMAGE
           }
           alt={`${movie.title} 포스터`}
           className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
@@ -26,8 +29,7 @@ const MovieCard = ({ movie, onClick }: MovieCardProps) => {
         <div className="absolute right-2 top-2 rounded-md bg-black px-2 py-1 text-sm font-bold text-white">
           {movie.vote_average.toFixed(1)}
         </div>
-      </div>{" "}
-      {/* /.relative.h-80.overflow-hidden */}
+      </div>
       <div className="p-4">
         <h3 className="mb-2 text-lg font-bold text-gray-800">{movie.title}</h3>
         <p className="text-sm text-gray-600">
@@ -43,4 +45,5 @@ const MovieCard = ({ movie, onClick }: MovieCardProps) => {
   );
 };
 
-export default MovieCard;
+// 최적화: React.memo로 props가 변경되지 않으면 리렌더링 방지
+export default memo(MovieCard);

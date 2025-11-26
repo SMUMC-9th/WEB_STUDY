@@ -26,12 +26,10 @@ export default function HomePage() {
     axiosRequestConfig
   );
 
-  const handleMovieFilters = useCallback(
-    (filters: MovieFilters) => {
-      setFilters(filters);
-    },
-    [setFilters]
-  );
+  // 최적화: setFilters는 의존성에서 제거 (stable function)
+  const handleMovieFilters = useCallback((filters: MovieFilters) => {
+    setFilters(filters);
+  }, []);
 
   const handleMovieClick = useCallback((movie: Movie) => {
     setSelectedMovie(movie);
@@ -41,20 +39,28 @@ export default function HomePage() {
     setSelectedMovie(null);
   }, []);
 
+  // 최적화: movies를 useMemo로 메모이제이션
+  const movies = useMemo(() => data?.results || [], [data?.results]);
+
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center text-red-600">
+        {error}
+      </div>
+    );
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <MovieFilter onChange={handleMovieFilters} />
       {isLoading ? (
-        <div>로딩 중 입니다...</div>
+        <div className="flex h-60 items-center justify-center">
+          <div className="text-lg font-semibold text-gray-600">
+            로딩 중 입니다...
+          </div>
+        </div>
       ) : (
-        <MovieList
-          movies={data?.results || []}
-          onMovieClick={handleMovieClick}
-        />
+        <MovieList movies={movies} onMovieClick={handleMovieClick} />
       )}
 
       {selectedMovie && (

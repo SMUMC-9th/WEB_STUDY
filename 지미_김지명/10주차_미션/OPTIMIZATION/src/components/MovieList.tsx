@@ -1,3 +1,4 @@
+import { memo } from "react";
 import MovieCard from "../components/MovieCard";
 import type { Movie } from "../types/movie";
 
@@ -28,4 +29,5 @@ const MovieList = ({ movies, onMovieClick }: MovieListProps) => {
   );
 };
 
-export default MovieList;
+// 최적화: React.memo로 불필요한 리렌더링 방지
+export default memo(MovieList);
