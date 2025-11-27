@@ -1,11 +1,15 @@
+import { useState } from "react";
 import type { Movie } from "../types/movie";
 import MovieCard from "./MovieCard";
+import MovieModal from "./MovieModal";
 
 interface MovieListProps {
   movies: Movie[];
 }
 
 const MovieList = ({ movies }: MovieListProps) => {
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+
   if (movies.length === 0) {
     return (
       <div className="flex h-60 items-center justify-center">
@@ -15,11 +19,24 @@ const MovieList = ({ movies }: MovieListProps) => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 md:grid-cols-6">
-      {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
-      ))}
-    </div>
+    <>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 md:grid-cols-6">
+        {movies.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            onClick={() => setSelectedMovie(movie)}
+          />
+        ))}
+      </div>
+
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          onClose={() => setSelectedMovie(null)}
+        />
+      )}
+    </>
   );
 };
 

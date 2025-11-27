@@ -2,14 +2,16 @@ import { type Movie } from "../types/movie";
 
 interface MovieCardProps {
   movie: Movie;
+  onClick?: () => void;
 }
 
-const MovieCard = ({ movie }: MovieCardProps) => {
+const MovieCard = ({ movie, onClick }: MovieCardProps) => {
   return (
     <div
       className="group relative overflow-hidden rounded-xl shadow-lg
                  transition-transform duration-300 hover:scale-105
                  aspect-[2/3]"
+      onClick={onClick}
     >
       <img
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
